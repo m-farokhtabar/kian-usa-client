@@ -1,0 +1,20 @@
+.ProductGroupButton {
+    display: inline-block;
+    border: 1px solid #eee;
+    text-decoration: none;
+    color:black;
+    width: 120px;
+    text-align:center;
+    padding: 5px 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.ProductGroupButton:Hover {
+    background-color: #ffeeff;
+    border: 1px solid #eee;
+}
+.ProductButtonActive{
+    background-color: #f3f3f3;
+    border: 1px solid #ccc;
+}

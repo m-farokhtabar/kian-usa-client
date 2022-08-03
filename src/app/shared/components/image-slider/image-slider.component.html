@@ -1,0 +1,62 @@
+<div [id]="SliderName" class="carousel slide"
+     data-bs-ride="false" data-bs-pause="false" data-bs-interval="0"
+     data-bs-touch="true" *ngIf="!IsFullScreen; else FullScreenMode">
+    <div class="carousel-indicators">
+        <button type="button" [attr.data-bs-target]="'#' + SliderName" [attr.data-bs-slide-to]="idx"
+                [ngClass]="{'active':idx === 0}"
+                [attr.aria-current]="idx === 0 ? 'true': null" [attr.aria-label]="Slider.Alt"
+                *ngFor="let Slider of Sliders;let idx = index" style="border-top-color:#00000015;"></button>
+    </div>
+    <div class="carousel-inner" *ngIf="!ShowDialogForFullScreen; else ShowDialogForFullScreenMode">
+        <div class="carousel-item"  [ngClass]="{'active':idx === 0}" *ngFor="let Slider of Sliders;let idx = index">
+            <img [src]="Slider.Url" class="d-block w-100" [alt]="Slider.Alt">
+        </div>
+    </div>
+    <ng-template #ShowDialogForFullScreenMode>
+        <div class="carousel-inner" data-bs-toggle="modal"
+             [attr.data-bs-target]="'#' + SliderName + '_FullscreenSliderContainer'" style="cursor:pointer;">
+            <div class="carousel-item" [ngClass]="{'active':idx === 0}" *ngFor="let Slider of Sliders;let idx = index">
+                <img [src]="Slider.Url" class="d-block w-100" [alt]="Slider.Alt">
+            </div>
+        </div>
+    </ng-template>
+
+    <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#' + SliderName"
+            data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color: #000000ad;"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#' + SliderName"
+            data-bs-slide="next" #NextSlideCarousel>
+        <span class="carousel-control-next-icon" aria-hidden="true" style="background-color: #000000ad;"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+<ng-template #FullScreenMode>
+    <div [id]="SliderName" class="carousel slide" data-bs-ride="carousel"
+         data-bs-touch="true" data-bs-interval="11500"
+         style="display:flex;flex-direction: row;flex-wrap: nowrap;align-items: stretch;height:100vh;width: 100vw;">
+        <div class="carousel-indicators">
+            <button type="button" [attr.data-bs-target]="'#' + SliderName" [attr.data-bs-slide-to]="idx"
+                    [ngClass]="{'active':idx === 0}"
+                    [attr.aria-current]="idx === 0 ? 'true': null" [attr.aria-label]="Slider.Alt"
+                    *ngFor="let Slider of Sliders;let idx = index" style="border-top-color:#00000015;"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item" [ngClass]="{'active':idx === 0}" *ngFor="let Slider of Sliders;let idx = index"
+                 style="height:100vh;width: 100vw;background-image:url('{{Slider.Url}}');background-size:cover;background-repeat:no-repeat;background-position:center center;">
+                <!--<img [src]="Slider.Url" class="d-block w-100" [alt]="Slider.Alt">-->
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#' + SliderName"
+                data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color: #000000ad;"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#' + SliderName"
+                data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true" style="background-color: #000000ad;"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</ng-template>

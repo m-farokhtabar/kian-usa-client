@@ -1,0 +1,41 @@
+<div class="table-responsive SmallFontSize">
+    <table class="table table-hover table-bordered table-striped mb-0">
+        <thead>
+        <tr class="Header">
+            <th rowspan="2" scope="col">Item Number</th>
+            <th rowspan="2" scope="col">Description</th>
+            <th rowspan="2" scope="col">WH Qty</th>
+            <th rowspan="2" scope="col" *ngFor="let PriceIndex of ProductPricesIndex">{{getPriceHeaderName(PriceIndex)}}</th>
+            <th colspan="3" scope="col">Item Dimensions (in)</th>
+            <th colspan="3" scope="col">Box Dimensions (in)</th>
+            <th rowspan="2" scope="col">Cube</th>
+        </tr>
+        <tr class="Header">
+            <th scope="col">Width</th>
+            <th scope="col">Depth</th>
+            <th scope="col">Height</th>
+            <th scope="col">Width</th>
+            <th scope="col">Depth</th>
+            <th scope="col">Height</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr></tr>
+        <ng-container *ngFor="let product of products;">
+            <tr>
+                <td scope="row">{{product.Name}}</td>
+                <td>{{product.Description}}</td>
+                <td>{{product.WHQTY}}</td>
+                <td *ngFor="let PriceIndex of ProductPricesIndex">{{GetPriceFormat(product.Prices[PriceIndex].Value)}}</td>
+                <td>{{product.W}}</td>
+                <td>{{product.D}}</td>
+                <td>{{product.H}}</td>
+                <td>{{product.BoxW}}</td>
+                <td>{{product.BoxD}}</td>
+                <td>{{product.BoxH}}</td>
+                <td>{{product.Cube}}</td>
+            </tr>
+        </ng-container>
+        </tbody>
+    </table>
+</div>

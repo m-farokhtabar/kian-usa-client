@@ -1,0 +1,18 @@
+<div class="table-responsive SmallFontSize">
+    <table class="table table-hover table-bordered table-striped">
+        <thead>
+        <tr class="Header">
+            <th scope="col" colspan="2">More Details</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr></tr>
+        <ng-container *ngFor="let Parameter of CategoryParameters">
+            <tr *ngIf="Parameter.Value!=null && Parameter.Value!==''">
+                <td scope="row">{{Parameter.Name}}</td>
+                <td>{{Parameter.Value}}</td>
+            </tr>
+        </ng-container>
+        </tbody>
+    </table>
+</div>

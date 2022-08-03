@@ -1,0 +1,10 @@
+<div *ngFor="let CategoryShort  of CategoriesShort;let Idx = index" class="ps-1 pe-1 float-start" style="height:50px;">
+    <a class="ProductGroupButton"
+       routerLinkActive="ProductButtonActive"
+       [routerLinkActiveOptions]="{exact: true}"
+       [routerLink]="['/price-list',CategoryShort.Slug]"
+       [ngStyle]="{'width':CategoryShort.Name.length>14 ? '250px' : '120px'}"
+       [title]="CategoryShort.ShortDescription">
+        {{CategoryShort.Name}}
+    </a>
+</div>

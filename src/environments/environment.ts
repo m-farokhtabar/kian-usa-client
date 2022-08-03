@@ -3,7 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  ServiceHost: "https://localhost:5001",
+  ImageHost: "https://localhost:5001",
+  CatalogAddress: "https://localhost:5001/Catalogs/",
+  FullCatalogFileName: "Catalog",
+  DefaultImageFileName: "/Images/Products/Default/kian_usa_comming_soon.jpg",
+  HomeSlider: "/Images/Home/Sliders/",
+  HomeGrid: "/Images/Home/Grids/",
+  Logo: "/Images/Logo/"
 };
 
 /*

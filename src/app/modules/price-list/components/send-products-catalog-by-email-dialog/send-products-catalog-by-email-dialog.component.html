@@ -1,0 +1,49 @@
+<div class="modal fade" [id]="'Dialog_'+ CategorySlug + '_SendMailModal'" tabindex="-1" [attr.aria-labelledby]="'#Dialog_'+ CategorySlug + '_SendMailModalLabel'" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" [id]="'Dialog_'+ CategorySlug + '_SendMailModalLabel'">Sending Catalog By Email</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form #EmailForm="ngForm" name="sendCatalogByEmailForm" (ngSubmit)="OnSubmit(EmailForm)" class="needs-validation">
+                <div class="modal-body">
+                    <div class="row pb-2">
+                        <label class="form-label col-sm-4" for="CatalogType">Price list</label>
+                        <div class="col-sm-8">
+                            <select ngModel name="CatalogType" #CatalogType="ngModel" id="CatalogType" class="form-select" required>
+                                <option value="0">{{CategoryName}} price list</option>
+                                <option value="1">All price lists</option>
+                            </select>
+                            <div class="invalid-feedback" *ngIf="CatalogType.touched && CatalogType.invalid">Please select price list.</div>
+                        </div>
+                    </div>
+                    <div class="row pb-2">
+                        <label class="form-label col-sm-4" for="CustomerName">Customer name:</label>
+                        <div class="col-sm-8">
+                            <input ngModel maxlength="100" name="CustomerFullName" #CustomerFullName="ngModel" class="form-control" id="CustomerName" type="text" required/>
+                            <div class="invalid-feedback" *ngIf="CustomerFullName.touched && CustomerFullName.invalid">
+                                <div *ngIf="CustomerFullName.errors?.['required']">Please input customer name.</div>
+                                <div *ngIf="CustomerFullName.errors?.['maxlength']">Customer name should be less than 100 character.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pb-2">
+                        <label class="form-label col-sm-4" for="CustomerEmail">Customer email:</label>
+                        <div class="col-sm-8">
+                            <input ngModel maxlength="150" name="CustomerEmail" #CustomerEmail="ngModel" placeholder="name@example.com" class="form-control" id="CustomerEmail" type="email" email required/>
+                            <div class="invalid-feedback" *ngIf="CustomerEmail.touched && CustomerEmail.invalid">
+                                <div *ngIf="CustomerEmail.errors?.['required']">Please input customer email.</div>
+                                <div *ngIf="CustomerEmail.errors?.['maxlength']">Customer email should be less than {{CustomerEmail.errors?.['maxlength'].requiredLength}} character.</div>
+                                <div *ngIf="CustomerEmail.errors?.['email']">Customer email is not valid.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" #ModelCloseButton>Close</button>
+                    <button class="btn btn-primary" type="submit" [disabled]="!EmailForm.valid">Send Mail</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

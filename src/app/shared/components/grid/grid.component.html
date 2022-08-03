@@ -1,0 +1,21 @@
+<div class="row" *ngFor="let RowCells of GridCells">
+    <div [class]="'pt-2 col-12 col-sm-12 col-md-' + this.ColsPerRow " *ngFor="let Cell of RowCells"  style="text-align: center;">
+        <a style="color:#000;text-decoration: none;" [routerLink]="[Cell.Link]">
+            <ng-container *ngIf="!IsThemeCard(); else CardTheme">
+                <h5 *ngIf="IsThemeUp()" class="card-title">{{Cell.Title}}</h5>
+                <img class="shadow-sm rounded  img-fluid" [src]="Cell.ImageUrl" [alt]="Cell.Alt"/>
+                <h5 *ngIf="!IsThemeUp()" style="font-weight: normal;">{{Cell.Title}}</h5>
+            </ng-container>
+
+            <ng-template #CardTheme>
+                <div class="card shadow-sm">
+                    <img [src]="Cell.ImageUrl" class="card-img-top" [alt]="Cell.Alt">
+                    <div class="card-body">
+                        <h5 class="card-title">{{Cell.Title}}</h5>
+                        <!--<p class="card-text">{{Cell.ShortDescription != "" ? Cell.ShortDescription : "&nbsp;"}}</p>-->
+                    </div>
+                </div>
+            </ng-template>
+        </a>
+    </div>
+</div>

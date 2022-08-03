@@ -1,0 +1,39 @@
+<div class="modal fade" id="LoginModal" tabindex="-1" aria-labelledby="LoginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="LoginModalLabel">User login</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form #LoginForm="ngForm" name="LoginForm" (ngSubmit)="OnSubmit(LoginForm)" class="needs-validation">
+                <div class="modal-body">
+                    <div class="row pb-2">
+                        <label class="form-label col-sm-4" for="Username">Username:</label>
+                        <div class="col-sm-8">
+                            <input ngModel maxlength="100" name="Username" #Username="ngModel" placeholder="name@example.com" class="form-control" id="Username" type="email" email required/>
+                            <div class="invalid-feedback" *ngIf="Username.touched && Username.invalid">
+                                <div *ngIf="Username.errors?.['required']">Please input Username.</div>
+                                <div *ngIf="Username.errors?.['maxlength']">Username should be less than 100 character.</div>
+                                <div *ngIf="Username.errors?.['email']">Username is not valid. It must be email.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pb-2">
+                        <label class="form-label col-sm-4" for="Password">Password:</label>
+                        <div class="col-sm-8">
+                            <input ngModel maxlength="40" name="Password" #Password="ngModel" class="form-control" id="Password" type="password" required/>
+                            <div class="invalid-feedback" *ngIf="Password.touched && Password.invalid">
+                                <div *ngIf="Password.errors?.['required']">Please input password.</div>
+                                <div *ngIf="Password.errors?.['maxlength']">Customer password should be less than {{Password.errors?.['maxlength'].requiredLength}} character.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" #LoginModelCloseButton>Close</button>
+                    <button class="btn btn-primary" type="submit" [disabled]="!LoginForm.valid">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

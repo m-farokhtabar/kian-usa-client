@@ -1,0 +1,17 @@
+<div class="table-responsive SmallFontSize">
+    <table class="table table-hover table-bordered table-striped">
+        <thead>
+        <tr class="Header">
+            <th scope="col" colspan="2">Features</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr></tr>
+        <ng-container *ngFor="let Feature of CategoryFeatures">
+            <tr *ngIf="Feature.Value!=null && Feature.Value!==''">
+                <td>{{Feature.Value}}</td>
+            </tr>
+        </ng-container>
+        </tbody>
+    </table>
+</div>
