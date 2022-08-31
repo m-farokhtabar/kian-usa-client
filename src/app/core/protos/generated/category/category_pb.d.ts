@@ -43,6 +43,11 @@ export class CategoryResponseMessage extends jspb.Message {
   setImagesurlList(value: Array<string>): void;
   addImagesurl(value: string, index?: number): string;
 
+  clearTagsList(): void;
+  getTagsList(): Array<string>;
+  setTagsList(value: Array<string>): void;
+  addTags(value: string, index?: number): string;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CategoryResponseMessage.AsObject;
   static toObject(includeInstance: boolean, msg: CategoryResponseMessage): CategoryResponseMessage.AsObject;
@@ -65,6 +70,7 @@ export namespace CategoryResponseMessage {
     childrenList: Array<ChildrenCategoryResponseMessage.AsObject>,
     order: number,
     imagesurlList: Array<string>,
+    tagsList: Array<string>,
   }
 }
 
@@ -237,6 +243,28 @@ export class CategoryBySlugRequestMessage extends jspb.Message {
 export namespace CategoryBySlugRequestMessage {
   export type AsObject = {
     slug: string,
+  }
+}
+
+export class CategoryByTagsRequestMessage extends jspb.Message {
+  clearTagsList(): void;
+  getTagsList(): Array<string>;
+  setTagsList(value: Array<string>): void;
+  addTags(value: string, index?: number): string;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CategoryByTagsRequestMessage.AsObject;
+  static toObject(includeInstance: boolean, msg: CategoryByTagsRequestMessage): CategoryByTagsRequestMessage.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CategoryByTagsRequestMessage, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CategoryByTagsRequestMessage;
+  static deserializeBinaryFromReader(message: CategoryByTagsRequestMessage, reader: jspb.BinaryReader): CategoryByTagsRequestMessage;
+}
+
+export namespace CategoryByTagsRequestMessage {
+  export type AsObject = {
+    tagsList: Array<string>,
   }
 }
 

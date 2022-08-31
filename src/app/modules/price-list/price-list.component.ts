@@ -93,7 +93,6 @@ export class PriceListComponent implements OnInit, OnDestroy {
             let Images = this.Categories[i].ImagesUrl;
             this.SliderImages[i] = Images.map(ImageUrl => <ImageSliderModel>(new ImageSliderModel(ImageUrl, Tools.GetFileNameWithOutExtensionFromPath(ImageUrl))));
             this.SliderImages[i] = this.SliderImages[i].sort((a, b) => a.Url.substring(a.Url.lastIndexOf("_")).localeCompare(b.Url.substring(b.Url.lastIndexOf("_"))));
-
         }
     }
 

@@ -14,6 +14,15 @@ type CategorySrvGetAll = {
   readonly responseType: typeof category_pb.CategoriesResponseMessage;
 };
 
+type CategorySrvGetAllWithChildren = {
+  readonly methodName: string;
+  readonly service: typeof CategorySrv;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof google_protobuf_empty_pb.Empty;
+  readonly responseType: typeof category_pb.CategoriesResponseMessage;
+};
+
 type CategorySrvGetAllShortData = {
   readonly methodName: string;
   readonly service: typeof CategorySrv;
@@ -50,6 +59,15 @@ type CategorySrvGetBySlugWithChildren = {
   readonly responseType: typeof category_pb.CategoriesResponseMessage;
 };
 
+type CategorySrvGetByFilter = {
+  readonly methodName: string;
+  readonly service: typeof CategorySrv;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof category_pb.CategoryByTagsRequestMessage;
+  readonly responseType: typeof category_pb.CategoriesResponseMessage;
+};
+
 type CategorySrvGetFirst = {
   readonly methodName: string;
   readonly service: typeof CategorySrv;
@@ -62,10 +80,12 @@ type CategorySrvGetFirst = {
 export class CategorySrv {
   static readonly serviceName: string;
   static readonly GetAll: CategorySrvGetAll;
+  static readonly GetAllWithChildren: CategorySrvGetAllWithChildren;
   static readonly GetAllShortData: CategorySrvGetAllShortData;
   static readonly GetById: CategorySrvGetById;
   static readonly GetBySlug: CategorySrvGetBySlug;
   static readonly GetBySlugWithChildren: CategorySrvGetBySlugWithChildren;
+  static readonly GetByFilter: CategorySrvGetByFilter;
   static readonly GetFirst: CategorySrvGetFirst;
 }
 
@@ -110,6 +130,15 @@ export class CategorySrvClient {
     requestMessage: google_protobuf_empty_pb.Empty,
     callback: (error: ServiceError|null, responseMessage: category_pb.CategoriesResponseMessage|null) => void
   ): UnaryResponse;
+  getAllWithChildren(
+    requestMessage: google_protobuf_empty_pb.Empty,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: category_pb.CategoriesResponseMessage|null) => void
+  ): UnaryResponse;
+  getAllWithChildren(
+    requestMessage: google_protobuf_empty_pb.Empty,
+    callback: (error: ServiceError|null, responseMessage: category_pb.CategoriesResponseMessage|null) => void
+  ): UnaryResponse;
   getAllShortData(
     requestMessage: google_protobuf_empty_pb.Empty,
     metadata: grpc.Metadata,
@@ -144,6 +173,15 @@ export class CategorySrvClient {
   ): UnaryResponse;
   getBySlugWithChildren(
     requestMessage: category_pb.CategoryBySlugRequestMessage,
+    callback: (error: ServiceError|null, responseMessage: category_pb.CategoriesResponseMessage|null) => void
+  ): UnaryResponse;
+  getByFilter(
+    requestMessage: category_pb.CategoryByTagsRequestMessage,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: category_pb.CategoriesResponseMessage|null) => void
+  ): UnaryResponse;
+  getByFilter(
+    requestMessage: category_pb.CategoryByTagsRequestMessage,
     callback: (error: ServiceError|null, responseMessage: category_pb.CategoriesResponseMessage|null) => void
   ): UnaryResponse;
   getFirst(

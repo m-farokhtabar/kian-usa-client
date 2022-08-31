@@ -46,7 +46,8 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     HideMenu(): void {
-        if (this.BtnMenu?.nativeElement.offsetParent != null)
+        if (this.BtnMenu?.nativeElement.offsetParent != null) {
             this.BtnMenu.nativeElement.click();
+        }
     }
 }

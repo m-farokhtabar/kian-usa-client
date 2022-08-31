@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit {
                     }
                 ],
             CellsPerRow: 2,
-            MaxRow: 1,
+            MaxRowPerPage: 1,
             CellStyle: CellStyle.Up,
         };
     }
@@ -85,7 +85,7 @@ export class HomeComponent implements OnInit {
                     }
                 ],
             CellsPerRow: 3,
-            MaxRow: 1,
+            MaxRowPerPage: 1,
             CellStyle: CellStyle.Up,
         };
     }
@@ -104,7 +104,7 @@ export class HomeComponent implements OnInit {
                         Title: "Visit us at Market",
                         Alt: "KianUSA furniture",
                         ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_03_0002.jpg",
-                        Link: "/",
+                        Link: "/visit-us-at-market",
                         ShortDescription: ""
                     },
                     {
@@ -123,7 +123,7 @@ export class HomeComponent implements OnInit {
                     }
                 ],
             CellsPerRow: 4,
-            MaxRow: 1,
+            MaxRowPerPage: 1,
             CellStyle: CellStyle.Card,
         };
     }

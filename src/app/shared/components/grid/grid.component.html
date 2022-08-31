@@ -1,21 +1,84 @@
-<div class="row" *ngFor="let RowCells of GridCells">
-    <div [class]="'pt-2 col-12 col-sm-12 col-md-' + this.ColsPerRow " *ngFor="let Cell of RowCells"  style="text-align: center;">
+<ng-container *ngIf="TotalPages>1">
+    <div class="row mt-3">
+        <div class="col-12 text-center">
+            <nav aria-label="Page navigation example" class="d-inline-block">
+                <ul class="pagination">
+                    <li class="page-item" [ngClass]="{'disabled':GetPrev() === -1}">
+                        <a class="page-link" (click)="MoveToPage(GetPrev())"
+                           [routerLink]="[PagerBaseLink, (GetPrev() + 1)]" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item" [ngClass]="{'active':CheckForActive(PageIndex)}"
+                        *ngFor="let PageIndex of GetPagesIndex()">
+                        <a class="page-link" (click)="MoveToPage(PageIndex)"
+                           [routerLink]="[PagerBaseLink,(PageIndex + 1)]">{{(PageIndex + 1)}}</a>
+                    </li>
+                    <li class="page-item" [ngClass]="{'disabled':GetNext() === -1}">
+                        <a class="page-link" (click)="MoveToPage(GetNext())"
+                           [routerLink]="[PagerBaseLink,(GetNext() + 1)]" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</ng-container>
+<div class="row" *ngFor="let RowCells of GridCells[CurrentPageIndex]">
+    <div [class]="'pt-2 col-12 col-sm-12 col-md-' + this.ColsPerRow " *ngFor="let Cell of RowCells"
+         style="text-align: center;">
         <a style="color:#000;text-decoration: none;" [routerLink]="[Cell.Link]">
             <ng-container *ngIf="!IsThemeCard(); else CardTheme">
                 <h5 *ngIf="IsThemeUp()" class="card-title">{{Cell.Title}}</h5>
                 <img class="shadow-sm rounded  img-fluid" [src]="Cell.ImageUrl" [alt]="Cell.Alt"/>
                 <h5 *ngIf="!IsThemeUp()" style="font-weight: normal;">{{Cell.Title}}</h5>
             </ng-container>
-
             <ng-template #CardTheme>
-                <div class="card shadow-sm">
-                    <img [src]="Cell.ImageUrl" class="card-img-top" [alt]="Cell.Alt">
+                <div class="card shadow-sm overflow-hidden">
+                    <div class="overflow-hidden">
+                        <img [src]="Cell.ImageUrl" class="card-img-top img-zoom" [alt]="Cell.Alt"
+                             *ngIf="ZoomOnImageWhenMouseOver; else imgWithoutZoom">
+                        <ng-template #imgWithoutZoom>
+                            <img [src]="Cell.ImageUrl" class="card-img-top" [alt]="Cell.Alt">
+                        </ng-template>
+                    </div>
                     <div class="card-body">
                         <h5 class="card-title">{{Cell.Title}}</h5>
-                        <!--<p class="card-text">{{Cell.ShortDescription != "" ? Cell.ShortDescription : "&nbsp;"}}</p>-->
+                        <p class="card-text"
+                           *ngIf="IsThemeCardWithDescription()">{{Cell.ShortDescription != "" ? Cell.ShortDescription : "&nbsp;"}}</p>
                     </div>
                 </div>
             </ng-template>
         </a>
     </div>
 </div>
+<ng-container *ngIf="TotalPages>1">
+    <div class="row mt-3">
+        <div class="col-2">{{MakeInfoAboutCountOfItems()}}</div>
+        <div class="col-8 text-center">
+            <nav aria-label="Page navigation example" class="d-inline-block">
+                <ul class="pagination">
+                    <li class="page-item" [ngClass]="{'disabled':GetPrev() === -1}">
+                        <a class="page-link" (click)="MoveToPage(GetPrev())"
+                           [routerLink]="[PagerBaseLink, (GetPrev() + 1)]" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item" [ngClass]="{'active':CheckForActive(PageIndex)}"
+                        *ngFor="let PageIndex of GetPagesIndex()">
+                        <a class="page-link" (click)="MoveToPage(PageIndex)"
+                           [routerLink]="[PagerBaseLink,(PageIndex + 1)]">{{(PageIndex + 1)}}</a>
+                    </li>
+                    <li class="page-item" [ngClass]="{'disabled':GetNext() === -1}">
+                        <a class="page-link" (click)="MoveToPage(GetNext())"
+                           [routerLink]="[PagerBaseLink,(GetNext() + 1)]" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-2" style="text-align: right;">[] [][]</div>
+    </div>
+</ng-container>

@@ -1,7 +1,7 @@
 export class GridViewmodel {
     public Cells: GridCell[] = [];
     public CellsPerRow: number = 4;
-    public MaxRow: number = 5;
+    public MaxRowPerPage: number = 5;
     public CellStyle: CellStyle = CellStyle.Up;
 }
 
@@ -24,5 +24,6 @@ export class GridCell {
 export enum CellStyle {
     Up,
     Down,
-    Card
+    Card,
+    CardWithDescription
 }

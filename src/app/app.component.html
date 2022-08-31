@@ -1,16 +1,16 @@
-<div class="container-fluid bg-opacity-75 bg-light">
+<div class="container-fluid ps-0" style="background-color: #223f81;">
     <div class="container">
         <div class="row">
             <div class="col-lg-6 col-12 pt-2">
-                <div class="input-group mb-1" style="width:300px;">
+                <div class="input-group input-group-sm mb-1" style="width:250px;">
                     <input type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2">
                     <button class="btn btn-outline-secondary" type="button" id="button-addon2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="21" fill="currentColor" class="bi bi-search text-light" viewBox="0 0 16 16">
                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                         </svg>
                     </button>
                 </div>
-                <p style="color:gray;">A Retailer Tax ID is Required for Purchase</p>
+                <p class="text-light" style="font-size:13px;">A Retailer Tax ID is Required for Purchase</p>
             </div>
             <div class="col-lg-6 d-lg-block d-md-none d-sm-none d-none">
                 <img [src]="KianUSALogoUrl" class="float-end" style="width: 96px;height:auto;" alt="KIAN USA"/>
@@ -18,10 +18,10 @@
         </div>
     </div>
 </div>
-<nav class="navbar navbar-expand-lg navbar-light bg-opacity-75 bg-light"
-     [ngClass]="{'fixed-top':IsFixedTopMenu, 'sticky-top':!IsFixedTopMenu}">
+<nav class="navbar navbar-expand-lg navbar-dark p-0"
+     [ngClass]="{'fixed-top':IsFixedTopMenu, 'sticky-top':!IsFixedTopMenu}" style="background-color: #223f81;">
     <div class="container">
-        <a class="navbar-brand" href="#"><h3>Kian USA</h3></a>
+        <a class="navbar-brand" href="#"><h2>KIAN USA</h2></a>
         <button id="NavMainMenuButton" class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navMainMenu" aria-controls="navMainMenu" aria-expanded="false"
                 aria-label="Toggle navigation" #NavMainMenuButton>
@@ -30,53 +30,63 @@
         <div class="collapse navbar-collapse" id="navMainMenu">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 float-right" style="margin:auto;">
                 <li class="nav-item">
-                    <a class="nav-link active fs-6" aria-current="page"
+                    <a class="nav-link active fs-6  fw-bold" aria-current="page"
                        (click)="HideMenu()"
                        routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/']">HOME</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle fs-6" href="#" id="navbarDropdownMenuLink" role="button"
+                    <a class="nav-link dropdown-toggle fs-6  fw-bold" href="#" id="navbarDropdownMenuLink" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         SHOP
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Sacramento, CA Warehouse</a></li>
-                        <li><a class="dropdown-item" href="#">Mixed Container from China</a></li>
-                        <li><a class="dropdown-item" href="#">Direct Container from China</a></li>
+                        <li (click)="HideMenu()"><a class="dropdown-item" href="#">Sacramento, CA Warehouse</a></li>
+                        <li (click)="HideMenu()"><a class="dropdown-item" href="#">Mixed Container from China</a></li>
+                        <li (click)="HideMenu()"><a class="dropdown-item" href="#">Direct Container from China</a></li>
                     </ul>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link active fs-6" aria-current="page"
-                       (click)="HideMenu()"
-                       routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
-                       [routerLink]="['/']">COVER</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle fs-6  fw-bold" href="#" id="navbarDropdownMenuLink" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        DEALER ONLY
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li (click)="HideMenu()"><a class="dropdown-item" href="#">New Customer</a></li>
+                        <li (click)="HideMenu()"><a class="dropdown-item"
+                               routerLinkActive="active"
+                               [routerLinkActiveOptions]="{exact: true}"
+                               [routerLink]="['/shipping-programs']">Shipping Programs</a></li>
+                        <li (click)="HideMenu()"><a class="dropdown-item" href="#">Claim Policy</a></li>
+                    </ul>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle fs-6" href="#" id="navbarDropdownMenuLink" role="button"
+                    <a class="nav-link dropdown-toggle fs-6  fw-bold" href="#" id="navbarDropdownMenuLink" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         WHO WE ARE
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">About US</a></li>
-                        <li><a class="dropdown-item" href="#">Shipping Programs</a></li>
-                        <li><a class="dropdown-item" href="#">Claim Policy</a></li>
-                        <li><a class="dropdown-item" href="#">Visit us at Market</a></li>
-                        <li><a class="dropdown-item" href="#">Privacy Policy</a></li>
-                        <li><a class="dropdown-item" href="#">Contact US</a></li>
+                        <li (click)="HideMenu()"><a class="dropdown-item"
+                               routerLinkActive="active"
+                               [routerLinkActiveOptions]="{exact: true}"
+                               [routerLink]="['/about-us']">About US</a></li>
+                        <li (click)="HideMenu()"><a class="dropdown-item"
+                               routerLinkActive="active"
+                               [routerLinkActiveOptions]="{exact: true}"
+                               [routerLink]="['/visit-us-at-market']"
+                               href="#">Visit Us at Market</a></li>
+                        <li (click)="HideMenu()"><a class="dropdown-item"
+                               routerLinkActive="active"
+                               [routerLinkActiveOptions]="{exact: true}"
+                               [routerLink]="['/privacy-policy']">Privacy Policy</a></li>
+                        <li (click)="HideMenu()"><a class="dropdown-item"
+                               routerLinkActive="active"
+                               [routerLinkActiveOptions]="{exact: true}"
+                               [routerLink]="['/contact-us']">Contact US</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active fs-6" aria-current="page"
-                       (click)="HideMenu()"
-                       routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/']">Where to
-                        Shop</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active fs-6" aria-current="page"
-                       (click)="HideMenu()"
-                       routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/']">New
-                        Customer</a>
+                    <a class="nav-link fs-6  fw-bold" aria-current="page" (click)="HideMenu()">Where to Shop</a>
                 </li>
                 <!--<li class="nav-item" *ngIf="AccountIsValid">-->
                     <!--<a class="nav-link fs-6"-->
@@ -85,22 +95,22 @@
                        <!--[routerLink]="['/price-list']">PRICE LIST</a>-->
                 <!--</li>-->
                 <li class="nav-item dropdown" *ngIf="AccountIsValid">
-                    <a class="nav-link dropdown-toggle fs-6" href="#" id="navbarDropdownMenuLink" role="button"
+                    <a class="nav-link dropdown-toggle fs-6  fw-bold" href="#" id="navbarDropdownMenuLink" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         VIP TOOLS
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" (click)="HideMenu()"
+                        <li (click)="HideMenu()"><a class="dropdown-item" (click)="HideMenu()"
                                routerLinkActive="active"
                                [routerLinkActiveOptions]="{exact: true}"
                                [routerLink]="['/price-list']">Price List</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fs-6"
+                    <a class="nav-link fs-6  fw-bold"
                        href="#" data-bs-toggle="modal" data-bs-target="#LoginModal" (click)="HideMenu()"
                        *ngIf="!AccountIsValid">LOGIN</a>
-                    <a class="nav-link fs-6"
+                    <a class="nav-link fs-6 fw-bold"
                        href="#" (click)="OnLogOut()" *ngIf="AccountIsValid">LOGOUT</a>
                 </li>
             </ul>

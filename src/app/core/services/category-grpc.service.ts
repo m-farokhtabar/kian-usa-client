@@ -3,7 +3,7 @@ import {grpc} from "@improbable-eng/grpc-web";
 import {CategorySrv} from "../protos/generated/category/category_pb_service";
 import {
     CategoriesResponseMessage,
-    CategoriesShortDataResponseMessage, CategoryBySlugRequestMessage,
+    CategoriesShortDataResponseMessage, CategoryBySlugRequestMessage, CategoryByTagsRequestMessage,
     CategoryParameterResponseMessage,
     CategoryResponseMessage, ChildrenCategoryResponseMessage
 } from "../protos/generated/category/category_pb";
@@ -19,6 +19,80 @@ export class CategoryGrpcService {
     constructor(private account: AccountModel) {
     }
 
+    GetByFilter(Tags: string[]): Promise<CategoryModel[]> {
+        const request = new CategoryByTagsRequestMessage();
+        request.setTagsList(Tags);
+        return new Promise<CategoryModel[]>((resolve, reject) =>{
+            grpc.unary(CategorySrv.GetByFilter, {
+                request: request,
+                host: Constant.ServiceHost,
+                metadata: ServiceHelper.CreateAuthToken(this.account),
+                onEnd: res => {
+                    const {status, message} = res;
+                    if (status === grpc.Code.OK && message) {
+                        let result = message.toObject() as CategoriesResponseMessage.AsObject;
+
+                        if (result != null) {
+                            const categories = result.categoriesList.map(x=> <CategoryModel>{
+                                Id: x.id,
+                                Name: x.name,
+                                Slug: x.slug,
+                                Order: x.order,
+                                ShortDescription: x.shortdescription,
+                                Description: x.description,
+                                Parameters: this.CategoryParameterResponseMessageMapToCategoryParameterModel(x.parametersList),
+                                Features: this.CategoryParameterResponseMessageMapToCategoryParameterModel(x.featuresList),
+                                ImagesUrl: x.imagesurlList,
+                                Children: this.ChildrenCategoryResponseMessageMapToCategoryChildModel(x.childrenList),
+                                Tags:x.tagsList
+                            });
+                            return resolve(categories);
+                        }
+                        else
+                            return reject();
+                    }
+                    else
+                        return reject();
+                }
+            });
+        });
+    }
+    GetWithChildren(): Promise<CategoryModel[]> {
+        return new Promise<CategoryModel[]>((resolve, reject) =>{
+            grpc.unary(CategorySrv.GetAllWithChildren, {
+                request: new Empty(),
+                host: Constant.ServiceHost,
+                metadata: ServiceHelper.CreateAuthToken(this.account),
+                onEnd: res => {
+                    const {status, message} = res;
+                    if (status === grpc.Code.OK && message) {
+                        let result = message.toObject() as CategoriesResponseMessage.AsObject;
+
+                        if (result != null) {
+                            const categories = result.categoriesList.map(x=> <CategoryModel>{
+                                Id: x.id,
+                                Name: x.name,
+                                Slug: x.slug,
+                                Order: x.order,
+                                ShortDescription: x.shortdescription,
+                                Description: x.description,
+                                Parameters: this.CategoryParameterResponseMessageMapToCategoryParameterModel(x.parametersList),
+                                Features: this.CategoryParameterResponseMessageMapToCategoryParameterModel(x.featuresList),
+                                ImagesUrl: x.imagesurlList,
+                                Children: this.ChildrenCategoryResponseMessageMapToCategoryChildModel(x.childrenList),
+                                Tags:x.tagsList
+                            });
+                            return resolve(categories);
+                        }
+                        else
+                            return reject();
+                    }
+                    else
+                        return reject();
+                }
+            });
+        });
+    }
     GetAllShortData(): Promise<CategoryDetailsShortModel[]> {
         return new Promise<CategoryDetailsShortModel[]>((resolve, reject) =>{
             grpc.unary(CategorySrv.GetAllShortData, {
@@ -61,7 +135,8 @@ export class CategoryGrpcService {
                                 this.CategoryParameterResponseMessageMapToCategoryParameterModel(result.parametersList),
                                 this.CategoryParameterResponseMessageMapToCategoryParameterModel(result.featuresList),
                                 result.imagesurlList,
-                                this.ChildrenCategoryResponseMessageMapToCategoryChildModel(result.childrenList));
+                                this.ChildrenCategoryResponseMessageMapToCategoryChildModel(result.childrenList),
+                                result.tagsList);
                             return resolve(Category);
                         }
                         else
@@ -94,7 +169,8 @@ export class CategoryGrpcService {
                                 this.CategoryParameterResponseMessageMapToCategoryParameterModel(result.parametersList),
                                 this.CategoryParameterResponseMessageMapToCategoryParameterModel(result.featuresList),
                                 result.imagesurlList,
-                                this.ChildrenCategoryResponseMessageMapToCategoryChildModel(result.childrenList));
+                                this.ChildrenCategoryResponseMessageMapToCategoryChildModel(result.childrenList),
+                                result.tagsList);
                             return resolve(Category);
                         }
                         else
@@ -133,7 +209,8 @@ export class CategoryGrpcService {
                                 Parameters: this.CategoryParameterResponseMessageMapToCategoryParameterModel(x.parametersList),
                                 Features: this.CategoryParameterResponseMessageMapToCategoryParameterModel(x.featuresList),
                                 ImagesUrl: x.imagesurlList,
-                                Children: this.ChildrenCategoryResponseMessageMapToCategoryChildModel(x.childrenList)
+                                Children: this.ChildrenCategoryResponseMessageMapToCategoryChildModel(x.childrenList),
+                                Tags:x.tagsList
                             });
                             return resolve(categories);
                         }

@@ -1,31 +1,22 @@
 // package: 
-// file: email.proto
+// file: filter.proto
 
-import * as email_pb from "./email_pb";
+import * as filter_pb from "./filter_pb";
+import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
 import {grpc} from "@improbable-eng/grpc-web";
 
-type EmailSrvSendCatalog = {
+type FilterSrvGetAll = {
   readonly methodName: string;
-  readonly service: typeof EmailSrv;
+  readonly service: typeof FilterSrv;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof email_pb.SendCatalogRequestMessage;
-  readonly responseType: typeof email_pb.SendResponseMessage;
+  readonly requestType: typeof google_protobuf_empty_pb.Empty;
+  readonly responseType: typeof filter_pb.FiltersResponseMessage;
 };
 
-type EmailSrvSendContactUs = {
-  readonly methodName: string;
-  readonly service: typeof EmailSrv;
-  readonly requestStream: false;
-  readonly responseStream: false;
-  readonly requestType: typeof email_pb.SendContactUsRequestMessage;
-  readonly responseType: typeof email_pb.SendResponseMessage;
-};
-
-export class EmailSrv {
+export class FilterSrv {
   static readonly serviceName: string;
-  static readonly SendCatalog: EmailSrvSendCatalog;
-  static readonly SendContactUs: EmailSrvSendContactUs;
+  static readonly GetAll: FilterSrvGetAll;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -56,27 +47,18 @@ interface BidirectionalStream<ReqT, ResT> {
   on(type: 'status', handler: (status: Status) => void): BidirectionalStream<ReqT, ResT>;
 }
 
-export class EmailSrvClient {
+export class FilterSrvClient {
   readonly serviceHost: string;
 
   constructor(serviceHost: string, options?: grpc.RpcOptions);
-  sendCatalog(
-    requestMessage: email_pb.SendCatalogRequestMessage,
+  getAll(
+    requestMessage: google_protobuf_empty_pb.Empty,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: email_pb.SendResponseMessage|null) => void
+    callback: (error: ServiceError|null, responseMessage: filter_pb.FiltersResponseMessage|null) => void
   ): UnaryResponse;
-  sendCatalog(
-    requestMessage: email_pb.SendCatalogRequestMessage,
-    callback: (error: ServiceError|null, responseMessage: email_pb.SendResponseMessage|null) => void
-  ): UnaryResponse;
-  sendContactUs(
-    requestMessage: email_pb.SendContactUsRequestMessage,
-    metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: email_pb.SendResponseMessage|null) => void
-  ): UnaryResponse;
-  sendContactUs(
-    requestMessage: email_pb.SendContactUsRequestMessage,
-    callback: (error: ServiceError|null, responseMessage: email_pb.SendResponseMessage|null) => void
+  getAll(
+    requestMessage: google_protobuf_empty_pb.Empty,
+    callback: (error: ServiceError|null, responseMessage: filter_pb.FiltersResponseMessage|null) => void
   ): UnaryResponse;
 }
 

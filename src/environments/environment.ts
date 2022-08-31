@@ -11,7 +11,8 @@ export const environment = {
   DefaultImageFileName: "/Images/Products/Default/kian_usa_comming_soon.jpg",
   HomeSlider: "/Images/Home/Sliders/",
   HomeGrid: "/Images/Home/Grids/",
-  Logo: "/Images/Logo/"
+  Logo: "/Images/Logo/",
+  VisitUsAtMarketImagesUrl: "/Images/VisitUsAtMarket/"
 };
 
 /*

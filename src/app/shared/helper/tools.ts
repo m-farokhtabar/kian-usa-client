@@ -19,4 +19,7 @@ export class Tools {
     public static GetPriceFormat(price: number | undefined): string {
         return price != null ? "$" + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") : "";
     }
+    public static SortImageFiles(ImageFiles: Array<string>) : Array<string>{
+        return ImageFiles.sort((a,b)=> a.substring(a.lastIndexOf("_")).localeCompare(b.substring(b.lastIndexOf("_"))));
+    }
 }

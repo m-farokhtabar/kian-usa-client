@@ -12,9 +12,10 @@ export class CategoryModel {
     public Features: Array<CategoryParameterModel>;
     public Children: Array<CategoryChildModel>;
     public ImagesUrl: Array<string>;
+    public Tags:Array<string>;
 
 
-    constructor(Id: string, Name: string, Slug: string, Order: number, ShortDescription: string, Description: string, Parameters: Array<CategoryParameterModel>, Features: Array<CategoryParameterModel>, ImagesUrl: Array<string>, Children: Array<CategoryChildModel>) {
+    constructor(Id: string, Name: string, Slug: string, Order: number, ShortDescription: string, Description: string, Parameters: Array<CategoryParameterModel>, Features: Array<CategoryParameterModel>, ImagesUrl: Array<string>, Children: Array<CategoryChildModel>,Tags:Array<string>) {
         this.Id = Id;
         this.Name = Name;
         this.Slug = Slug;
@@ -25,5 +26,6 @@ export class CategoryModel {
         this.Features = Features;
         this.ImagesUrl = ImagesUrl;
         this.Children = Children;
+        this.Tags = Tags;
     }
 }

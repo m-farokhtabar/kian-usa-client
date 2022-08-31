@@ -20,6 +20,15 @@ CategorySrv.GetAll = {
   responseType: category_pb.CategoriesResponseMessage
 };
 
+CategorySrv.GetAllWithChildren = {
+  methodName: "GetAllWithChildren",
+  service: CategorySrv,
+  requestStream: false,
+  responseStream: false,
+  requestType: google_protobuf_empty_pb.Empty,
+  responseType: category_pb.CategoriesResponseMessage
+};
+
 CategorySrv.GetAllShortData = {
   methodName: "GetAllShortData",
   service: CategorySrv,
@@ -56,6 +65,15 @@ CategorySrv.GetBySlugWithChildren = {
   responseType: category_pb.CategoriesResponseMessage
 };
 
+CategorySrv.GetByFilter = {
+  methodName: "GetByFilter",
+  service: CategorySrv,
+  requestStream: false,
+  responseStream: false,
+  requestType: category_pb.CategoryByTagsRequestMessage,
+  responseType: category_pb.CategoriesResponseMessage
+};
+
 CategorySrv.GetFirst = {
   methodName: "GetFirst",
   service: CategorySrv,
@@ -77,6 +95,37 @@ CategorySrvClient.prototype.getAll = function getAll(requestMessage, metadata, c
     callback = arguments[1];
   }
   var client = grpc.unary(CategorySrv.GetAll, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+CategorySrvClient.prototype.getAllWithChildren = function getAllWithChildren(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(CategorySrv.GetAllWithChildren, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,
@@ -201,6 +250,37 @@ CategorySrvClient.prototype.getBySlugWithChildren = function getBySlugWithChildr
     callback = arguments[1];
   }
   var client = grpc.unary(CategorySrv.GetBySlugWithChildren, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+CategorySrvClient.prototype.getByFilter = function getByFilter(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(CategorySrv.GetByFilter, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

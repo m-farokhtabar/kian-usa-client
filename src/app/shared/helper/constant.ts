@@ -9,4 +9,5 @@ export class Constant{
     public static readonly HomeSlider: string = environment.HomeSlider;
     public static readonly HomeGrid: string = environment.HomeGrid;
     public static readonly Logo: string = environment.Logo;
+    public static readonly VisitUsAtMarketImagesUrl: string = environment.VisitUsAtMarketImagesUrl;
 }
