@@ -1,0 +1,95 @@
+<div class="container">
+    <div class="row">
+        <div class="d-none d-sm-block col-sm-3">
+            <div class="pt-5">
+                <vertical-menu [Menu]="VerticalMenu"></vertical-menu>
+            </div>
+        </div>
+        <div class="col-12 col-sm-9">
+            <div class="row pt-5">
+                <div class="col-12">
+                    <paragraph [Data]="Header"></paragraph>
+                </div>
+            </div>
+            <ng-container *ngIf="!SentSuccessfully; else SuccessfulMessage">
+                <div class="row pt-5">
+                <div class="col-12">
+                    <Form [formGroup]="ContactForm" (ngSubmit)="OnSubmit();">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <label for="Name" class="form-label">First Name</label>
+                                <input maxlength="100" id="Name" type="text" class="form-control" formControlName="Name"
+                                       aria-errormessage="NameInfo" aria-describedby="NameInfo">
+                                <div id="NameInfo" class="invalid-feedback" *ngIf="Name?.touched && Name?.invalid">
+                                    <div *ngIf="Name?.errors?.['required']">Please input your name.</div>
+                                    <div *ngIf="Name?.errors?.['maxlength']">Name should be less
+                                        than {{Name?.errors?.['maxlength'].requiredLength}} character.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label for="Family" class="form-label">Last Name</label>
+                                <input maxlength="100" id="Family" type="text" class="form-control"
+                                       formControlName="Family" aria-errormessage="FamilyInfo"
+                                       aria-describedby="FamilyInfo">
+                                <div id="FamilyInfo" class="invalid-feedback"
+                                     *ngIf="Family?.touched && Family?.invalid">
+                                    <div *ngIf="Family?.errors?.['required']">Please input your family.</div>
+                                    <div *ngIf="Family?.errors?.['maxlength']">Family should be less
+                                        than {{Family?.errors?.['maxlength'].requiredLength}} character.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <label for="Phone" class="form-label">Telephone</label>
+                                <input maxlength="12" id="Phone" type="tel" class="form-control" formControlName="Phone"
+                                       aria-describedby="PhoneInfo" aria-errormessage="PhoneInfo" placeholder="123-456-7890">
+                                <div id="PhoneInfo" class="invalid-feedback" *ngIf="Phone?.touched && Phone?.invalid">
+                                    <div *ngIf="Phone?.errors?.['maxlength']">Phone should be less
+                                        than {{Phone?.errors?.['maxlength'].requiredLength}} character.
+                                    </div>
+                                    <div *ngIf="Phone?.errors?.['pattern']">Phone is not valid. Valid format is 123-456-7890</div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label for="Email" class="form-label">Email</label>
+                                <input placeholder="name@example.com" maxlength="200" id="Email" type="email" class="form-control"
+                                       formControlName="Email" aria-errormessage="EmailInfo"
+                                       aria-describedby="EmailInfo">
+                                <div id="EmailInfo" class="invalid-feedback" *ngIf="Email?.touched && Email?.invalid">
+                                    <div *ngIf="Email?.errors?.['required']">Please input email.</div>
+                                    <div *ngIf="Email?.errors?.['maxlength']">Email should be less
+                                        than {{Email?.errors?.['maxlength'].requiredLength}} character.
+                                    </div>
+                                    <div *ngIf="Email?.errors?.['email']">Email is not valid.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label for="Comment" class="form-label">Comment</label>
+                                <textarea maxlength="1500" id="Comment" class="form-control" formControlName="Comment" rows="3"
+                                          aria-errormessage="CommentInfo" aria-describedby="CommentInfo"></textarea>
+                                <div id="CommentInfo" class="invalid-feedback"*ngIf="Comment?.touched && Comment?.invalid" >
+                                    <div *ngIf="Comment?.errors?.['required']">Please input comment.</div>
+                                    <div *ngIf="Comment?.errors?.['maxlength']">Comment should be less
+                                        than {{Comment?.errors?.['maxlength'].requiredLength}} character.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-12">
+                                <button class="btn btn-primary" type="submit" [disabled]="!ContactForm.valid">Send request</button>
+                            </div>
+                        </div>
+                    </Form>
+                </div>
+            </div>
+            </ng-container>
+            <ng-template #SuccessfulMessage><div class="row pt-5"><div class="col-12 display-6">Your request has been sent successfully.</div></div></ng-template>
+        </div>
+    </div>
+</div>

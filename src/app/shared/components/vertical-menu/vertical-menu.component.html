@@ -1,0 +1,12 @@
+<div class="row">
+    <div class="col-12">
+        <div #VerticalMenuHeaderElement></div>
+        <hr/>
+        <div class="list-group" *ngFor="let Link of Menu.Links">
+            <a class="list-group-item list-group-item-action"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="{exact: true}"
+               [routerLink]="Link.Url">{{Link.Title}}</a>
+        </div>
+    </div>
+</div>
