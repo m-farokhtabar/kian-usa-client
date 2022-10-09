@@ -37,7 +37,9 @@ export class HomeComponent implements OnInit {
                         Alt: "KianUSA sectional furniture",
                         ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_01_0001.jpg",
                         Link: "/",
-                        ShortDescription: ""
+                        ShortDescription: "",
+                        Prices : [],
+                        Quantity: ""
                     },
                     {
                         Title: "Sofa & Loveseat & chair",
@@ -45,12 +47,15 @@ export class HomeComponent implements OnInit {
                         ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_01_0002.jpg",
 
                         Link: "/",
-                        ShortDescription: ""
+                        ShortDescription: "",
+                        Prices : [],
+                        Quantity: ""
                     }
                 ],
             CellsPerRow: 2,
             MaxRowPerPage: 1,
             CellStyle: CellStyle.Up,
+            GridStyle: ["1,2","1,2"]
         };
     }
     public FirstParagraph(): ParagraphViewmodel{
@@ -67,26 +72,33 @@ export class HomeComponent implements OnInit {
                         Alt: "KianUSA Power Back & Seat",
                         ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_02_0001.jpg",
                         Link: "/",
-                        ShortDescription: ""
+                        ShortDescription: "",
+                        Prices : [],
+                        Quantity: ""
                     },
                     {
                         Title: "Power Seat",
                         Alt: "KianUSA Power Seat",
                         ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_02_0002.jpg",
                         Link: "/",
-                        ShortDescription: ""
+                        ShortDescription: "",
+                        Prices : [],
+                        Quantity: ""
                     },
                     {
                         Title: "Manual",
                         Alt: "KianUSA Manual",
                         ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_02_0003.jpg",
                         Link: "/",
-                        ShortDescription: ""
+                        ShortDescription: "",
+                        Prices : [],
+                        Quantity: ""
                     }
                 ],
             CellsPerRow: 3,
             MaxRowPerPage: 1,
             CellStyle: CellStyle.Up,
+            GridStyle: ["1,3","1,3"]
         };
     }
     public ThirdGrid(): GridViewmodel {
@@ -98,33 +110,42 @@ export class HomeComponent implements OnInit {
                         Alt: "KianUSA furniture",
                         ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_03_0001.jpg",
                         Link: "/",
-                        ShortDescription: ""
+                        ShortDescription: "",
+                        Prices : [],
+                        Quantity: ""
                     },
                     {
                         Title: "Visit us at Market",
                         Alt: "KianUSA furniture",
                         ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_03_0002.jpg",
                         Link: "/visit-us-at-market",
-                        ShortDescription: ""
+                        ShortDescription: "",
+                        Prices : [],
+                        Quantity: ""
                     },
                     {
                         Title: "Special Request",
                         Alt: "KianUSA furniture",
                         ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_03_0003.jpg",
                         Link: "/",
-                        ShortDescription: ""
+                        ShortDescription: "",
+                        Prices : [],
+                        Quantity: ""
                     },
                     {
                         Title: "Coming Soon",
                         Alt: "KianUSA furniture",
                         ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_03_0004.jpg",
                         Link: "/",
-                        ShortDescription: ""
+                        ShortDescription: "",
+                        Prices : [],
+                        Quantity: ""
                     }
                 ],
             CellsPerRow: 4,
             MaxRowPerPage: 1,
             CellStyle: CellStyle.Card,
+            GridStyle: ["1,4","1,4"]
         };
     }
 }

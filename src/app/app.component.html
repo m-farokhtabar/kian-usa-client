@@ -40,9 +40,9 @@
                         SHOP
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li (click)="HideMenu()"><a class="dropdown-item" href="#">Sacramento, CA Warehouse</a></li>
-                        <li (click)="HideMenu()"><a class="dropdown-item" href="#">Mixed Container from China</a></li>
-                        <li (click)="HideMenu()"><a class="dropdown-item" href="#">Direct Container from China</a></li>
+                        <li (click)="HideMenu()"><a class="dropdown-item" [routerLink]="['/shop/sacramento-ca-warehouse']">Sacramento, CA Warehouse</a></li>
+                        <li (click)="HideMenu()"><a class="dropdown-item" [routerLink]="['/shop/mixed-container-from-sacramento']">Mixed Container from Sacramento</a></li>
+                        <li (click)="HideMenu()"><a class="dropdown-item" [routerLink]="['/shop/direct-container-from-china']">Direct Container from China</a></li>
                     </ul>
                 </li>
 

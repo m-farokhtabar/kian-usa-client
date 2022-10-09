@@ -1,6 +1,7 @@
 .btn-outline-navy {
     border-color: #e5e5e5;
     color: #000;
+    padding: 4px 15px 4px 15px!important;
 }
 
 .btn-outline-navy:hover {
@@ -11,7 +12,7 @@
 
 .btn-outline-heavy-navy {
     background-color: #f8f6ffcc;
-    border-color: #bbcef9;
+    border-color: #dfe7f9;
     color: #223f81;
 }
 
@@ -32,9 +33,11 @@
 }
 
 .SubButtonContainer {
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
     border-radius: 5px;
-    padding: 8px;
+    padding: 12px;
+    margin-top: 10px!important;
+    border-color: rgb(235, 238, 245);
 }
 .SelectedTagCloseButton{
     width: 10px;

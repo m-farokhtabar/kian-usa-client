@@ -1,16 +1,17 @@
-<div class="container-fluid">
-    <div *ngFor="let Category of Categories;let Idx = index" class="GreyBox m-4">
+<div class="container-fluid" *ngIf="!JustShowGroupList">
+    <div *ngFor="let Category of SelectedCategories;let Idx = index" class="GreyBox m-4">
         <div class="bg-opacity-10 p-1 ps-2">
             <h1 class="display-6">{{Category.Name}}</h1>
         </div>
         <div class="row" *ngIf="!JustShowGroupList">
             <div class="col-lg-7 col-md-12 col-sm-12 col-12">
-                <image-slider [ShowDialogForFullScreen]="true"  [SliderName]="'Slider_' + Category.Slug"
+                <image-slider [ShowDialogForFullScreen]="true" [SliderName]="'Slider_' + Category.Slug"
                               [DefaultAlt]="'Kian USA ' + Category.Name + ' or products images'"
                               [DefaultImage]="DefaultImageSlider" [Sliders]="SliderImages[Idx]"></image-slider>
             </div>
             <div class="col-lg-5 col-md-12 col-sm-12 col-12">
-                <product-price-table [CategoryName]="Category.Name" [CategorySlug]="Category.Slug" [products]="Products[Idx]"></product-price-table>
+                <product-price-table [CategoryName]="Category.Name" [CategorySlug]="Category.Slug"
+                                     [products]="Products[Idx]"></product-price-table>
                 <div>
                     <a [href]="GetCurrentCategoryCatalogUrl(Idx)" target="_blank"
                        class="btn btn-light btn-outline-secondary btn-sm me-1 mb-1 SmallFontSize">Download Current</a>
@@ -35,28 +36,34 @@
         </div>
     </div>
     <div class="row" [ngClass]="{'LightGrayBox m-4 pt-3': !JustShowGroupList}">
-        <div class="col-12" *ngIf="!JustShowGroupList; else GroupList">
+        <div class="col-12">
             <group-list></group-list>
         </div>
-        <ng-template #GroupList>
-            <div class="offset-sm-2 col-sm-8 p-sm-2 col-12">
-                <h2 class="display-5 pt-3 pb-3">Please select the category</h2>
-                <hr/>
-                <group-list></group-list>
-            </div>
-        </ng-template>
+    </div>
+</div>
+<div class="container" *ngIf="JustShowGroupList">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="display-5 pt-3 pb-3">Please select the category</h2>
+            <hr/>
+        </div>
+    </div>
+    <div class="row">
+        <group-grid-filter [Categories]="Categories"></group-grid-filter>
     </div>
 </div>
 
+
 <!-- Full screen modal -->
-<ng-container *ngFor="let Category of Categories;let Idx = index">
+<ng-container *ngFor="let Category of SelectedCategories;let Idx = index">
     <div class="modal fade" [id]="'Slider_' + Category.Slug + '_FullscreenSliderContainer'" tabindex="-1"
          [attr.aria-labelledby]="'Slider_' + Category.Slug + '_FullscreenSliderContainerLabel'"
          aria-hidden="true">
         <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title h4" [id]="'Slider_' + Category.Slug + '_FullscreenSliderContainerLabel'">{{Category.Name}}</h5>
+                    <h5 class="modal-title h4"
+                        [id]="'Slider_' + Category.Slug + '_FullscreenSliderContainerLabel'">{{Category.Name}}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

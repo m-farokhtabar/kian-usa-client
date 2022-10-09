@@ -20,6 +20,15 @@ ProductSrv.GetAll = {
   responseType: product_pb.ProductsResponseMessage
 };
 
+ProductSrv.GetByGroupsTagsWithPaging = {
+  methodName: "GetByGroupsTagsWithPaging",
+  service: ProductSrv,
+  requestStream: false,
+  responseStream: false,
+  requestType: product_pb.ProductsByGroupsTagsWithPagingRequestMessage,
+  responseType: product_pb.ProductsWithTotalItemsResponseMessage
+};
+
 ProductSrv.GetByCategoryId = {
   methodName: "GetByCategoryId",
   service: ProductSrv,
@@ -86,6 +95,37 @@ ProductSrvClient.prototype.getAll = function getAll(requestMessage, metadata, ca
     callback = arguments[1];
   }
   var client = grpc.unary(ProductSrv.GetAll, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+ProductSrvClient.prototype.getByGroupsTagsWithPaging = function getByGroupsTagsWithPaging(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(ProductSrv.GetByGroupsTagsWithPaging, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

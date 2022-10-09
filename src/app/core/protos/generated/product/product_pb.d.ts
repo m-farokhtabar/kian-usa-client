@@ -95,6 +95,21 @@ export class ProductResponseMessage extends jspb.Message {
   setCategoryidsList(value: Array<string>): void;
   addCategoryids(value: string, index?: number): string;
 
+  clearTagsList(): void;
+  getTagsList(): Array<string>;
+  setTagsList(value: Array<string>): void;
+  addTags(value: string, index?: number): string;
+
+  clearGroupsList(): void;
+  getGroupsList(): Array<string>;
+  setGroupsList(value: Array<string>): void;
+  addGroups(value: string, index?: number): string;
+
+  clearFactoriesList(): void;
+  getFactoriesList(): Array<string>;
+  setFactoriesList(value: Array<string>): void;
+  addFactories(value: string, index?: number): string;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ProductResponseMessage.AsObject;
   static toObject(includeInstance: boolean, msg: ProductResponseMessage): ProductResponseMessage.AsObject;
@@ -128,6 +143,9 @@ export namespace ProductResponseMessage {
     imagesurlsList: Array<string>,
     isgroup: boolean,
     categoryidsList: Array<string>,
+    tagsList: Array<string>,
+    groupsList: Array<string>,
+    factoriesList: Array<string>,
   }
 }
 
@@ -176,6 +194,32 @@ export class ProductsResponseMessage extends jspb.Message {
 export namespace ProductsResponseMessage {
   export type AsObject = {
     productsList: Array<ProductResponseMessage.AsObject>,
+  }
+}
+
+export class ProductsWithTotalItemsResponseMessage extends jspb.Message {
+  clearProductsList(): void;
+  getProductsList(): Array<ProductResponseMessage>;
+  setProductsList(value: Array<ProductResponseMessage>): void;
+  addProducts(value?: ProductResponseMessage, index?: number): ProductResponseMessage;
+
+  getTotalitems(): number;
+  setTotalitems(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ProductsWithTotalItemsResponseMessage.AsObject;
+  static toObject(includeInstance: boolean, msg: ProductsWithTotalItemsResponseMessage): ProductsWithTotalItemsResponseMessage.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ProductsWithTotalItemsResponseMessage, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ProductsWithTotalItemsResponseMessage;
+  static deserializeBinaryFromReader(message: ProductsWithTotalItemsResponseMessage, reader: jspb.BinaryReader): ProductsWithTotalItemsResponseMessage;
+}
+
+export namespace ProductsWithTotalItemsResponseMessage {
+  export type AsObject = {
+    productsList: Array<ProductResponseMessage.AsObject>,
+    totalitems: number,
   }
 }
 
@@ -278,6 +322,42 @@ export class ProductsByCategorySlugRequestMessage extends jspb.Message {
 export namespace ProductsByCategorySlugRequestMessage {
   export type AsObject = {
     categoryslug: string,
+  }
+}
+
+export class ProductsByGroupsTagsWithPagingRequestMessage extends jspb.Message {
+  clearGroupsList(): void;
+  getGroupsList(): Array<string>;
+  setGroupsList(value: Array<string>): void;
+  addGroups(value: string, index?: number): string;
+
+  clearTagsList(): void;
+  getTagsList(): Array<string>;
+  setTagsList(value: Array<string>): void;
+  addTags(value: string, index?: number): string;
+
+  getPagenumber(): number;
+  setPagenumber(value: number): void;
+
+  getPagecount(): number;
+  setPagecount(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ProductsByGroupsTagsWithPagingRequestMessage.AsObject;
+  static toObject(includeInstance: boolean, msg: ProductsByGroupsTagsWithPagingRequestMessage): ProductsByGroupsTagsWithPagingRequestMessage.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ProductsByGroupsTagsWithPagingRequestMessage, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ProductsByGroupsTagsWithPagingRequestMessage;
+  static deserializeBinaryFromReader(message: ProductsByGroupsTagsWithPagingRequestMessage, reader: jspb.BinaryReader): ProductsByGroupsTagsWithPagingRequestMessage;
+}
+
+export namespace ProductsByGroupsTagsWithPagingRequestMessage {
+  export type AsObject = {
+    groupsList: Array<string>,
+    tagsList: Array<string>,
+    pagenumber: number,
+    pagecount: number,
   }
 }
 

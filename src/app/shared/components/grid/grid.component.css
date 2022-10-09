@@ -6,3 +6,21 @@
 .img-zoom:hover{
     transform: scale(1.2);
 }
+.grid-style-button{
+    cursor: pointer;
+}
+.pager-button{
+    border: none;
+    color: #003131;
+}
+.page-item.active .page-link{
+    border: none;
+    background-color: transparent;
+    color: #2354c5;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+.AlertShortDescription{
+    font-weight: bold;
+    color: red;
+}

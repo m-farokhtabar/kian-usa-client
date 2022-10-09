@@ -19,6 +19,11 @@ export class FilterResponseMessage extends jspb.Message {
   setTagsList(value: Array<string>): void;
   addTags(value: string, index?: number): string;
 
+  clearGroupsList(): void;
+  getGroupsList(): Array<string>;
+  setGroupsList(value: Array<string>): void;
+  addGroups(value: string, index?: number): string;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): FilterResponseMessage.AsObject;
   static toObject(includeInstance: boolean, msg: FilterResponseMessage): FilterResponseMessage.AsObject;
@@ -35,6 +40,7 @@ export namespace FilterResponseMessage {
     name: string,
     order: number,
     tagsList: Array<string>,
+    groupsList: Array<string>,
   }
 }
 

@@ -2,8 +2,8 @@ import {ProductModel} from "../models/product/product.model";
 import {ProductSrvClient} from "../protos/generated/product/product_pb_service";
 import {
     ProductsByCategoryIdsRequestMessage,
-    ProductsByCategorySlugRequestMessage,
-    ProductsResponseMessage
+    ProductsByCategorySlugRequestMessage, ProductsByGroupsTagsWithPagingRequestMessage,
+    ProductsResponseMessage, ProductsWithTotalItemsResponseMessage
 } from "../protos/generated/product/product_pb";
 import {ServiceError} from "../protos/generated/category/category_pb_service";
 import {ProductPriceModel} from "../models/product/product-price.model";
@@ -11,6 +11,7 @@ import {Constant} from "../../shared/helper/constant";
 import {Empty} from "google-protobuf/google/protobuf/empty_pb";
 import {ServiceHelper} from "./service.helper";
 import {AccountModel} from "../models/account/account.model";
+import {ProductWithPagingModel} from "../models/product/product-with-paging-model";
 
 export class ProductGrpcService {
     constructor(private account: AccountModel) {
@@ -52,7 +53,10 @@ export class ProductGrpcService {
                         Prices: product.getPricesList().map(price => <ProductPriceModel>{
                             Name: price.getName(),
                             Value: price.getValue()?.getValue()
-                        })
+                        }),
+                        Tags: product.getTagsList(),
+                        Groups: product.getGroupsList(),
+                        Factories: product.getFactoriesList()
                     })));
                 });
             }
@@ -98,7 +102,10 @@ export class ProductGrpcService {
                             Name: price.getName(),
                             Value: price.getValue()?.getValue()
                         }),
-                        CategoryIds: product.getCategoryidsList()
+                        CategoryIds: product.getCategoryidsList(),
+                        Tags: product.getTagsList(),
+                        Groups: product.getGroupsList(),
+                        Factories: product.getFactoriesList()
                     })));
                 });
             }
@@ -142,10 +149,67 @@ export class ProductGrpcService {
                         Prices: product.getPricesList().map(price => <ProductPriceModel>{
                             Name: price.getName(),
                             Value: price.getValue()?.getValue()
-                        })
+                        }),
+                        Tags: product.getTagsList(),
+                        Groups: product.getGroupsList(),
+                        Factories: product.getFactoriesList()
                     })));
                 });
             }
+        });
+    }
+    GetByGroupsTagsWithPaging(Groups: string[],Tags: string[],PageNumber:number, PageCount:number): Promise<ProductWithPagingModel> {
+        return new Promise<ProductWithPagingModel>((resolve, reject) => {
+            const client = new ProductSrvClient(Constant.ServiceHost);
+            const request = new ProductsByGroupsTagsWithPagingRequestMessage();
+            request.setGroupsList(Groups);
+            request.setTagsList(Tags);
+            request.setPagenumber(PageNumber);
+            request.setPagecount(PageCount);
+            const metadata = ServiceHelper.CreateAuthToken(this.account);
+            if (metadata!=undefined) {
+                client.getByGroupsTagsWithPaging(request, metadata, (error: ServiceError | null, response: ProductsWithTotalItemsResponseMessage | null) => {
+                    if (error != null) {
+                        return reject();
+                    }
+                    if (response == null) {
+                        return reject();
+                    }
+                    const Products  = response.getProductsList().map(product => <ProductModel>({
+                        BoxD: product.getBoxd(),
+                        BoxH: product.getBoxh(),
+                        BoxW: product.getBoxw(),
+                        Cube: product.getCube(),
+                        D: product.getD(),
+                        Description: product.getDescription(),
+                        H: product.getH(),
+                        Id: product.getId(),
+                        Inventory: product.getInventory(),
+                        IsGroup: product.getIsgroup(),
+                        WHQTY: product.getWhqty(),
+                        ImagesUrls: product.getImagesurlsList(),
+                        Securities: product.getSecuritiesList(),
+                        Weight: product.getWeight(),
+                        Slug: product.getSlug(),
+                        ShortDescription: product.getShortdescription(),
+                        Name: product.getName(),
+                        Order: product.getOrder(),
+                        W: product.getW(),
+                        Prices: product.getPricesList().map(price => <ProductPriceModel>{
+                            Name: price.getName(),
+                            Value: price.getValue()?.getValue()
+                        }),
+                        CategoryIds: product.getCategoryidsList(),
+                        Tags: product.getTagsList(),
+                        Groups: product.getGroupsList(),
+                        Factories: product.getFactoriesList()
+                    }));
+                    let Result: ProductWithPagingModel = new ProductWithPagingModel(Products,response.getTotalitems());
+                    return resolve(Result);
+                });
+            }
+            else
+                alert("Please login.");
         });
     }
 }

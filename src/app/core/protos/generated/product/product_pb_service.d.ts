@@ -14,6 +14,15 @@ type ProductSrvGetAll = {
   readonly responseType: typeof product_pb.ProductsResponseMessage;
 };
 
+type ProductSrvGetByGroupsTagsWithPaging = {
+  readonly methodName: string;
+  readonly service: typeof ProductSrv;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof product_pb.ProductsByGroupsTagsWithPagingRequestMessage;
+  readonly responseType: typeof product_pb.ProductsWithTotalItemsResponseMessage;
+};
+
 type ProductSrvGetByCategoryId = {
   readonly methodName: string;
   readonly service: typeof ProductSrv;
@@ -71,6 +80,7 @@ type ProductSrvGetBySlug = {
 export class ProductSrv {
   static readonly serviceName: string;
   static readonly GetAll: ProductSrvGetAll;
+  static readonly GetByGroupsTagsWithPaging: ProductSrvGetByGroupsTagsWithPaging;
   static readonly GetByCategoryId: ProductSrvGetByCategoryId;
   static readonly GetByCategoryIds: ProductSrvGetByCategoryIds;
   static readonly GetByCategorySlug: ProductSrvGetByCategorySlug;
@@ -119,6 +129,15 @@ export class ProductSrvClient {
   getAll(
     requestMessage: google_protobuf_empty_pb.Empty,
     callback: (error: ServiceError|null, responseMessage: product_pb.ProductsResponseMessage|null) => void
+  ): UnaryResponse;
+  getByGroupsTagsWithPaging(
+    requestMessage: product_pb.ProductsByGroupsTagsWithPagingRequestMessage,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: product_pb.ProductsWithTotalItemsResponseMessage|null) => void
+  ): UnaryResponse;
+  getByGroupsTagsWithPaging(
+    requestMessage: product_pb.ProductsByGroupsTagsWithPagingRequestMessage,
+    callback: (error: ServiceError|null, responseMessage: product_pb.ProductsWithTotalItemsResponseMessage|null) => void
   ): UnaryResponse;
   getByCategoryId(
     requestMessage: product_pb.ProductsByCategoryIdRequestMessage,

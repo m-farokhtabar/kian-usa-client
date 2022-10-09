@@ -6,7 +6,7 @@ import {ProductGrpcService} from "../../core/services/product-grpc.service";
 import {ImageSliderModel} from "../../shared/components/image-slider/models/image-slider.model";
 import {Tools} from "../../shared/helper/tools";
 import {Constant} from "../../shared/helper/constant";
-import {ActivatedRoute, Params, Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {AccountModel} from "../../core/models/account/account.model";
 import {Subscription} from "rxjs";
 import {SharedDataService} from "../../core/services/shareddata.service";
@@ -19,6 +19,7 @@ import {SharedDataService} from "../../core/services/shareddata.service";
 
 export class PriceListComponent implements OnInit, OnDestroy {
     Categories: CategoryModel[] = [];
+    SelectedCategories: CategoryModel[] = [];
     Products: ProductModel[][] = [];
     ProductPricesIndex: number[][] = [];
     SliderImages: ImageSliderModel[][] = [];
@@ -26,6 +27,7 @@ export class PriceListComponent implements OnInit, OnDestroy {
     private accSub: Subscription | null = null;
     private RandomNumberForUrl = Math.random();
     JustShowGroupList: boolean = true;
+    private urlSubscription: Subscription | null = null;
 
 
     constructor(private router: Router, private route: ActivatedRoute, private account: AccountModel, private sharedData: SharedDataService) {
@@ -37,60 +39,136 @@ export class PriceListComponent implements OnInit, OnDestroy {
                 this.router.navigateByUrl('/');
         });
         this.account.IsValid();
-        this.route.params.subscribe(() => {
-            this.LoadData();
+        this.urlSubscription = this.route.url.subscribe((urlSegments) => {
+            window.scrollTo(0, 0);
             this.sharedData.SetMenuStatus(false);
+            let Slug = "";
+            if (Array.isArray(urlSegments) && urlSegments.length > 0)
+                Slug = urlSegments[0].path;
+            this.LoadData(Slug);
+            console.log(urlSegments);
         });
+        this.LoadCategories();
     }
 
-    private LoadData(): void {
+    private LoadData(Slug: string): void {
         this.RandomNumberForUrl = Math.random();
-        this.Products = [];
-        this.SliderImages = [];
-        this.ProductPricesIndex = [];
-        this.Categories = [];
 
-        const CategoryService = new CategoryGrpcService(this.account);
-        const ProductService = new ProductGrpcService(this.account);
-        const slug = this.route.snapshot.params['slug'];
-        if (slug == null || slug.trim() == "") {
+
+        //const CategoryService = new CategoryGrpcService(this.account);
+        //const ProductService = new ProductGrpcService(this.account);
+        //const slug = this.route.snapshot.params['slug'];
+        //const filter = this.route.snapshot.queryParams['Filter'];
+        if (Slug == null || Slug.trim() == "") {
             this.JustShowGroupList = true;
-            // CategoryService.GetFirst().then(data => {
-            //     this.Categories = data;
-            //     this.SetCategorySliderImages();
-            // });
-            // ProductService.GetByFirstCategory().then(data => {
-            //     this.Products = data.sort((a, b) => a.Order > b.Order ? 1 : -1);
-            //     //this.SetProductsSliderImages();
-            //     this.SetProductPricesIndex();
-            // });
         } else {
             this.JustShowGroupList = false;
-            CategoryService.GetBySlugWithChildren(slug).then(data => {
-                this.Categories = data.sort((a, b) => a.Order > b.Order ? 1 : -1);
-                if (this.Categories != null && this.Categories.length > 0) {
-                    if (this.Categories.length > 1)
-                      this.Categories.splice(0, 1);
-                    this.SetCategorySliderImages();
-                    ProductService.GetByCategoryIds(this.Categories.map(x => x.Id)).then(data => {
-                        for (let i = 0; i < this.Categories.length; i++) {
-                            this.Products[i] = data.filter(prd => {
-                                return prd.CategoryIds.includes(this.Categories[i].Id)
-                            });
-                            this.Products[i] = this.Products[i].sort((a, b) => a.Order > b.Order ? 1 : -1);
-                        }
-                        //this.SetProductsSliderImages();
-                        this.SetProductPricesIndex();
-                    }).catch(data => {});
-                }
-            });
+            this.LoadSelectedCategories(Slug);
+            this.LoadSelectedProducts();
+
+            // CategoryService.GetBySlugWithChildren(slug).then(data => {
+            //     this.Categories = data.sort((a, b) => a.Order > b.Order ? 1 : -1);
+            //     if (this.Categories != null && this.Categories.length > 0) {
+            //         if (this.Categories.length > 1)
+            //             this.Categories.splice(0, 1);
+            //         this.SetCategorySliderImages();
+            //         ProductService.GetByCategoryIds(this.Categories.map(x => x.Id)).then(data => {
+            //             for (let i = 0; i < this.Categories.length; i++) {
+            //                 this.Products[i] = data.filter(prd => {
+            //                     return prd.CategoryIds.includes(this.Categories[i].Id)
+            //                 });
+            //                 this.Products[i] = this.Products[i].sort((a, b) => a.Order > b.Order ? 1 : -1);
+            //             }
+            //             //this.SetProductsSliderImages();
+            //             this.SetProductPricesIndex();
+            //         }).catch(data => {
+            //         });
+            //     }
+            // });
 
         }
     }
 
+    private LoadCategories() {
+        const CategoryService = new CategoryGrpcService(this.account);
+        CategoryService.GetWithChildren().then(data => {
+            this.Categories = data.sort((a, b) => a.Order > b.Order ? 1 : -1);
+            let Slug = "";
+            if (this.route.snapshot.url != null && this.route.snapshot.url.length > 0)
+                Slug = this.route.snapshot.url[0].path;
+            this.LoadData(Slug);
+        }).catch(data => {
+        })
+    }
+
+    private LoadSelectedCategories(Param: string) {
+        this.SelectedCategories = [];
+        this.SliderImages = [];
+        let SelectedTags: string[] = [];
+        if (Param.toLowerCase().startsWith("?filter=")) {
+            SelectedTags = Param.replace("?Filter=", "").split(",");
+            if (Array.isArray(SelectedTags) && SelectedTags.length > 0) {
+                this.Categories.forEach(Cat => {
+                    let Founded = true;
+                    if (Array.isArray(Cat.Tags) && Cat.Tags.length > 0)
+                        SelectedTags.forEach(x => Founded = Founded && Cat.Tags.includes(x));
+                    else
+                        Founded = false;
+                    if (Founded) {
+                        this.SelectedCategories.push(Cat);
+                        Cat.Children.forEach(x => {
+                            const ChildCat = this.Categories.find(y => y.Slug == x.Slug);
+                            if (ChildCat != null)
+                                this.SelectedCategories.push(ChildCat);
+                        })
+                    }
+                });
+                //Distinct Data
+                this.SelectedCategories = this.SelectedCategories.filter(
+                    (cat, i, arr) => arr.findIndex(t => t.Slug === cat.Slug) === i
+                );
+                this.SetCategorySliderImages();
+            }
+        } else {
+            const SelectedCategory = this.Categories.find(x => x.Slug == Param);
+            if (SelectedCategory != null) {
+                if (Array.isArray(SelectedCategory.Children) && SelectedCategory.Children.length > 0) {
+                    SelectedCategory.Children.forEach(x => {
+                        const ChildCat = this.Categories.find(y => y.Slug == x.Slug);
+                        if (ChildCat != null)
+                            this.SelectedCategories.push(ChildCat);
+                    })
+                } else {
+                    this.SelectedCategories.push(SelectedCategory);
+                }
+                this.SetCategorySliderImages();
+            }
+        }
+        this.SelectedCategories = this.SelectedCategories.sort((a, b) => a.Order > b.Order ? 1 : -1);
+    }
+
+    private LoadSelectedProducts() {
+        this.Products = [];
+        this.ProductPricesIndex = [];
+        const ProductService = new ProductGrpcService(this.account);
+        if (Array.isArray(this.SelectedCategories) && this.SelectedCategories.length > 0) {
+            ProductService.GetByCategoryIds(this.SelectedCategories.map(x => x.Id)).then(data => {
+                for (let i = 0; i < this.SelectedCategories.length; i++) {
+                    this.Products[i] = data.filter(prd => {
+                        return prd.CategoryIds.includes(this.SelectedCategories[i].Id)
+                    });
+                    this.Products[i] = this.Products[i].sort((a, b) => a.Order > b.Order ? 1 : -1);
+                }
+                this.SetProductPricesIndex();
+            }).catch(data => {
+            });
+        }
+    }
+
+
     private SetCategorySliderImages(): void {
-        for (let i = 0; i < this.Categories.length; i++) {
-            let Images = this.Categories[i].ImagesUrl;
+        for (let i = 0; i < this.SelectedCategories.length; i++) {
+            let Images = this.SelectedCategories[i].ImagesUrl;
             this.SliderImages[i] = Images.map(ImageUrl => <ImageSliderModel>(new ImageSliderModel(ImageUrl, Tools.GetFileNameWithOutExtensionFromPath(ImageUrl))));
             this.SliderImages[i] = this.SliderImages[i].sort((a, b) => a.Url.substring(a.Url.lastIndexOf("_")).localeCompare(b.Url.substring(b.Url.lastIndexOf("_"))));
         }
@@ -139,5 +217,6 @@ export class PriceListComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.accSub?.unsubscribe();
+        this.urlSubscription?.unsubscribe();
     }
 }

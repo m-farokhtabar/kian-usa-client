@@ -67,7 +67,7 @@ if (goog.DEBUG && !COMPILED) {
  * @private {!Array<number>}
  * @const
  */
-proto.FilterResponseMessage.repeatedFields_ = [4];
+proto.FilterResponseMessage.repeatedFields_ = [4,5];
 
 
 
@@ -103,7 +103,8 @@ proto.FilterResponseMessage.toObject = function(includeInstance, msg) {
     id: jspb.Message.getFieldWithDefault(msg, 1, ""),
     name: jspb.Message.getFieldWithDefault(msg, 2, ""),
     order: jspb.Message.getFieldWithDefault(msg, 3, 0),
-    tagsList: (f = jspb.Message.getRepeatedField(msg, 4)) == null ? undefined : f
+    tagsList: (f = jspb.Message.getRepeatedField(msg, 4)) == null ? undefined : f,
+    groupsList: (f = jspb.Message.getRepeatedField(msg, 5)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -155,6 +156,10 @@ proto.FilterResponseMessage.deserializeBinaryFromReader = function(msg, reader) 
     case 4:
       var value = /** @type {string} */ (reader.readString());
       msg.addTags(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addGroups(value);
       break;
     default:
       reader.skipField();
@@ -210,6 +215,13 @@ proto.FilterResponseMessage.serializeBinaryToWriter = function(message, writer) 
   if (f.length > 0) {
     writer.writeRepeatedString(
       4,
+      f
+    );
+  }
+  f = message.getGroupsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      5,
       f
     );
   }
@@ -304,6 +316,43 @@ proto.FilterResponseMessage.prototype.addTags = function(value, opt_index) {
  */
 proto.FilterResponseMessage.prototype.clearTagsList = function() {
   return this.setTagsList([]);
+};
+
+
+/**
+ * repeated string Groups = 5;
+ * @return {!Array<string>}
+ */
+proto.FilterResponseMessage.prototype.getGroupsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 5));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.FilterResponseMessage} returns this
+ */
+proto.FilterResponseMessage.prototype.setGroupsList = function(value) {
+  return jspb.Message.setField(this, 5, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.FilterResponseMessage} returns this
+ */
+proto.FilterResponseMessage.prototype.addGroups = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 5, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.FilterResponseMessage} returns this
+ */
+proto.FilterResponseMessage.prototype.clearGroupsList = function() {
+  return this.setGroupsList([]);
 };
 
 

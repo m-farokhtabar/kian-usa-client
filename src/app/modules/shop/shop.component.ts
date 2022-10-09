@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {SharedDataService} from "../../core/services/shareddata.service";
 import {AccountModel} from "../../core/models/account/account.model";
@@ -16,13 +16,20 @@ import {FilterModel} from "../../core/models/filter/filter.model";
     templateUrl: './shop.component.html',
     styleUrls: ['./shop.component.css']
 })
-export class ShopComponent implements OnInit {
+export class ShopComponent implements OnInit, OnDestroy {
     CategoriesGrid: GridViewmodel = new GridViewmodel();
-    CategoriesIndexPager: number = 0;
+
 
     Categories: CategoryModel[] = [];
     Filters: FilterModel[] = [];
     SelectedTags: string[] = [];
+
+    ShippingTypes: string[] = ["sacramento-ca-warehouse", "mixed-container-from-sacramento", "direct-container-from-china"];
+    CurrentGroup: string = "Categories";
+    CurrentGridStyle: string = "3,2";
+    CurrentBaseUrl: string = "";
+    CurrentPageNumber: number = 0;
+    CurrentShippingType: string = "";
 
     private accSub: Subscription | null = null;
 
@@ -30,38 +37,78 @@ export class ShopComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.LoadData();
         this.accSub = this.account.UserToken.subscribe(acc => {
             if (!acc || acc == "")
                 this.router.navigateByUrl('/');
         });
-
-        this.route.params.subscribe(() => {
-            this.sharedData.SetMenuStatus(false)
+        this.account.IsValid();
+        this.LoadData();
+        this.route.queryParams.subscribe(() => {
+            this.sharedData.SetMenuStatus(false);
+            this.CurrentBaseUrl = this.getBaseUrl();
+            this.CurrentGridStyle = this.GetGridStyleByUrl();
+            this.CurrentShippingType = this.getShippingType();
+            this.SetGroupByUrl();
+            this.SetFilter();
             this.SetIndexPager();
+            this.FilterCategoriesByTags();
+        });
+        this.route.params.subscribe(() => {
+            this.sharedData.SetMenuStatus(false);
+            this.CurrentBaseUrl = this.getBaseUrl();
+            this.CurrentGridStyle = this.GetGridStyleByUrl();
+            this.CurrentShippingType = this.getShippingType();
+            this.SetGroupByUrl();
+            this.SetFilter();
+            this.SetIndexPager();
+            this.FilterCategoriesByTags();
         });
     }
 
     private LoadData() {
+        this.CurrentBaseUrl = this.getBaseUrl();
+        this.CurrentGridStyle = this.GetGridStyleByUrl();
+        this.CurrentShippingType = this.getShippingType();
         this.SetFilter();
         this.SetIndexPager();
+        this.SetGridStyle();
         this.LoadCategories();
         this.LoadTags();
     }
 
     private SetFilter() {
-        if (this.route.snapshot.params['filter'] != null && this.route.snapshot.params['filter'] != "")
-            this.SelectedTags = this.route.snapshot.params['filter'].split(',');
+        const Filter = this.route.snapshot.queryParamMap.get('Filter');
+        if (Filter != null && Filter.trim() != "")
+            this.SelectedTags = Filter.split(',');
         else
             this.SelectedTags = [];
     }
 
     private SetIndexPager() {
-        if (this.route.snapshot.params['page-index'] != null)
-            this.CategoriesIndexPager = (+this.route.snapshot.params['page-index'] - 1);
+        const PageNumber = this.route.snapshot.queryParamMap.get('PageNumber');
+        if (PageNumber != null)
+            this.CurrentPageNumber = (+PageNumber - 1);
         else
-            this.CategoriesIndexPager = 0;
+            this.CurrentPageNumber = 0;
     }
+
+    private SetGridStyle() {
+        const GridStyle = this.GetGridStyleByUrl();
+        const Style = GridStyle.split(",");
+        if (Array.isArray(Style) && Style.length == 2) {
+            this.CategoriesGrid.MaxRowPerPage = +Style[0];
+            this.CategoriesGrid.CellsPerRow = +Style[1];
+        }
+    }
+
+    private GetGridStyleByUrl(): string {
+        const GridStyle = this.route.snapshot.queryParamMap.get('GridStyle');
+        if (GridStyle != null && GridStyle.trim().length > 0) {
+            return GridStyle;
+        } else
+            return "3,2";
+    }
+
 
     private LoadCategories() {
         const CategoryService = new CategoryGrpcService(this.account);
@@ -73,6 +120,8 @@ export class ShopComponent implements OnInit {
     }
 
     private FilterCategoriesByTags() {
+        this.SetUrl();
+
         const Cells: GridCell[] = [];
         this.Categories.forEach(Cat => {
             let Founded = true;
@@ -84,30 +133,58 @@ export class ShopComponent implements OnInit {
             }
             if (Founded) {
                 if (Cat.Children == null || Cat.Children.length === 0) {
-                    console.log(Cat);
                     Cat.ImagesUrl = Tools.SortImageFiles(Cat.ImagesUrl);
                     const Cell: GridCell = {
                         Title: Cat.Name,
                         ShortDescription: Cat.ShortDescription,
                         ImageUrl: this.GetImage(Cat.ImagesUrl),
-                        Link: "/shop/" + Cat.Slug,
-                        Alt: Cat.Name + " - " + Cat.ShortDescription
+                        Link: this.CurrentBaseUrl + Cat.Slug,
+                        Alt: Cat.Name + " - " + Cat.ShortDescription,
+                        Prices: [],
+                        Quantity:""
                     };
                     Cells.push(Cell);
                 }
             }
         });
         this.CategoriesGrid = new GridViewmodel();
+        this.CategoriesGrid.GridStyle = ["3,2", "2,3"];
         this.CategoriesGrid.CellStyle = CellStyle.CardWithDescription;
-        this.CategoriesGrid.CellsPerRow = 2;
-        this.CategoriesGrid.MaxRowPerPage = 9;
         this.CategoriesGrid.Cells = Cells;
-        window.history.replaceState({}, '', '/shop/' + (this.CategoriesIndexPager + 1) + '/' + this.SelectedTags.toString());
+
+        this.SetGridStyle();
+
+        // let Filter = "";
+        // if (Array.isArray(this.SelectedTags) && this.SelectedTags.length > 0) {
+        //     Filter = "&Filter=" + this.SelectedTags.toString();
+        // }
+        //
+        // const Style = this.CategoriesGrid.MaxRowPerPage + "," + this.CategoriesGrid.CellsPerRow;
+        //
+        // const Url = "/shop/" + this.getShippingType() + "/" + this.CurrentGroup + "/?PageNumber=" + (this.CurrentPageNumber + 1) + Filter + "&GridStyle=" + Style;
+        // window.history.replaceState({}, '', Url);
+
+        //const Url = "/shop?PageNumber=" + (this.CurrentPageNumber + 1) + Filter + "&GridStyle=" + Style;
+
+    }
+
+    private getShippingType() {
+        let ShippingType = this.route.snapshot.params['shippingType'];
+        if (ShippingType != undefined && ShippingType != null) {
+            const CurrentShippingType = this.ShippingTypes.find(x => x === ShippingType.toLocaleString());
+            if (CurrentShippingType != undefined && CurrentShippingType != null) {
+                return CurrentShippingType;
+            } else
+                return this.ShippingTypes[0];
+        } else
+            return this.ShippingTypes[0];
     }
 
     private LoadTags() {
         const FilterService = new FilterGrpcService(this.account);
         FilterService.GetAll().then(data => {
+
+            //TODO: Needs Check Group for show
             this.Filters = data.sort((a, b) => a.Order > b.Order ? 1 : -1);
         }).catch(data => {
         })
@@ -127,22 +204,18 @@ export class ShopComponent implements OnInit {
             this.SelectedTags.push(Tag);
         else
             this.SelectedTags.splice(idx, 1);
-        this.CategoriesIndexPager = 0;
+        this.CurrentPageNumber = 0;
         this.FilterCategoriesByTags();
     }
 
     public ClearAllTags() {
         this.SelectedTags = [];
-        this.CategoriesIndexPager = 0;
+        this.CurrentPageNumber = 0;
         this.FilterCategoriesByTags();
     }
 
     public IsTagSelected(Tag: string): boolean {
         return this.SelectedTags.includes(Tag);
-    }
-
-    ngOnDestroy(): void {
-        this.accSub?.unsubscribe();
     }
 
     public getFilterNames(Tag: string): string {
@@ -156,5 +229,42 @@ export class ShopComponent implements OnInit {
             }
         }
         return Names;
+    }
+
+    OnGroupChanged(GroupName: string) {
+        this.CurrentGroup = GroupName;
+        this.CurrentPageNumber = 0;
+        this.SetUrl();
+    }
+
+    IsCurrentGroupCategories() {
+        return this.CurrentGroup == "Categories";
+    }
+
+    SetGroupByUrl() {
+        let group = this.route.snapshot.params['group'];
+        if (group != null)
+            this.CurrentGroup = group;
+        else
+            this.CurrentGroup = "Categories";
+    }
+
+    SetUrl() {
+        let Filter = "";
+        if (Array.isArray(this.SelectedTags) && this.SelectedTags.length > 0) {
+            Filter = "&Filter=" + this.SelectedTags.toString();
+        }
+        const Style = this.CategoriesGrid.MaxRowPerPage + "," + this.CategoriesGrid.CellsPerRow;
+        const Url = this.getBaseUrl() + "?PageNumber=" + (this.CurrentPageNumber + 1) + Filter + "&GridStyle=" + Style;
+        window.history.replaceState({}, '', Url);
+        this.CurrentBaseUrl = this.getBaseUrl();
+    }
+
+    getBaseUrl() {
+        return "/shop/" + this.getShippingType() + "/" + this.CurrentGroup + "/";
+    }
+
+    ngOnDestroy(): void {
+        this.accSub?.unsubscribe();
     }
 }

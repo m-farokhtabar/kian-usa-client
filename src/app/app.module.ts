@@ -12,19 +12,22 @@ import {SendProductsCatalogByEmailDialogComponent} from './modules/price-list/co
 import {FeaturesTableComponent} from './modules/price-list/components/features-table/features-table.component';
 import {Routes, RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { HomeComponent } from './modules/home/home.component';
-import { LoginComponent } from './shared/components/login/login.component'
+import {HomeComponent} from './modules/home/home.component';
+import {LoginComponent} from './shared/components/login/login.component'
 import {AccountModel} from "./core/models/account/account.model";
 import {SharedDataService} from "./core/services/shareddata.service";
-import { GridComponent } from './shared/components/grid/grid.component';
-import { ParagraphComponent } from './shared/components/paragraph/paragraph.component';
-import { AboutUsComponent } from './modules/about-us/about-us.component';
-import { VerticalMenuComponent } from './shared/components/vertical-menu/vertical-menu.component';
-import { ShippingProgramsComponent } from './modules/shipping-program/shipping-programs.component';
-import { PrivacyPolicyComponent } from './modules/privacy-policy/privacy-policy.component';
-import { ContactUsComponent } from './modules/contact-us/contact-us.component';
-import { VisitUsAtMarketComponent } from './modules/visit-us-at-market/visit-us-at-market.component';
-import { ShopComponent } from './modules/shop/shop.component';
+import {GridComponent} from './shared/components/grid/grid.component';
+import {ParagraphComponent} from './shared/components/paragraph/paragraph.component';
+import {AboutUsComponent} from './modules/about-us/about-us.component';
+import {VerticalMenuComponent} from './shared/components/vertical-menu/vertical-menu.component';
+import {ShippingProgramsComponent} from './modules/shipping-program/shipping-programs.component';
+import {PrivacyPolicyComponent} from './modules/privacy-policy/privacy-policy.component';
+import {ContactUsComponent} from './modules/contact-us/contact-us.component';
+import {VisitUsAtMarketComponent} from './modules/visit-us-at-market/visit-us-at-market.component';
+import {ShopComponent} from './modules/shop/shop.component';
+import {GroupGridFilterComponent} from './modules/price-list/components/group-grid-filter/group-grid-filter.component';
+import { GroupComponent } from './modules/shop/components/group/group.component';
+import { ShopProductGridComponent } from './modules/shop/components/shop-product-grid/shop-product-grid.component';
 
 const appRoutes: Routes = [
     {path: '', component: HomeComponent},
@@ -33,11 +36,10 @@ const appRoutes: Routes = [
     {path: 'privacy-policy', component: PrivacyPolicyComponent},
     {path: 'about-us', component: AboutUsComponent},
     {path: 'shipping-programs', component: ShippingProgramsComponent},
-    {path: 'price-list', component: PriceListComponent},
-    {path: 'price-list/:slug', component: PriceListComponent},
+    {path: 'price-list', children: [{path: "**", component: PriceListComponent}]},
     {path: 'shop', component: ShopComponent},
-    {path: 'shop/:page-index', component: ShopComponent},
-    {path: 'shop/:page-index/:filter', component: ShopComponent},
+    {path: 'shop/:shippingType', component: ShopComponent},
+    {path: 'shop/:shippingType/:group', component: ShopComponent}
 ];
 
 @NgModule({
@@ -61,7 +63,10 @@ const appRoutes: Routes = [
         PrivacyPolicyComponent,
         ContactUsComponent,
         VisitUsAtMarketComponent,
-        ShopComponent
+        ShopComponent,
+        GroupGridFilterComponent,
+        GroupComponent,
+        ShopProductGridComponent
     ],
     imports: [
         BrowserModule,

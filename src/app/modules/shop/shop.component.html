@@ -1,16 +1,26 @@
 <div class="container">
-    <div class="row mt-5 position-relative">
+    <div class="row mt-5">
         <div class="col-12">
-            <div class="btn-group" role="group" *ngFor="let Filter of Filters">
+            <h1 class="h3">Sacramento, CA Warehouse</h1>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-12">
+            <app-group [SelectedGroup]="CurrentGroup" (SelectedGroupChanged)="OnGroupChanged($event)"></app-group>
+        </div>
+    </div>
+    <div class="row mt-3 position-relative">
+        <div class="col-12">
+            <div class="mt-2" role="group" style="display: block;float: left;" *ngFor="let Filter of Filters">
                 <button type="button" class="btn btn-outline-navy dropdown-toggle btn-sm me-2"
                         [id]="Filter.Name" data-bs-toggle="dropdown">
                     {{Filter.Name}}
                 </button>
-                <div class="dropdown-menu SubButtonContainer" style="margin-top:3px;"
-                     [attr.aria-labelledby]="Filter.Name">
+                <div class="dropdown-menu SubButtonContainer" [attr.aria-labelledby]="Filter.Name">
                     <button [ngClass]="{'btn-Selected':IsTagSelected(Tag)}" type="button"
                             class="btn btn-outline-heavy-navy btn-xs me-1"
-                            *ngFor="let Tag of Filter.Tags" (click)="OnTagButtonClick($event, Tag)">{{Tag}}</button>
+                            (click)="OnTagButtonClick($event, Tag)" *ngFor="let Tag of Filter.Tags">
+                        <span>{{Tag}}</span></button>
                 </div>
             </div>
         </div>
@@ -30,7 +40,13 @@
         </div>
     </div>
     <div class="row mt-3">
-        <grid [Data]="CategoriesGrid" [PagerBaseLink]="'/shop/'" [ZoomOnImageWhenMouseOver]="true"
-              [CurrentPageIndex]="CategoriesIndexPager"></grid>
+        <ng-container *ngIf="IsCurrentGroupCategories(); else ShowProductGrid">
+            <grid [Data]="CategoriesGrid" [PagerBaseLink]="CurrentBaseUrl" [ZoomOnImageWhenMouseOver]="true"
+                  [CurrentPageIndex]="CurrentPageNumber" [ShowPaging]="true" [ExtraQueryParameterName]="'Filter'"
+                  [ExtraQueryParameterValue]="SelectedTags.toString()"></grid>
+        </ng-container>
+        <ng-template #ShowProductGrid>
+            <app-shop-product-grid [CurrentShippingType]="CurrentShippingType" [BaseUrl] = "CurrentBaseUrl" [CurrentGridStyle]="CurrentGridStyle" [SelectedGroup]="CurrentGroup" [PageCount]="6" [PageNumber]="CurrentPageNumber" [SelectedTags]="SelectedTags.toString()"></app-shop-product-grid>
+        </ng-template>
     </div>
 </div>
