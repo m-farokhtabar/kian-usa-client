@@ -1,0 +1,85 @@
+.btn-outline-navy {
+    border-color: #e5e5e5;
+    color: #000;
+    padding: 4px 15px 4px 15px!important;
+}
+
+.btn-outline-navy:hover {
+    background-color: #f8f6ffcc;
+    border-color: #bbcef9;
+    color: #223f81;
+}
+
+.btn-outline-heavy-navy {
+    background-color: #f8f6ffcc;
+    border-color: #dfe7f9;
+    color: #223f81;
+}
+
+.btn-outline-heavy-navy:hover {
+    background-color: #223f81;
+    border-color: #223f81;
+    color: #fff;
+}
+
+.btn-xs {
+    padding: 2px 4px;
+    font-size: 14px;
+}
+.btn-Selected{
+    background-color: #223f81;
+    border-color: #223f81;
+    color: #fff;
+}
+
+.SubButtonContainer {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
+    border-radius: 5px;
+    padding: 12px;
+    margin-top: 10px!important;
+    border-color: rgb(235, 238, 245);
+}
+.SelectedTagCloseButton{
+    width: 10px;
+    vertical-align: unset;
+    margin-left:3px;
+}
+.SelectedTagCloseButtonContainer{
+    background-color: #fff;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    cursor: pointer;
+    margin-left:3px;
+}
+.SelectedTagCloseButtonContainer:hover{
+    background-color: #e6eeff;
+    border-radius: 8px;
+
+}
+.SelectedTag{
+    padding: 1px 4px 1px 4px;
+    border: solid 1px  #eee;
+    color: #223f81;
+    background-color: #fff;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+}
+.dropdown-menu.show{
+    display: flex;
+}
+.ClearTags{
+    padding: 1px 4px 1px 4px;
+    color: #223f81;
+    background-color: #fff;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+    text-decoration:none;
+    cursor: pointer;
+}
+.ClearTags:hover{
+    background-color: #e6eeff;
+    text-decoration: underline;
+}

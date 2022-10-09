@@ -1,0 +1,33 @@
+<div class="row mt-1 position-relative">
+    <div class="col-12">
+        <div class="mt-2" role="group" style="display: block;float: left;" *ngFor="let Filter of Filters">
+            <button type="button" class="btn btn-outline-navy dropdown-toggle btn-sm me-2"
+                    [id]="Filter.Name" data-bs-toggle="dropdown">
+                {{Filter.Name}}
+            </button>
+            <div class="dropdown-menu SubButtonContainer" [attr.aria-labelledby]="Filter.Name">
+                <button [ngClass]="{'btn-Selected':IsTagSelected(Tag)}" type="button"
+                        class="btn btn-outline-heavy-navy btn-xs me-1"
+                        (click)="OnTagButtonClick($event, Tag)" *ngFor="let Tag of Filter.Tags">
+                    <span>{{Tag}}</span></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-12">
+        <div class="SelectedTag d-inline-block" *ngFor="let Tag of SelectedTags">
+            <span>{{getFilterNames(Tag)}}: {{Tag}}</span>
+            <span class="SelectedTagCloseButtonContainer" (click)="OnTagButtonClick($event, Tag)">
+                    <svg class="SelectedTagCloseButton" fill="#223f81"
+                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="8px" height="8px">
+                        <path d="M 4.9902344 3.9902344 A 1.0001 1.0001 0 0 0 4.2929688 5.7070312 L 10.585938 12 L 4.2929688 18.292969 A 1.0001 1.0001 0 1 0 5.7070312 19.707031 L 12 13.414062 L 18.292969 19.707031 A 1.0001 1.0001 0 1 0 19.707031 18.292969 L 13.414062 12 L 19.707031 5.7070312 A 1.0001 1.0001 0 0 0 18.980469 3.9902344 A 1.0001 1.0001 0 0 0 18.292969 4.2929688 L 12 10.585938 L 5.7070312 4.2929688 A 1.0001 1.0001 0 0 0 4.9902344 3.9902344 z"/>
+                    </svg>
+                </span>
+        </div>
+        <span class="ClearTags" (click)="ClearAllTags()" *ngIf="SelectedTags!=null && SelectedTags.length>0">Clear all</span>
+    </div>
+</div>
+<div class="row mt-3">
+    <grid [Data]="CategoriesGrid" [ZoomOnImageWhenMouseOver]="true" [IsUseShortDescriptionAsAnAlert]="true"></grid>
+</div>

@@ -1,0 +1,21 @@
+.btn-outline-navy {
+    border-color: #e5e5e5;
+    color: #000;
+    padding: 4px 15px 4px 15px!important;
+}
+
+.btn-outline-navy:hover {
+    background-color: #f8f6ffcc;
+    border-color: #bbcef9;
+    color: #223f81;
+}
+.btn-Selected{
+    background-color: #223f81;
+    border-color: #223f81;
+    color: #fff;
+}
+.btn-Selected:hover{
+    background-color: #223f81;
+    border-color: #223f81;
+    color: #fff;
+}
