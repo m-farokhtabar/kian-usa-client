@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, ɵConsole} from '@angular/core';
 import {ProductGrpcService} from "../../../../core/services/product-grpc.service";
-import {AccountModel} from "../../../../core/models/account/account.model";
+import {AuthService} from "../../../../core/models/account/auth.service";
 import {ProductModel} from "../../../../core/models/product/product.model";
 import {CellStyle, GridCell, GridViewmodel} from "../../../../shared/components/grid/viewmodel/grid.viewmodel";
 import {Constant} from "../../../../shared/helper/constant";
@@ -57,7 +57,7 @@ export class ShopProductGridComponent implements OnInit {
     @Input()
     PageCount: number = 20;
     @Input()
-    _CurrentGridStyle: string = "3,2";
+    _CurrentGridStyle: string = "4,3";
     @Input()
     public set CurrentGridStyle(value: string) {
         this._CurrentGridStyle = value;
@@ -71,7 +71,8 @@ export class ShopProductGridComponent implements OnInit {
             this.ViewModel = TmpViewModel;
         }
     }
-
+    @Input()
+    IsAscOrder:boolean = true;
     public get CurrentGridStyle() {
         return this._CurrentGridStyle;
     }
@@ -85,7 +86,7 @@ export class ShopProductGridComponent implements OnInit {
     ViewModel: GridViewmodel = new GridViewmodel();
     TotalProducts: number = 0;
 
-    constructor(private account: AccountModel) {
+    constructor(private account: AuthService) {
     }
 
     ngOnInit(): void {
@@ -99,12 +100,12 @@ export class ShopProductGridComponent implements OnInit {
             const Groups = [this.SelectedGroup];
             if (this.PageNumber < 0)
                 this.PageNumber = 0;
-            ProductService.GetByGroupsTagsWithPaging(Groups, this._SelectedTags, this.PageNumber, this.PageCount).then(data => {
+            ProductService.GetByGroupsTagsWithPaging(Groups, this._SelectedTags, this.PageNumber, this.PageCount, this.IsAscOrder).then(data => {
                 this.TotalProducts = data.TotalProducts;
-                this.Products = data.Products.sort((a, b) => a.Order > b.Order ? 1 : -1);
+                this.Products = data.Products.sort((a, b) => a.Order < b.Order ? 1 : -1);
                 const Cells: GridCell[] = [];
                 for (let i = 0; i < this.PageNumber * this.PageCount; i++)
-                    Cells.push(new GridCell("", "", "", "", "", [],""));
+                    Cells.push(new GridCell("", "", "", "", "", [],"",""));
                 this.Products.forEach(prd => {
                     const Cell: GridCell = {
                         Title: prd.Name,
@@ -113,13 +114,14 @@ export class ShopProductGridComponent implements OnInit {
                         Link: this.BaseUrl + prd.Slug,
                         Alt: prd.Name + " - " + prd.ShortDescription,
                         Prices: this.GetPrices(prd),
-                        Quantity: prd.WHQTY
+                        Quantity: prd.WHQTY,
+                        Description: prd.Description
                     };
                     Cells.push(Cell);
                 });
 
                 this.ViewModel = new GridViewmodel();
-                this.ViewModel.GridStyle = ["3,2", "2,3"];
+                this.ViewModel.GridStyle = ["4,3", "6,2"];
                 this.ViewModel.CellStyle = CellStyle.ShopCard;
                 this.ViewModel.Cells = Cells;
                 this.SetGridStyle();
@@ -138,7 +140,7 @@ export class ShopProductGridComponent implements OnInit {
 
     private SetGridStyle() {
         this.ViewModel.CellsPerRow = 2;
-        this.ViewModel.MaxRowPerPage = 3;
+        this.ViewModel.MaxRowPerPage = 6;
         if (this.CurrentGridStyle != null && this.CurrentGridStyle.trim().length > 0) {
             const Style = this.CurrentGridStyle.split(",");
             if (Array.isArray(Style) && Style.length == 2) {
@@ -163,9 +165,6 @@ export class ShopProductGridComponent implements OnInit {
                 Prices.push(Product.Prices[3].Value);
                 break;
         }
-        console.log(Prices);
-        console.log(Product);
-        console.log(this.SelectedGroup);
         return Prices;
     }
 

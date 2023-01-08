@@ -39,7 +39,8 @@ export class HomeComponent implements OnInit {
                         Link: "/",
                         ShortDescription: "",
                         Prices : [],
-                        Quantity: ""
+                        Quantity: "",
+                        Description: ""
                     },
                     {
                         Title: "Sofa & Loveseat & chair",
@@ -49,7 +50,8 @@ export class HomeComponent implements OnInit {
                         Link: "/",
                         ShortDescription: "",
                         Prices : [],
-                        Quantity: ""
+                        Quantity: "",
+                        Description: ""
                     }
                 ],
             CellsPerRow: 2,
@@ -74,7 +76,8 @@ export class HomeComponent implements OnInit {
                         Link: "/",
                         ShortDescription: "",
                         Prices : [],
-                        Quantity: ""
+                        Quantity: "",
+                        Description: ""
                     },
                     {
                         Title: "Power Seat",
@@ -83,7 +86,8 @@ export class HomeComponent implements OnInit {
                         Link: "/",
                         ShortDescription: "",
                         Prices : [],
-                        Quantity: ""
+                        Quantity: "",
+                        Description: ""
                     },
                     {
                         Title: "Manual",
@@ -92,7 +96,8 @@ export class HomeComponent implements OnInit {
                         Link: "/",
                         ShortDescription: "",
                         Prices : [],
-                        Quantity: ""
+                        Quantity: "",
+                        Description: ""
                     }
                 ],
             CellsPerRow: 3,
@@ -112,7 +117,8 @@ export class HomeComponent implements OnInit {
                         Link: "/",
                         ShortDescription: "",
                         Prices : [],
-                        Quantity: ""
+                        Quantity: "",
+                        Description: ""
                     },
                     {
                         Title: "Visit us at Market",
@@ -121,7 +127,8 @@ export class HomeComponent implements OnInit {
                         Link: "/visit-us-at-market",
                         ShortDescription: "",
                         Prices : [],
-                        Quantity: ""
+                        Quantity: "",
+                        Description: ""
                     },
                     {
                         Title: "Special Request",
@@ -130,7 +137,8 @@ export class HomeComponent implements OnInit {
                         Link: "/",
                         ShortDescription: "",
                         Prices : [],
-                        Quantity: ""
+                        Quantity: "",
+                        Description: ""
                     },
                     {
                         Title: "Coming Soon",
@@ -139,7 +147,8 @@ export class HomeComponent implements OnInit {
                         Link: "/",
                         ShortDescription: "",
                         Prices : [],
-                        Quantity: ""
+                        Quantity: "",
+                        Description: ""
                     }
                 ],
             CellsPerRow: 4,

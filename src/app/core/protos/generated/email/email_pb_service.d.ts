@@ -13,6 +13,15 @@ type EmailSrvSendCatalog = {
   readonly responseType: typeof email_pb.SendResponseMessage;
 };
 
+type EmailSrvSendCatalogWithLandedPrice = {
+  readonly methodName: string;
+  readonly service: typeof EmailSrv;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof email_pb.SendCatalogWithLandedPriceRequestMessage;
+  readonly responseType: typeof email_pb.SendResponseMessage;
+};
+
 type EmailSrvSendContactUs = {
   readonly methodName: string;
   readonly service: typeof EmailSrv;
@@ -25,6 +34,7 @@ type EmailSrvSendContactUs = {
 export class EmailSrv {
   static readonly serviceName: string;
   static readonly SendCatalog: EmailSrvSendCatalog;
+  static readonly SendCatalogWithLandedPrice: EmailSrvSendCatalogWithLandedPrice;
   static readonly SendContactUs: EmailSrvSendContactUs;
 }
 
@@ -67,6 +77,15 @@ export class EmailSrvClient {
   ): UnaryResponse;
   sendCatalog(
     requestMessage: email_pb.SendCatalogRequestMessage,
+    callback: (error: ServiceError|null, responseMessage: email_pb.SendResponseMessage|null) => void
+  ): UnaryResponse;
+  sendCatalogWithLandedPrice(
+    requestMessage: email_pb.SendCatalogWithLandedPriceRequestMessage,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: email_pb.SendResponseMessage|null) => void
+  ): UnaryResponse;
+  sendCatalogWithLandedPrice(
+    requestMessage: email_pb.SendCatalogWithLandedPriceRequestMessage,
     callback: (error: ServiceError|null, responseMessage: email_pb.SendResponseMessage|null) => void
   ): UnaryResponse;
   sendContactUs(

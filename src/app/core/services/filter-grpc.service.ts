@@ -1,4 +1,4 @@
-import {AccountModel} from "../models/account/account.model";
+import {AuthService} from "../models/account/auth.service";
 import {FilterModel} from "../models/filter/filter.model";
 import {grpc} from "@improbable-eng/grpc-web";
 import {Empty} from "google-protobuf/google/protobuf/empty_pb";
@@ -8,7 +8,7 @@ import {FilterSrv} from "../protos/generated/filter/filter_pb_service";
 import {FiltersResponseMessage} from "../protos/generated/filter/filter_pb";
 
 export class FilterGrpcService{
-    constructor(private account: AccountModel) {
+    constructor(private account: AuthService) {
     }
     public GetAll(): Promise<FilterModel[]>{
         return new Promise<FilterModel[]>((resolve, reject) =>{

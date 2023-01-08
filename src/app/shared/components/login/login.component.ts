@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {AccountGrpcService} from "../../../core/services/account-grpc.service";
-import {AccountModel} from "../../../core/models/account/account.model";
+import {AuthService} from "../../../core/models/account/auth.service";
 
 @Component({
   selector: 'login',
@@ -10,14 +10,14 @@ import {AccountModel} from "../../../core/models/account/account.model";
 })
 export class LoginComponent implements OnInit {
   @ViewChild('LoginModelCloseButton') ModelCloseButton: ElementRef | null = null;
-  constructor(private account: AccountModel) { }
+  constructor(private account: AuthService) { }
 
   ngOnInit(): void {
   }
 
   OnSubmit(Form: NgForm) {
     if (Form.valid) {
-      const AccountService = new AccountGrpcService();
+      const AccountService = new AccountGrpcService(null);
       AccountService.Login(Form.value.Username,Form.value.Password).then(data => {
         this.ModelCloseButton?.nativeElement.click();
         this.account.Set(data);

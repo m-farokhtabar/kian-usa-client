@@ -110,6 +110,17 @@ export class ProductResponseMessage extends jspb.Message {
   setFactoriesList(value: Array<string>): void;
   addFactories(value: string, index?: number): string;
 
+  getPiecescount(): number;
+  setPiecescount(value: number): void;
+
+  clearComplexitempiecesList(): void;
+  getComplexitempiecesList(): Array<string>;
+  setComplexitempiecesList(value: Array<string>): void;
+  addComplexitempieces(value: string, index?: number): string;
+
+  getComplexitempriority(): number;
+  setComplexitempriority(value: number): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ProductResponseMessage.AsObject;
   static toObject(includeInstance: boolean, msg: ProductResponseMessage): ProductResponseMessage.AsObject;
@@ -146,6 +157,9 @@ export namespace ProductResponseMessage {
     tagsList: Array<string>,
     groupsList: Array<string>,
     factoriesList: Array<string>,
+    piecescount: number,
+    complexitempiecesList: Array<string>,
+    complexitempriority: number,
   }
 }
 
@@ -342,6 +356,9 @@ export class ProductsByGroupsTagsWithPagingRequestMessage extends jspb.Message {
   getPagecount(): number;
   setPagecount(value: number): void;
 
+  getIsacsorder(): boolean;
+  setIsacsorder(value: boolean): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ProductsByGroupsTagsWithPagingRequestMessage.AsObject;
   static toObject(includeInstance: boolean, msg: ProductsByGroupsTagsWithPagingRequestMessage): ProductsByGroupsTagsWithPagingRequestMessage.AsObject;
@@ -358,6 +375,7 @@ export namespace ProductsByGroupsTagsWithPagingRequestMessage {
     tagsList: Array<string>,
     pagenumber: number,
     pagecount: number,
+    isacsorder: boolean,
   }
 }
 

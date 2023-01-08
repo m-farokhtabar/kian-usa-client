@@ -30,7 +30,7 @@
                            aria-label="Next">
                             <span aria-hidden="true">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 8 8"
-                                      fill="currentColor" class="bi bi-caret-right-fill">
+                                     fill="currentColor" class="bi bi-caret-right-fill">
                                     <path d="M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z"/>
                                 </svg>
                             </span>
@@ -40,9 +40,9 @@
             </nav>
         </div>
         <div class="d-none d-md-block col-2" style="text-align: right;">
-            <a (click)="ChangeGridStyle(Data.GridStyle[1])"
+            <a (click)="ChangeGridStyle(Data.GridStyle[0])"
                [routerLink]="[PagerBaseLink]"
-               [queryParams]="CreateQueryParameter(CurrentPageIndex + 1, Data.GridStyle[1])">
+               [queryParams]="CreateQueryParameter(CurrentPageIndex + 1, Data.GridStyle[0])">
                 <svg class="grid-style-button" enable-background="new 0 0 32 32" height="32px" id="Layer_1"
                      version="1.1" viewBox="0 0 32 32" width="26px" xml:space="preserve"
                      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="grid-2"><path d="M10.246,4.228c0-0.547-0.443-0.991-0.99-0.991H3.914c-0.548,0-0.991,0.443-0.991,0.991V9.57   c0,0.546,0.443,0.99,0.991,0.99h5.342c0.547,0,0.99-0.444,0.99-0.99V4.228z" fill="#515151"/>
@@ -64,9 +64,9 @@
                           fill="#515151"/></g></svg>
             </a>
 
-            <a (click)="ChangeGridStyle(Data.GridStyle[0])"
+            <a (click)="ChangeGridStyle(Data.GridStyle[1])"
                [routerLink]="[PagerBaseLink]"
-               [queryParams]="CreateQueryParameter(CurrentPageIndex + 1,Data.GridStyle[0])">
+               [queryParams]="CreateQueryParameter(CurrentPageIndex + 1,Data.GridStyle[1])">
                 <svg class="grid-style-button" enable-background="new 0 0 32 32"
                      height="32px" id="Layer_1" version="1.1" viewBox="0 0 32 32" width="32px" xml:space="preserve"
                      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><path d="M15.42,7.221c0-0.951-0.771-1.721-1.721-1.721H6.729c-0.951,0-1.721,0.771-1.721,1.721v6.103   c0,0.951,0.771,1.721,1.721,1.721h6.971c0.951,0,1.721-0.771,1.721-1.721V7.221z" fill="#515151"/><path
@@ -101,20 +101,37 @@
                     <ng-container *ngIf="!IsThemeShopCard(); else ShopCardTheme">
                         <div class="card-body">
                             <h5 class="card-title">{{Cell.Title}}</h5>
-                            <p class="card-text" [ngClass]="{'AlertShortDescription':IsUseShortDescriptionAsAnAlert}"
-                               *ngIf="IsThemeCardWithDescription()">{{Cell.ShortDescription != "" ? Cell.ShortDescription : "&nbsp;"}}</p>
+                            <p class="card-text" *ngIf="UseDescription; else ShortDescription">
+                                {{Cell.Description != "" ? Cell.Description : "&nbsp;"}}
+                            </p>
+                            <ng-template #ShortDescription>
+                                <p class="card-text"
+                                   [ngClass]="{'AlertShortDescription':IsUseShortDescriptionAsAnAlert}"
+                                   *ngIf="IsThemeCardWithDescription()">{{Cell.ShortDescription != "" ? Cell.ShortDescription : "&nbsp;"}}</p>
+                            </ng-template>
                         </div>
                     </ng-container>
                     <ng-template #ShopCardTheme>
                         <div class="card-body">
                             <div>
-                                <h5 class="card-title text-start float-start" >{{Cell.Title}}</h5>
-                                <span class="float-end" style="color:navy;" >{{Cell.Quantity}}</span>
+                                <h5 class="card-title text-start float-start">{{Cell.Title}}</h5>
+                                <span class="float-end small" style="color:navy;">{{Cell.Quantity}}</span>
                             </div>
-                            <p style="clear: both;" class="card-text text-start" [ngClass]="{'AlertShortDescription':IsUseShortDescriptionAsAnAlert}">
+                            <p style="clear: both;" class="card-text text-start"
+                               [ngClass]="{'AlertShortDescription':IsUseShortDescriptionAsAnAlert}"
+                               *ngIf="!UseDescription; else ShowShortDescription">
                                 {{Cell.ShortDescription != "" ? Cell.ShortDescription : "&nbsp;"}}
                             </p>
-                            <h6 class="text-start" [ngClass]="{'text-danger':HasMoreThanOnePrice(Cell)}">{{GetCurrentPrice(Cell)}} <span *ngIf="HasMoreThanOnePrice(Cell);">&nbsp;&nbsp;<span class="text-dark text-decoration-line-through">{{GetFirstPrice(Cell)}}</span></span></h6>
+                            <ng-template #ShowShortDescription>
+                                <p style="clear: both;" class="card-text text-start" *ngIf="UseDescription">
+                                    {{Cell.Description != "" ? Cell.Description : "&nbsp;"}}
+                                </p>
+                            </ng-template>
+                            <h6 style="clear: both;" class="text-start"
+                                [ngClass]="{'text-danger':HasMoreThanOnePrice(Cell)}">{{GetCurrentPrice(Cell)}} <span
+                                    *ngIf="HasMoreThanOnePrice(Cell);">&nbsp;&nbsp;<span
+                                    class="text-dark text-decoration-line-through">{{GetFirstPrice(Cell)}}</span></span>
+                            </h6>
                         </div>
                     </ng-template>
                 </div>
@@ -134,7 +151,7 @@
                            aria-label="Previous">
                             <span aria-hidden="true">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 8 8"
-                                                                     style="transform:scale(-1,1);" fill="currentColor" class="bi bi-caret-right-fill">
+                                      style="transform:scale(-1,1);" fill="currentColor" class="bi bi-caret-right-fill">
                                     <path d="M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z"/>
                                 </svg>
                             </span>
@@ -153,7 +170,7 @@
                            aria-label="Next">
                             <span aria-hidden="true">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 8 8"
-                                                                     fill="currentColor" class="bi bi-caret-right-fill">
+                                      fill="currentColor" class="bi bi-caret-right-fill">
                                     <path d="M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z"/>
                                 </svg>
                             </span>

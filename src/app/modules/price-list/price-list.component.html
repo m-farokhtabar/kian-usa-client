@@ -1,57 +1,87 @@
-<div class="container-fluid" *ngIf="!JustShowGroupList">
-    <div *ngFor="let Category of SelectedCategories;let Idx = index" class="GreyBox m-4">
-        <div class="bg-opacity-10 p-1 ps-2">
-            <h1 class="display-6">{{Category.Name}}</h1>
-        </div>
-        <div class="row" *ngIf="!JustShowGroupList">
-            <div class="col-lg-7 col-md-12 col-sm-12 col-12">
-                <image-slider [ShowDialogForFullScreen]="true" [SliderName]="'Slider_' + Category.Slug"
-                              [DefaultAlt]="'Kian USA ' + Category.Name + ' or products images'"
-                              [DefaultImage]="DefaultImageSlider" [Sliders]="SliderImages[Idx]"></image-slider>
+<ng-container *ngIf="!JustShowGroupList; else GroupListTemplate">
+    <div class="container-fluid">
+        <div *ngFor="let Category of SelectedCategories;let Idx = index" class="GreyBox m-4">
+            <div class="bg-opacity-10 p-1 ps-2">
+                <h1 class="display-6">{{Category.Name}}</h1>
             </div>
-            <div class="col-lg-5 col-md-12 col-sm-12 col-12">
-                <product-price-table [CategoryName]="Category.Name" [CategorySlug]="Category.Slug"
-                                     [products]="Products[Idx]"></product-price-table>
-                <div>
-                    <a [href]="GetCurrentCategoryCatalogUrl(Idx)" target="_blank"
-                       class="btn btn-light btn-outline-secondary btn-sm me-1 mb-1 SmallFontSize">Download Current</a>
-                    <a [href]="GetAllCategoryCatalogUrl()" target="_blank"
-                       class="btn btn-light btn-outline-secondary btn-sm me-1 mb-1 SmallFontSize">Download All</a>
-                    <button class="btn btn-light btn-outline-primary btn-sm mb-1 SmallFontSize" type="button"
-                            data-bs-toggle="modal" [attr.data-bs-target]="'#Dialog_'+ Category.Slug + '_SendMailModal'">
-                        Send Mail
-                    </button>
+            <div class="row" *ngIf="!JustShowGroupList">
+                <div class="col-lg-7 col-md-12 col-sm-12 col-12">
+                    <image-slider [ShowDialogForFullScreen]="true" [SliderName]="'Slider_' + Category.Slug"
+                                  [DefaultAlt]="'Kian USA ' + Category.Name + ' or products images'"
+                                  [DefaultImage]="DefaultImageSlider" [Sliders]="SliderImages[Idx]"></image-slider>
                 </div>
-                <more-details-table [CategoryParameters]="Category.Parameters"></more-details-table>
+                <div class="col-lg-5 col-md-12 col-sm-12 col-12">
+                    <product-price-table [CategoryName]="Category.Name" [CategorySlug]="Category.Slug"
+                                         [products]="Products[Idx]" (CurrentOrdersCreated)="OnAddOrders($event)"></product-price-table>
+                    <div>
+                        <!--<a [href]="GetCurrentCategoryCatalogUrl(Idx)" target="_blank"-->
+                        <!--class="btn btn-light btn-outline-secondary btn-sm me-1 mb-1 SmallFontSize">Download Current</a>-->
+                        <button class="btn btn-light btn-outline-secondary btn-sm me-1 mb-1 SmallFontSize" type="button"
+                                data-bs-toggle="modal"
+                                [hidden]="!account.AccessToDownloadOneCatOrAllCat()[1]"
+                                [attr.data-bs-target]="'#Dialog_'+ Category.Slug + '_DownloadModal'">
+                            Download Current
+                        </button>
+                        <!--<a [href]="GetAllCategoryCatalogUrl()" target="_blank"-->
+                           <!--class="btn btn-light btn-outline-secondary btn-sm me-1 mb-1 SmallFontSize">Download All</a>-->
+                        <button class="btn btn-light btn-outline-primary btn-sm mb-1 SmallFontSize" type="button"
+                                data-bs-toggle="modal"
+                                [hidden]="!account.AccessToEmailOneCatOrAllCat()[1]"
+                                [attr.data-bs-target]="'#Dialog_'+ Category.Slug + '_SendMailModal'">
+                            Send Email
+                        </button>
+                    </div>
+                    <more-details-table [CategoryParameters]="Category.Parameters"></more-details-table>
+                </div>
+            </div>
+            <div class="row" *ngIf="!JustShowGroupList">
+                <div class="col-12">
+                    <features-table [CategoryFeatures]="Category.Features"></features-table>
+                </div>
+                <div class="col-12">
+                    <app-product-details-table [products]="Products[Idx]"
+                                               [ProductPricesIndex]="ProductPricesIndex[Idx]"></app-product-details-table>
+                </div>
             </div>
         </div>
-        <div class="row" *ngIf="!JustShowGroupList">
+        <div class="row" [ngClass]="{'LightGrayBox m-4 pt-3': !JustShowGroupList}">
             <div class="col-12">
-                <features-table [CategoryFeatures]="Category.Features"></features-table>
+                <group-list></group-list>
             </div>
+        </div>
+    </div>
+</ng-container>
+<ng-template #GroupListTemplate>
+    <div class="container-fluid p-2 p-sm-5 " *ngIf="JustShowGroupList">
+        <div class="row">
             <div class="col-12">
-                <app-product-details-table [products]="Products[Idx]"
-                                           [ProductPricesIndex]="ProductPricesIndex[Idx]"></app-product-details-table>
+                <h2 class="display-5 pt-3 pb-3">Please select the category</h2>
+                <hr/>
             </div>
         </div>
-    </div>
-    <div class="row" [ngClass]="{'LightGrayBox m-4 pt-3': !JustShowGroupList}">
-        <div class="col-12">
-            <group-list></group-list>
+        <div class="row text-end">
+            <div>
+                <button class="btn btn-light btn-outline-secondary btn-sm me-1 mb-1 SmallFontSize" type="button"
+                        data-bs-toggle="modal" [attr.data-bs-target]="'#Dialog_All_Cat_DownloadModal'"
+                        [hidden]="!account.AccessToDownloadOneCatOrAllCat()[0]">
+                    Download Catalog of Categories
+                </button>
+                <button class="btn btn-light btn-outline-primary btn-sm mb-1 SmallFontSize" type="button"
+                        data-bs-toggle="modal" [attr.data-bs-target]="'#Dialog_All_Cat_SendMailModal'"
+                        [hidden]="!account.AccessToEmailOneCatOrAllCat()[0]">
+                    Send Catalog of Categories by Email
+                </button>
+                <app-send-products-catalog-by-email-dialog [CategoryName]="'All'"
+                                                           [CategorySlug]="'All_Cat'"></app-send-products-catalog-by-email-dialog>
+                <price-list-download-dialog [CategoryName]="'All'"
+                                            [CategorySlug]="'All_Cat'"></price-list-download-dialog>
+            </div>
+        </div>
+        <div class="row">
+            <group-grid-filter [Categories]="Categories"></group-grid-filter>
         </div>
     </div>
-</div>
-<div class="container" *ngIf="JustShowGroupList">
-    <div class="row">
-        <div class="col-12">
-            <h2 class="display-5 pt-3 pb-3">Please select the category</h2>
-            <hr/>
-        </div>
-    </div>
-    <div class="row">
-        <group-grid-filter [Categories]="Categories"></group-grid-filter>
-    </div>
-</div>
+</ng-template>
 
 
 <!-- Full screen modal -->
@@ -81,3 +111,4 @@
         </div>
     </div>
 </ng-container>
+<app-shopping-cart [NewOrders]="AddOrders" ></app-shopping-cart>

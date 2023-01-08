@@ -14,7 +14,7 @@ import {Routes, RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HomeComponent} from './modules/home/home.component';
 import {LoginComponent} from './shared/components/login/login.component'
-import {AccountModel} from "./core/models/account/account.model";
+import {AuthService} from "./core/models/account/auth.service";
 import {SharedDataService} from "./core/services/shareddata.service";
 import {GridComponent} from './shared/components/grid/grid.component';
 import {ParagraphComponent} from './shared/components/paragraph/paragraph.component';
@@ -28,6 +28,8 @@ import {ShopComponent} from './modules/shop/shop.component';
 import {GroupGridFilterComponent} from './modules/price-list/components/group-grid-filter/group-grid-filter.component';
 import { GroupComponent } from './modules/shop/components/group/group.component';
 import { ShopProductGridComponent } from './modules/shop/components/shop-product-grid/shop-product-grid.component';
+import { PriceListDownloadDialogComponent } from './modules/price-list/components/price-list-download-dialog/price-list-download-dialog.component';
+import { ShoppingCartComponent } from './modules/shopping-cart/shopping-cart.component';
 
 const appRoutes: Routes = [
     {path: '', component: HomeComponent},
@@ -38,8 +40,9 @@ const appRoutes: Routes = [
     {path: 'shipping-programs', component: ShippingProgramsComponent},
     {path: 'price-list', children: [{path: "**", component: PriceListComponent}]},
     {path: 'shop', component: ShopComponent},
-    {path: 'shop/:shippingType', component: ShopComponent},
-    {path: 'shop/:shippingType/:group', component: ShopComponent}
+    //{path: 'shop/:shippingType', component: ShopComponent},
+    //{path: 'shop/:shippingType/:group', component: ShopComponent},
+    {path: 'shop/:group', component: ShopComponent}
 ];
 
 @NgModule({
@@ -66,7 +69,9 @@ const appRoutes: Routes = [
         ShopComponent,
         GroupGridFilterComponent,
         GroupComponent,
-        ShopProductGridComponent
+        ShopProductGridComponent,
+        PriceListDownloadDialogComponent,
+        ShoppingCartComponent
     ],
     imports: [
         BrowserModule,
@@ -74,7 +79,7 @@ const appRoutes: Routes = [
         FormsModule,
         ReactiveFormsModule
     ],
-    providers: [AccountModel, SharedDataService],
+    providers: [AuthService, SharedDataService],
     bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CategoryGrpcService} from "../../../../core/services/category-grpc.service";
 import {CategoryDetailsShortModel} from "../../../../core/models/category/category-details-short.model";
 import {ActivatedRoute} from "@angular/router";
-import {AccountModel} from "../../../../core/models/account/account.model";
+import {AuthService} from "../../../../core/models/account/auth.service";
 
 @Component({
     selector: 'group-list',
@@ -12,7 +12,7 @@ import {AccountModel} from "../../../../core/models/account/account.model";
 export class GroupListComponent implements OnInit {
     CategoriesShort: CategoryDetailsShortModel[] = [];
 
-    constructor(private route: ActivatedRoute, private account: AccountModel) {
+    constructor(private route: ActivatedRoute, private account: AuthService) {
     }
 
     ngOnInit(): void {

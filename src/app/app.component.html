@@ -32,60 +32,66 @@
                 <li class="nav-item">
                     <a class="nav-link active fs-6  fw-bold" aria-current="page"
                        (click)="HideMenu()"
-                       routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/']">HOME</a>
+                       routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['']">HOME</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle fs-6  fw-bold" href="#" id="navbarDropdownMenuLink" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        SHOP
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li (click)="HideMenu()"><a class="dropdown-item" [routerLink]="['/shop/sacramento-ca-warehouse']">Sacramento, CA Warehouse</a></li>
-                        <li (click)="HideMenu()"><a class="dropdown-item" [routerLink]="['/shop/mixed-container-from-sacramento']">Mixed Container from Sacramento</a></li>
-                        <li (click)="HideMenu()"><a class="dropdown-item" [routerLink]="['/shop/direct-container-from-china']">Direct Container from China</a></li>
-                    </ul>
+                <li class="nav-item" [hidden]="!UserAccessToMenu('Shop')">
+                    <a class="nav-link active fs-6  fw-bold" aria-current="page"
+                       (click)="HideMenu()"
+                       routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/shop']">SHOP</a>
                 </li>
 
-                <li class="nav-item dropdown">
+                <!--<li class="nav-item dropdown">-->
+                    <!--<a class="nav-link dropdown-toggle fs-6  fw-bold" href="#" id="navbarDropdownMenuLink" role="button"-->
+                       <!--data-bs-toggle="dropdown" aria-expanded="false">-->
+                        <!--SHOP-->
+                    <!--</a>-->
+                    <!--<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">-->
+                        <!--<li (click)="HideMenu()"><a class="dropdown-item" [routerLink]="['/shop/sacramento-ca-warehouse']">Sacramento, CA Warehouse</a></li>-->
+                        <!--<li (click)="HideMenu()"><a class="dropdown-item" [routerLink]="['/shop/mixed-container-from-sacramento']">Mixed Container from Sacramento</a></li>-->
+                        <!--<li (click)="HideMenu()"><a class="dropdown-item" [routerLink]="['/shop/direct-container-from-china']">Direct Container from China</a></li>-->
+                    <!--</ul>-->
+                <!--</li>-->
+
+                <li class="nav-item dropdown" [hidden]="!UserAccessToMenu('New Customer') && !UserAccessToMenu('Shipping Programs') && !UserAccessToMenu('Claim Policy')">
                     <a class="nav-link dropdown-toggle fs-6  fw-bold" href="#" id="navbarDropdownMenuLink" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         DEALER ONLY
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li (click)="HideMenu()"><a class="dropdown-item" href="#">New Customer</a></li>
-                        <li (click)="HideMenu()"><a class="dropdown-item"
+                        <li (click)="HideMenu()" [hidden]="!UserAccessToMenu('New Customer')"><a class="dropdown-item" href="#">New Customer</a></li>
+                        <li (click)="HideMenu()" [hidden]="!UserAccessToMenu('Shipping Programs')"><a class="dropdown-item"
                                routerLinkActive="active"
                                [routerLinkActiveOptions]="{exact: true}"
-                               [routerLink]="['/shipping-programs']">Shipping Programs</a></li>
-                        <li (click)="HideMenu()"><a class="dropdown-item" href="#">Claim Policy</a></li>
+                               [routerLink]="['/shipping-programs']" >Shipping Programs</a></li>
+                        <li (click)="HideMenu()" [hidden]="!UserAccessToMenu('Claim Policy')"><a class="dropdown-item" href="#" >Claim Policy</a></li>
                     </ul>
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown" [hidden]="!UserAccessToMenu('About US') && !UserAccessToMenu('Visit Us at Market') && !UserAccessToMenu('Privacy Policy') && !UserAccessToMenu('Contact US')" >
                     <a class="nav-link dropdown-toggle fs-6  fw-bold" href="#" id="navbarDropdownMenuLink" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         WHO WE ARE
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li (click)="HideMenu()"><a class="dropdown-item"
+                        <li (click)="HideMenu()" [hidden]="!UserAccessToMenu('About US')"><a class="dropdown-item"
                                routerLinkActive="active"
                                [routerLinkActiveOptions]="{exact: true}"
                                [routerLink]="['/about-us']">About US</a></li>
-                        <li (click)="HideMenu()"><a class="dropdown-item"
+                        <li (click)="HideMenu()" [hidden]="!UserAccessToMenu('Visit Us at Market')"><a class="dropdown-item"
                                routerLinkActive="active"
                                [routerLinkActiveOptions]="{exact: true}"
                                [routerLink]="['/visit-us-at-market']"
                                href="#">Visit Us at Market</a></li>
-                        <li (click)="HideMenu()"><a class="dropdown-item"
+                        <li (click)="HideMenu()" [hidden]="!UserAccessToMenu('Privacy Policy')"><a class="dropdown-item"
                                routerLinkActive="active"
                                [routerLinkActiveOptions]="{exact: true}"
                                [routerLink]="['/privacy-policy']">Privacy Policy</a></li>
-                        <li (click)="HideMenu()"><a class="dropdown-item"
+                        <li (click)="HideMenu()" [hidden]="!UserAccessToMenu('Contact US')"><a class="dropdown-item"
                                routerLinkActive="active"
                                [routerLinkActiveOptions]="{exact: true}"
                                [routerLink]="['/contact-us']">Contact US</a></li>
                     </ul>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" [hidden]="!UserAccessToMenu('Where to Shop')">
                     <a class="nav-link fs-6  fw-bold" aria-current="page" (click)="HideMenu()">Where to Shop</a>
                 </li>
                 <!--<li class="nav-item" *ngIf="AccountIsValid">-->
@@ -94,19 +100,19 @@
                        <!--routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"-->
                        <!--[routerLink]="['/price-list']">PRICE LIST</a>-->
                 <!--</li>-->
-                <li class="nav-item dropdown" *ngIf="AccountIsValid">
+                <li class="nav-item dropdown" *ngIf="AccountIsValid" [hidden]="!UserAccessToMenu('Price List')">
                     <a class="nav-link dropdown-toggle fs-6  fw-bold" href="#" id="navbarDropdownMenuLink" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         VIP TOOLS
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li (click)="HideMenu()"><a class="dropdown-item" (click)="HideMenu()"
+                        <li (click)="HideMenu()" [hidden]="!UserAccessToMenu('Price List')"><a class="dropdown-item" (click)="HideMenu()"
                                routerLinkActive="active"
                                [routerLinkActiveOptions]="{exact: true}"
                                [routerLink]="['/price-list']">Price List</a></li>
                     </ul>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" class="ms-md-4 ms-sm-0">
                     <a class="nav-link fs-6  fw-bold"
                        href="#" data-bs-toggle="modal" data-bs-target="#LoginModal" (click)="HideMenu()"
                        *ngIf="!AccountIsValid">LOGIN</a>

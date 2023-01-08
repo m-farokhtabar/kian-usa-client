@@ -10,11 +10,11 @@ import {ProductPriceModel} from "../models/product/product-price.model";
 import {Constant} from "../../shared/helper/constant";
 import {Empty} from "google-protobuf/google/protobuf/empty_pb";
 import {ServiceHelper} from "./service.helper";
-import {AccountModel} from "../models/account/account.model";
+import {AuthService} from "../models/account/auth.service";
 import {ProductWithPagingModel} from "../models/product/product-with-paging-model";
 
 export class ProductGrpcService {
-    constructor(private account: AccountModel) {
+    constructor(private account: AuthService) {
     }
     GetByCategorySlug(categorySlug: string): Promise<ProductModel[]> {
         return new Promise<ProductModel[]>((resolve, reject) => {
@@ -34,7 +34,7 @@ export class ProductGrpcService {
                         BoxD: product.getBoxd(),
                         BoxH: product.getBoxh(),
                         BoxW: product.getBoxw(),
-                        Cube: product.getCube(),
+                        Cube: product.getCube() != undefined ? product.getCube()!.getValue() : undefined,
                         D: product.getD(),
                         Description: product.getDescription(),
                         H: product.getH(),
@@ -56,7 +56,10 @@ export class ProductGrpcService {
                         }),
                         Tags: product.getTagsList(),
                         Groups: product.getGroupsList(),
-                        Factories: product.getFactoriesList()
+                        Factories: product.getFactoriesList(),
+                        PiecesCount: product.getPiecescount(),
+                        ComplexItemPieces: product.getComplexitempiecesList(),
+                        ComplexItemPriority: product.getComplexitempriority()
                     })));
                 });
             }
@@ -82,7 +85,7 @@ export class ProductGrpcService {
                         BoxD: product.getBoxd(),
                         BoxH: product.getBoxh(),
                         BoxW: product.getBoxw(),
-                        Cube: product.getCube(),
+                        Cube: product.getCube() != undefined ? product.getCube()!.getValue() : undefined,
                         D: product.getD(),
                         Description: product.getDescription(),
                         H: product.getH(),
@@ -105,7 +108,10 @@ export class ProductGrpcService {
                         CategoryIds: product.getCategoryidsList(),
                         Tags: product.getTagsList(),
                         Groups: product.getGroupsList(),
-                        Factories: product.getFactoriesList()
+                        Factories: product.getFactoriesList(),
+                        PiecesCount: product.getPiecescount(),
+                        ComplexItemPieces: product.getComplexitempiecesList(),
+                        ComplexItemPriority: product.getComplexitempriority()
                     })));
                 });
             }
@@ -130,7 +136,7 @@ export class ProductGrpcService {
                         BoxD: product.getBoxd(),
                         BoxH: product.getBoxh(),
                         BoxW: product.getBoxw(),
-                        Cube: product.getCube(),
+                        Cube: product.getCube() != undefined ? product.getCube()!.getValue() : undefined,
                         D: product.getD(),
                         Description: product.getDescription(),
                         H: product.getH(),
@@ -152,13 +158,16 @@ export class ProductGrpcService {
                         }),
                         Tags: product.getTagsList(),
                         Groups: product.getGroupsList(),
-                        Factories: product.getFactoriesList()
+                        Factories: product.getFactoriesList(),
+                        PiecesCount: product.getPiecescount(),
+                        ComplexItemPieces: product.getComplexitempiecesList(),
+                        ComplexItemPriority: product.getComplexitempriority()
                     })));
                 });
             }
         });
     }
-    GetByGroupsTagsWithPaging(Groups: string[],Tags: string[],PageNumber:number, PageCount:number): Promise<ProductWithPagingModel> {
+    GetByGroupsTagsWithPaging(Groups: string[],Tags: string[],PageNumber:number, PageCount:number, IsAscOrder: boolean): Promise<ProductWithPagingModel> {
         return new Promise<ProductWithPagingModel>((resolve, reject) => {
             const client = new ProductSrvClient(Constant.ServiceHost);
             const request = new ProductsByGroupsTagsWithPagingRequestMessage();
@@ -166,6 +175,7 @@ export class ProductGrpcService {
             request.setTagsList(Tags);
             request.setPagenumber(PageNumber);
             request.setPagecount(PageCount);
+            request.setIsacsorder(IsAscOrder);
             const metadata = ServiceHelper.CreateAuthToken(this.account);
             if (metadata!=undefined) {
                 client.getByGroupsTagsWithPaging(request, metadata, (error: ServiceError | null, response: ProductsWithTotalItemsResponseMessage | null) => {
@@ -179,7 +189,7 @@ export class ProductGrpcService {
                         BoxD: product.getBoxd(),
                         BoxH: product.getBoxh(),
                         BoxW: product.getBoxw(),
-                        Cube: product.getCube(),
+                        Cube: product.getCube() != undefined ? product.getCube()!.getValue() : undefined,
                         D: product.getD(),
                         Description: product.getDescription(),
                         H: product.getH(),
@@ -202,7 +212,10 @@ export class ProductGrpcService {
                         CategoryIds: product.getCategoryidsList(),
                         Tags: product.getTagsList(),
                         Groups: product.getGroupsList(),
-                        Factories: product.getFactoriesList()
+                        Factories: product.getFactoriesList(),
+                        PiecesCount: product.getPiecescount(),
+                        ComplexItemPieces: product.getComplexitempiecesList(),
+                        ComplexItemPriority: product.getComplexitempriority()
                     }));
                     let Result: ProductWithPagingModel = new ProductWithPagingModel(Products,response.getTotalitems());
                     return resolve(Result);

@@ -1,8 +1,8 @@
 import {grpc} from "@improbable-eng/grpc-web";
-import {AccountModel} from "../models/account/account.model";
+import {AuthService} from "../models/account/auth.service";
 
 export class ServiceHelper{
-    public static CreateAuthToken(account: AccountModel) : grpc.Metadata | undefined{
+    public static CreateAuthToken(account: AuthService) : grpc.Metadata | undefined{
         const metadata = new grpc.Metadata();
         const Token: string | null = account.getToken();
         if (Token != null) {

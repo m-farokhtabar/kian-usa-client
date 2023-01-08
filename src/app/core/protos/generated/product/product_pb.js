@@ -245,7 +245,7 @@ if (goog.DEBUG && !COMPILED) {
  * @private {!Array<number>}
  * @const
  */
-proto.ProductResponseMessage.repeatedFields_ = [7,16,19,21,22,23,24];
+proto.ProductResponseMessage.repeatedFields_ = [7,16,19,21,22,23,24,26];
 
 
 
@@ -302,7 +302,10 @@ proto.ProductResponseMessage.toObject = function(includeInstance, msg) {
     categoryidsList: (f = jspb.Message.getRepeatedField(msg, 21)) == null ? undefined : f,
     tagsList: (f = jspb.Message.getRepeatedField(msg, 22)) == null ? undefined : f,
     groupsList: (f = jspb.Message.getRepeatedField(msg, 23)) == null ? undefined : f,
-    factoriesList: (f = jspb.Message.getRepeatedField(msg, 24)) == null ? undefined : f
+    factoriesList: (f = jspb.Message.getRepeatedField(msg, 24)) == null ? undefined : f,
+    piecescount: jspb.Message.getFieldWithDefault(msg, 25, 0),
+    complexitempiecesList: (f = jspb.Message.getRepeatedField(msg, 26)) == null ? undefined : f,
+    complexitempriority: jspb.Message.getFieldWithDefault(msg, 27, 0)
   };
 
   if (includeInstance) {
@@ -444,6 +447,18 @@ proto.ProductResponseMessage.deserializeBinaryFromReader = function(msg, reader)
     case 24:
       var value = /** @type {string} */ (reader.readString());
       msg.addFactories(value);
+      break;
+    case 25:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setPiecescount(value);
+      break;
+    case 26:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addComplexitempieces(value);
+      break;
+    case 27:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setComplexitempriority(value);
       break;
     default:
       reader.skipField();
@@ -649,6 +664,27 @@ proto.ProductResponseMessage.serializeBinaryToWriter = function(message, writer)
   if (f.length > 0) {
     writer.writeRepeatedString(
       24,
+      f
+    );
+  }
+  f = message.getPiecescount();
+  if (f !== 0) {
+    writer.writeInt32(
+      25,
+      f
+    );
+  }
+  f = message.getComplexitempiecesList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      26,
+      f
+    );
+  }
+  f = message.getComplexitempriority();
+  if (f !== 0) {
+    writer.writeInt32(
+      27,
       f
     );
   }
@@ -1389,6 +1425,79 @@ proto.ProductResponseMessage.prototype.addFactories = function(value, opt_index)
  */
 proto.ProductResponseMessage.prototype.clearFactoriesList = function() {
   return this.setFactoriesList([]);
+};
+
+
+/**
+ * optional int32 PiecesCount = 25;
+ * @return {number}
+ */
+proto.ProductResponseMessage.prototype.getPiecescount = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 25, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.ProductResponseMessage} returns this
+ */
+proto.ProductResponseMessage.prototype.setPiecescount = function(value) {
+  return jspb.Message.setProto3IntField(this, 25, value);
+};
+
+
+/**
+ * repeated string ComplexItemPieces = 26;
+ * @return {!Array<string>}
+ */
+proto.ProductResponseMessage.prototype.getComplexitempiecesList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 26));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.ProductResponseMessage} returns this
+ */
+proto.ProductResponseMessage.prototype.setComplexitempiecesList = function(value) {
+  return jspb.Message.setField(this, 26, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.ProductResponseMessage} returns this
+ */
+proto.ProductResponseMessage.prototype.addComplexitempieces = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 26, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.ProductResponseMessage} returns this
+ */
+proto.ProductResponseMessage.prototype.clearComplexitempiecesList = function() {
+  return this.setComplexitempiecesList([]);
+};
+
+
+/**
+ * optional int32 ComplexItemPriority = 27;
+ * @return {number}
+ */
+proto.ProductResponseMessage.prototype.getComplexitempriority = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 27, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.ProductResponseMessage} returns this
+ */
+proto.ProductResponseMessage.prototype.setComplexitempriority = function(value) {
+  return jspb.Message.setProto3IntField(this, 27, value);
 };
 
 
@@ -2641,7 +2750,8 @@ proto.ProductsByGroupsTagsWithPagingRequestMessage.toObject = function(includeIn
     groupsList: (f = jspb.Message.getRepeatedField(msg, 1)) == null ? undefined : f,
     tagsList: (f = jspb.Message.getRepeatedField(msg, 2)) == null ? undefined : f,
     pagenumber: jspb.Message.getFieldWithDefault(msg, 3, 0),
-    pagecount: jspb.Message.getFieldWithDefault(msg, 4, 0)
+    pagecount: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    isacsorder: jspb.Message.getBooleanFieldWithDefault(msg, 5, false)
   };
 
   if (includeInstance) {
@@ -2693,6 +2803,10 @@ proto.ProductsByGroupsTagsWithPagingRequestMessage.deserializeBinaryFromReader =
     case 4:
       var value = /** @type {number} */ (reader.readInt32());
       msg.setPagecount(value);
+      break;
+    case 5:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsacsorder(value);
       break;
     default:
       reader.skipField();
@@ -2748,6 +2862,13 @@ proto.ProductsByGroupsTagsWithPagingRequestMessage.serializeBinaryToWriter = fun
   if (f !== 0) {
     writer.writeInt32(
       4,
+      f
+    );
+  }
+  f = message.getIsacsorder();
+  if (f) {
+    writer.writeBool(
+      5,
       f
     );
   }
@@ -2861,6 +2982,24 @@ proto.ProductsByGroupsTagsWithPagingRequestMessage.prototype.getPagecount = func
  */
 proto.ProductsByGroupsTagsWithPagingRequestMessage.prototype.setPagecount = function(value) {
   return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
+/**
+ * optional bool IsAcsOrder = 5;
+ * @return {boolean}
+ */
+proto.ProductsByGroupsTagsWithPagingRequestMessage.prototype.getIsacsorder = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 5, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.ProductsByGroupsTagsWithPagingRequestMessage} returns this
+ */
+proto.ProductsByGroupsTagsWithPagingRequestMessage.prototype.setIsacsorder = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 5, value);
 };
 
 

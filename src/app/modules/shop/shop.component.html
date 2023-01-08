@@ -1,9 +1,9 @@
 <div class="container">
-    <div class="row mt-5">
-        <div class="col-12">
-            <h1 class="h3">Sacramento, CA Warehouse</h1>
-        </div>
-    </div>
+    <!--<div class="row mt-5">-->
+        <!--<div class="col-12">-->
+            <!--<h1 class="h3">Sacramento, CA Warehouse</h1>-->
+        <!--</div>-->
+    <!--</div>-->
     <div class="row mt-5">
         <div class="col-12">
             <app-group [SelectedGroup]="CurrentGroup" (SelectedGroupChanged)="OnGroupChanged($event)"></app-group>
@@ -43,10 +43,10 @@
         <ng-container *ngIf="IsCurrentGroupCategories(); else ShowProductGrid">
             <grid [Data]="CategoriesGrid" [PagerBaseLink]="CurrentBaseUrl" [ZoomOnImageWhenMouseOver]="true"
                   [CurrentPageIndex]="CurrentPageNumber" [ShowPaging]="true" [ExtraQueryParameterName]="'Filter'"
-                  [ExtraQueryParameterValue]="SelectedTags.toString()"></grid>
+                  [ExtraQueryParameterValue]="SelectedTags.toString()" [UseDescription]="true"></grid>
         </ng-container>
         <ng-template #ShowProductGrid>
-            <app-shop-product-grid [CurrentShippingType]="CurrentShippingType" [BaseUrl] = "CurrentBaseUrl" [CurrentGridStyle]="CurrentGridStyle" [SelectedGroup]="CurrentGroup" [PageCount]="6" [PageNumber]="CurrentPageNumber" [SelectedTags]="SelectedTags.toString()"></app-shop-product-grid>
+            <app-shop-product-grid [IsAscOrder]="false" [CurrentShippingType]="CurrentShippingType" [BaseUrl] = "CurrentBaseUrl" [CurrentGridStyle]="CurrentGridStyle" [SelectedGroup]="CurrentGroup" [PageCount]="12" [PageNumber]="CurrentPageNumber" [SelectedTags]="SelectedTags.toString()"></app-shop-product-grid>
         </ng-template>
     </div>
 </div>

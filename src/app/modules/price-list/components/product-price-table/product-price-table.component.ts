@@ -1,8 +1,10 @@
-import {Component, ElementRef, Input, OnInit, ViewChildren} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, Output, ViewChildren, EventEmitter} from '@angular/core';
 import {ProductModel} from "../../../../core/models/product/product.model";
 import {Tools} from "../../../../shared/helper/tools";
-import {CategoryModel} from "../../../../core/models/category/category.model";
 import {ActivatedRoute} from "@angular/router";
+import {AuthService} from "../../../../core/models/account/auth.service";
+import {ProductPriceModel} from "../../../../core/models/product/product-price.model";
+import {OrderModel} from "../../../../core/models/Order/order-model";
 
 @Component({
     selector: 'product-price-table',
@@ -19,11 +21,14 @@ export class ProductPriceTableComponent implements OnInit {
     IsOrderTotalMessageVisible: boolean = false;
     GetPriceFormat = Tools.GetPriceFormat;
 
-    constructor(private route: ActivatedRoute) {
+    CurrentOrders: OrderModel[] = [];
+    @Output() CurrentOrdersCreated = new EventEmitter<OrderModel[]>();
+
+    constructor(private route: ActivatedRoute, private account: AuthService) {
     }
 
     ngOnInit(): void {
-        this.route.params.subscribe(()=> this.OnResetOrdersButton());
+        this.route.params.subscribe(() => this.ResetOrders());
     }
 
     getHeaderNames(): string[] {
@@ -46,10 +51,10 @@ export class ProductPriceTableComponent implements OnInit {
         let sumCube: number = 0;
         if (this.orderElements.length > 0) {
             this.orderElements.forEach(order => {
-                const Id = parseInt(order.nativeElement.id.replace(this.CategorySlug+"_",""));
+                const Id = parseInt(order.nativeElement.id.replace(this.CategorySlug + "_", ""));
                 const orderCount = parseInt(order.nativeElement.value);
                 sumCol1 += ((this.products[Id].Prices[0].Value ?? 0) * orderCount);
-                sumCol2 += ((this.products[Id].Prices[1].Value ?? 0) * orderCount);
+                sumCol2 += ((this.GetSacPrice(this.products[Id].Prices)) * orderCount);
                 sumCube += ((this.products[Id].Cube ?? 0) * orderCount);
             });
         }
@@ -64,15 +69,72 @@ export class ProductPriceTableComponent implements OnInit {
         this.Order = Message;
         this.Cube = sumCube.toFixed(2) + "";
     }
-    OnResetOrdersButton() : void {
+
+    GetSacPrice(Prices: Array<ProductPriceModel>): number {
+        if (Prices.length > 2 && Prices[2].Value != undefined && Prices[2].Value > 0) {
+            return Prices[2].Value;
+        } else {
+            if (Prices.length > 1 && Prices[1].Value != undefined)
+                return Prices[1].Value;
+        }
+        return 0;
+    }
+
+    OnAddOrdersButton(): void {
+        this.CurrentOrders = [];
+        let HasError = false;
+        if (this.orderElements.length > 0) {
+            this.orderElements.forEach(orderElement => {
+                const Id = parseInt(orderElement.nativeElement.id.replace(this.CategorySlug + "_", ""));
+                const orderCount = parseInt(orderElement.nativeElement.value);
+                const Prices = this.products[Id].Prices.map((x) => {
+                    return x.Value;
+                });
+                if (orderCount > 0) {
+                    if (this.IsItemAvailable(this.products[Id]))
+                        this.CurrentOrders.push(new OrderModel(this.products[Id].Id, orderCount, this.products[Id].Name, Prices, this.products[Id].PiecesCount, this.products[Id].Cube));
+                    else {
+                        alert(this.products[Id].Name + " is not available any more.");
+                        HasError = true;
+                        return;
+                    }
+                }
+            });
+            if (!HasError && Array.isArray(this.CurrentOrders) && this.CurrentOrders.length > 0)
+                this.CurrentOrdersCreated.emit(this.CurrentOrders);
+        }
+        if (!HasError)
+            this.ResetOrders();
+    }
+
+    ResetOrders() {
+        this.CurrentOrders = [];
         this.IsOrderTotalMessageVisible = false;
         this.Order = "";
         this.Cube = "";
         if (this.orderElements.length > 0) {
-            this.orderElements.forEach(orderElement =>
-            {
+            this.orderElements.forEach(orderElement => {
                 orderElement.nativeElement.value = 0;
             });
         }
+    }
+
+    MakeItBold(ProductName: string) {
+        if (ProductName.toLowerCase().indexOf("s/l") > 0 || ProductName.toLowerCase().indexOf("sec") > 0)
+            return "bold";
+        else
+            return "normal";
+    }
+
+    AccessToPriceIsValid(PriceIndex: number): boolean {
+        const PermissionPrices: number[] | null = this.account.GetPrices();
+        if (PermissionPrices != null && Array.isArray(PermissionPrices))
+            return PermissionPrices.includes(PriceIndex);
+        else
+            return false;
+    }
+
+    IsItemAvailable(Product: ProductModel) {
+        return Product.WHQTY && Product.WHQTY.toLowerCase().trim() == "available";
     }
 }

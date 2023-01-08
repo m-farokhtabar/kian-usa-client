@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {GroupGrpcService} from "../../../../core/services/group-grpc.service";
-import {AccountModel} from "../../../../core/models/account/account.model";
+import {AuthService} from "../../../../core/models/account/auth.service";
 import {GroupModel} from "../../../../core/models/group/group.model";
 
 @Component({
@@ -14,7 +14,7 @@ export class GroupComponent implements OnInit {
     SelectedGroup: string = "";
     @Output() SelectedGroupChanged = new EventEmitter<string>();
 
-    constructor(private account: AccountModel) {
+    constructor(private account: AuthService) {
     }
 
     ngOnInit(): void {

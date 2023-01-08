@@ -7,9 +7,10 @@ import {ImageSliderModel} from "../../shared/components/image-slider/models/imag
 import {Tools} from "../../shared/helper/tools";
 import {Constant} from "../../shared/helper/constant";
 import {ActivatedRoute, Router} from "@angular/router";
-import {AccountModel} from "../../core/models/account/account.model";
+import {AuthService} from "../../core/models/account/auth.service";
 import {Subscription} from "rxjs";
 import {SharedDataService} from "../../core/services/shareddata.service";
+import {OrderModel} from "../../core/models/Order/order-model";
 
 @Component({
     selector: 'price-list',
@@ -30,7 +31,7 @@ export class PriceListComponent implements OnInit, OnDestroy {
     private urlSubscription: Subscription | null = null;
 
 
-    constructor(private router: Router, private route: ActivatedRoute, private account: AccountModel, private sharedData: SharedDataService) {
+    constructor(private router: Router, private route: ActivatedRoute, public account: AuthService, private sharedData: SharedDataService) {
     }
 
     ngOnInit(): void {
@@ -46,7 +47,6 @@ export class PriceListComponent implements OnInit, OnDestroy {
             if (Array.isArray(urlSegments) && urlSegments.length > 0)
                 Slug = urlSegments[0].path;
             this.LoadData(Slug);
-            console.log(urlSegments);
         });
         this.LoadCategories();
     }
@@ -125,8 +125,8 @@ export class PriceListComponent implements OnInit, OnDestroy {
                 });
                 //Distinct Data
                 this.SelectedCategories = this.SelectedCategories.filter(
-                    (cat, i, arr) => arr.findIndex(t => t.Slug === cat.Slug) === i
-                );
+                    (cat, i, arr) => arr.findIndex(t => t.Slug === cat.Slug) === i);
+                this.SelectedCategories = this.SelectedCategories.sort((a, b) => a.Order > b.Order ? 1 : -1);
                 this.SetCategorySliderImages();
             }
         } else {
@@ -141,10 +141,10 @@ export class PriceListComponent implements OnInit, OnDestroy {
                 } else {
                     this.SelectedCategories.push(SelectedCategory);
                 }
+                this.SelectedCategories = this.SelectedCategories.sort((a, b) => a.Order > b.Order ? 1 : -1);
                 this.SetCategorySliderImages();
             }
         }
-        this.SelectedCategories = this.SelectedCategories.sort((a, b) => a.Order > b.Order ? 1 : -1);
     }
 
     private LoadSelectedProducts() {
@@ -195,7 +195,9 @@ export class PriceListComponent implements OnInit, OnDestroy {
                     for (let i = 0; i < product.Prices.length; i++) {
                         for (let j = 0; j < this.Products[k].length; j++) {
                             if (this.Products[k][j].Prices[i].Value != null) {
-                                this.ProductPricesIndex[k].push(i);
+                                //Price 0 and 1 and 2(Discount 1)does need to show
+                                if (i>2)
+                                    this.ProductPricesIndex[k].push(i);
                                 break;
                             }
                         }
@@ -206,13 +208,18 @@ export class PriceListComponent implements OnInit, OnDestroy {
     }
 
     public GetCurrentCategoryCatalogUrl(Index: number): string {
-        if (this.Categories[Index] != null && this.Categories[Index].Slug != "")
-            return Constant.CatalogAddress + this.Categories[Index].Slug + ".pdf" + "?id=" + this.RandomNumberForUrl;
+        if (this.SelectedCategories[Index] != null && this.SelectedCategories[Index].Slug != "")
+            return Constant.CatalogAddress + this.SelectedCategories[Index].Slug + ".pdf" + "?id=" + this.RandomNumberForUrl;
         return "";
     }
 
     public GetAllCategoryCatalogUrl(): string {
         return Constant.CatalogAddress + "Catalog.pdf" + "?id=" + this.RandomNumberForUrl;
+    }
+
+    AddOrders: OrderModel[] = [];
+    OnAddOrders(Orders: OrderModel[]){
+       this.AddOrders = Orders;
     }
 
     ngOnDestroy(): void {

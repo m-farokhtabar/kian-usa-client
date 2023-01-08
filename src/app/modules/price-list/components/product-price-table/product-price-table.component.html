@@ -5,31 +5,44 @@
             <th scope="col" style="width: 60px;">#</th>
             <th scope="col">Item Number</th>
             <th scope="col">Description</th>
-            <th scope="col" *ngIf="getHeaderNames().length>0">{{getHeaderNames()[0]}}</th>
-            <th scope="col" *ngIf="getHeaderNames().length>1">{{getHeaderNames()[1]}}</th>
+            <th scope="col">WH Qty</th>
+            <th scope="col" *ngIf="getHeaderNames().length>0 && AccessToPriceIsValid(0)">{{getHeaderNames()[0]}}</th>
+            <th scope="col" *ngIf="getHeaderNames().length>1 && AccessToPriceIsValid(1)">{{getHeaderNames()[1]}}</th>
         </tr>
         </thead>
         <tbody>
         <tr></tr>
         <ng-container *ngFor="let product of products;let idx= index;">
-            <tr>
+            <tr [ngStyle]="{'font-weight':MakeItBold(product.Name)}">
                 <td scope="row" class="pt-1 pb-1">
                     <!--<select [id]="idx" (change)="onChangeOrder()" class="form-select form-select-sm m-0 p-0 ps-2" style="width: 50px;" #orderInput>-->
-                        <!--<option [value]="value" *ngFor="let value of [0,1,2,3,4,5]">{{value}}</option>-->
+                    <!--<option [value]="value" *ngFor="let value of [0,1,2,3,4,5]">{{value}}</option>-->
                     <!--</select>-->
-                    <input [id]="CategorySlug + '_'+ idx" value="0" type="number" maxlength="5" min="0" max="99999" (change)="onChangeOrder()" class="form-control m-0 p-0 ps-1" style="width: 50px;" #orderInput>
+                    <input [id]="CategorySlug + '_'+ idx" value="0" type="number" maxlength="5" min="0" max="99999"
+                           (change)="onChangeOrder()" class="form-control m-0 p-0 ps-1" style="width: 50px;"
+                           #orderInput [disabled]="!IsItemAvailable(product)">
                 </td>
                 <td>{{product.Name}}</td>
                 <td>{{product.ShortDescription}}</td>
-                <td *ngIf="getHeaderNames().length>0">{{GetPriceFormat(product.Prices[0].Value)}}</td>
-                <td *ngIf="getHeaderNames().length>1">{{GetPriceFormat(product.Prices[1].Value)}}</td>
+                <td>{{product.WHQTY}}</td>
+                <td *ngIf="getHeaderNames().length>0 && AccessToPriceIsValid(0)"
+                    style="background-color: #b4c4e7;">{{GetPriceFormat(product.Prices[0].Value)}}</td>
+                <td *ngIf="getHeaderNames().length>1 && AccessToPriceIsValid(1)" style="background-color: #a9cd8d;">
+                    <span *ngIf="product.Prices.length<=2 || product.Prices[2].Value == undefined">{{GetPriceFormat(product.Prices[1].Value)}}</span>
+                    <strong *ngIf="product.Prices.length>2 && product.Prices[2].Value != undefined">{{GetPriceFormat(product.Prices[2].Value)}} &nbsp;&nbsp;</strong>
+                    <span class="text-decoration-line-through" *ngIf="product.Prices.length>1 && product.Prices[2].Value != undefined">{{GetPriceFormat(product.Prices[1].Value)}}</span>
+                </td>
             </tr>
         </ng-container>
         </tbody>
     </table>
 </div>
 <div class="SmallFontSize">
-    <button class="btn btn-light btn-outline-secondary btn-sm me-1 mb-1 fw-bold SmallFontSize" (click)="OnResetOrdersButton()" >Reset Orders</button>
+    <button class="btn btn-light btn-outline-secondary btn-sm me-1 mb-1 fw-bold SmallFontSize"
+            (click)="OnAddOrdersButton()">Add Orders
+    </button>
     <span *ngIf="IsOrderTotalMessageVisible"><strong>Total Price: {{Order}} and Total Cube: {{Cube}}</strong></span>
 </div>
-<app-send-products-catalog-by-email-dialog [CategoryName]="CategoryName" [CategorySlug]="CategorySlug"></app-send-products-catalog-by-email-dialog>
+<app-send-products-catalog-by-email-dialog [CategoryName]="CategoryName"
+                                           [CategorySlug]="CategorySlug"></app-send-products-catalog-by-email-dialog>
+<price-list-download-dialog [CategoryName]="CategoryName" [CategorySlug]="CategorySlug"></price-list-download-dialog>

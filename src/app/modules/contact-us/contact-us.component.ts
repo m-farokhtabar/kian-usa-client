@@ -7,7 +7,7 @@ import {SharedDataService} from "../../core/services/shareddata.service";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {EmailGrpcService} from "../../core/services/email-grpc.service";
 import {EmailContactusModel} from "../../core/models/email/email.contactus.model";
-import {AccountModel} from "../../core/models/account/account.model";
+import {AuthService} from "../../core/models/account/auth.service";
 
 @Component({
     selector: 'app-contact-us',
@@ -21,7 +21,7 @@ export class ContactUsComponent implements OnInit {
     Header: ParagraphViewmodel = new ParagraphViewmodel("<h1 class='bg-light bg-gradient display-5 p-2'>Contact US</h1>");
     VerticalMenu: VerticalMenuModel = MenuHelper.CreateVerticalMenuModelForWhoWeAre();
 
-    constructor(private route: ActivatedRoute, private sharedData: SharedDataService, private fb: FormBuilder, private account: AccountModel) {
+    constructor(private route: ActivatedRoute, private sharedData: SharedDataService, private fb: FormBuilder, private account: AuthService) {
         this.ContactForm = this.fb.group({
             Name: ["", [Validators.required, Validators.maxLength(100)]],
             Family: ["", [Validators.required, Validators.maxLength(100)]],

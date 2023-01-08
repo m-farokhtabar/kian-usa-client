@@ -47,3 +47,77 @@ export namespace LoginResponseMessage {
   }
 }
 
+export class CustomersOfRepRequestMessage extends jspb.Message {
+  getRepusername(): string;
+  setRepusername(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CustomersOfRepRequestMessage.AsObject;
+  static toObject(includeInstance: boolean, msg: CustomersOfRepRequestMessage): CustomersOfRepRequestMessage.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CustomersOfRepRequestMessage, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CustomersOfRepRequestMessage;
+  static deserializeBinaryFromReader(message: CustomersOfRepRequestMessage, reader: jspb.BinaryReader): CustomersOfRepRequestMessage;
+}
+
+export namespace CustomersOfRepRequestMessage {
+  export type AsObject = {
+    repusername: string,
+  }
+}
+
+export class CustomerOfRepResponseMessage extends jspb.Message {
+  getId(): string;
+  setId(value: string): void;
+
+  getName(): string;
+  setName(value: string): void;
+
+  getFamily(): string;
+  setFamily(value: string): void;
+
+  getUsername(): string;
+  setUsername(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CustomerOfRepResponseMessage.AsObject;
+  static toObject(includeInstance: boolean, msg: CustomerOfRepResponseMessage): CustomerOfRepResponseMessage.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CustomerOfRepResponseMessage, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CustomerOfRepResponseMessage;
+  static deserializeBinaryFromReader(message: CustomerOfRepResponseMessage, reader: jspb.BinaryReader): CustomerOfRepResponseMessage;
+}
+
+export namespace CustomerOfRepResponseMessage {
+  export type AsObject = {
+    id: string,
+    name: string,
+    family: string,
+    username: string,
+  }
+}
+
+export class CustomersOfRepResponseMessage extends jspb.Message {
+  clearCustomersList(): void;
+  getCustomersList(): Array<CustomerOfRepResponseMessage>;
+  setCustomersList(value: Array<CustomerOfRepResponseMessage>): void;
+  addCustomers(value?: CustomerOfRepResponseMessage, index?: number): CustomerOfRepResponseMessage;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CustomersOfRepResponseMessage.AsObject;
+  static toObject(includeInstance: boolean, msg: CustomersOfRepResponseMessage): CustomersOfRepResponseMessage.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CustomersOfRepResponseMessage, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CustomersOfRepResponseMessage;
+  static deserializeBinaryFromReader(message: CustomersOfRepResponseMessage, reader: jspb.BinaryReader): CustomersOfRepResponseMessage;
+}
+
+export namespace CustomersOfRepResponseMessage {
+  export type AsObject = {
+    customersList: Array<CustomerOfRepResponseMessage.AsObject>,
+  }
+}
+

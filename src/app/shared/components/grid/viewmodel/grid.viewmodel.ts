@@ -9,13 +9,14 @@ export class GridViewmodel {
 export class GridCell {
     public Title: string;
     public ShortDescription: string;
+    public Description: string;
     public Alt: string;
     public ImageUrl: string;
     public Link: string;
     public Prices: (number | undefined)[];
     public Quantity: string;
 
-    constructor(Title: string, Alt: string, ImageUrl: string, Link: string, ShortDescription: string, Prices: (number | undefined)[], Quantity: string) {
+    constructor(Title: string, Alt: string, ImageUrl: string, Link: string, ShortDescription: string, Prices: (number | undefined)[], Quantity: string, Description: string) {
         this.Title = Title;
         this.Alt = Alt;
         this.ImageUrl = ImageUrl;
@@ -23,6 +24,7 @@ export class GridCell {
         this.ShortDescription = ShortDescription;
         this.Prices = Prices;
         this.Quantity = Quantity;
+        this.Description = Description;
     }
 }
 

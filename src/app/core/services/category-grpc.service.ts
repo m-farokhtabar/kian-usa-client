@@ -11,12 +11,12 @@ import {Empty} from "google-protobuf/google/protobuf/empty_pb";
 import {CategoryModel} from "../models/category/category.model";
 import {CategoryParameterModel} from "../models/category/category-parameter.model";
 import {Constant} from "../../shared/helper/constant";
-import {AccountModel} from "../models/account/account.model";
+import {AuthService} from "../models/account/auth.service";
 import {ServiceHelper} from "./service.helper";
 import {CategoryChildModel} from "../models/category/category-child.model";
 
 export class CategoryGrpcService {
-    constructor(private account: AccountModel) {
+    constructor(private account: AuthService) {
     }
 
     GetByFilter(Tags: string[]): Promise<CategoryModel[]> {

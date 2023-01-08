@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {AccountModel} from "../../../../core/models/account/account.model";
+import {AuthService} from "../../../../core/models/account/auth.service";
 import {CellStyle, GridCell, GridViewmodel} from "../../../../shared/components/grid/viewmodel/grid.viewmodel";
 import {Tools} from "../../../../shared/helper/tools";
 import {CategoryModel} from "../../../../core/models/category/category.model";
@@ -29,7 +29,7 @@ export class GroupGridFilterComponent implements OnInit {
     Filters: FilterModel[] = [];
     SelectedTags: string[] = [];
 
-    constructor(private route: ActivatedRoute, private account: AccountModel) {
+    constructor(private route: ActivatedRoute, private account: AuthService) {
     }
 
     ngOnInit(): void {
@@ -39,7 +39,8 @@ export class GroupGridFilterComponent implements OnInit {
     private LoadTags() {
         const FilterService = new FilterGrpcService(this.account);
         FilterService.GetAll().then(data => {
-            this.Filters = data.sort((a, b) => a.Order > b.Order ? 1 : -1);
+            this.Filters = data.sort((a, b) => a.Order > b.Order ? 1 : -1)
+                               .filter(x => !Array.isArray(x.Groups) || x.Groups.length == 0 || x.Groups.find(y => y == null || y.trim() == "" || y.trim().toLowerCase() == "price-list"));
         }).catch(data => {
         })
     }
@@ -63,7 +64,8 @@ export class GroupGridFilterComponent implements OnInit {
                     Link: "/price-list/" + Cat.Slug,
                     Alt: Cat.Name + " - " + Cat.ShortDescription,
                     Prices: [],
-                    Quantity: ""
+                    Quantity: "",
+                    Description: ""
                 };
                 Cells.push(Cell);
             }
@@ -76,14 +78,15 @@ export class GroupGridFilterComponent implements OnInit {
                 Link: "/price-list/?Filter=" + this.SelectedTags.toString(),
                 Alt: this.SelectedTags.toString(),
                 Prices: [],
-                Quantity: ""
+                Quantity: "",
+                Description: ""
             };
-            Cells.push(Cell);
+            Cells.unshift(Cell);
         }
         this.CategoriesGrid = new GridViewmodel();
-        this.CategoriesGrid.GridStyle = ["100,3", "100,3"];
+        this.CategoriesGrid.GridStyle = ["100,4", "100,4"];
         this.CategoriesGrid.CellStyle = CellStyle.CardWithDescription;
-        this.CategoriesGrid.CellsPerRow = 3;
+        this.CategoriesGrid.CellsPerRow = 4;
         this.CategoriesGrid.MaxRowPerPage = 100;
         this.CategoriesGrid.Cells = Cells;
     }

@@ -25,6 +25,8 @@ export class GridComponent implements OnInit {
     @Input()
     public IsUseShortDescriptionAsAnAlert = false;
     @Input()
+    public UseDescription = false;
+    @Input()
     public TotalItems = 0;
 
 
@@ -144,7 +146,10 @@ export class GridComponent implements OnInit {
             if (Cell.Prices.length == 1) {
                 return Tools.GetPriceFormat(Cell.Prices[0]);
             } else {
-                return Tools.GetPriceFormat(Cell.Prices[1]);
+                if (Cell.Prices[1] != undefined && Cell.Prices[1] > 0)
+                    return Tools.GetPriceFormat(Cell.Prices[1]);
+                else
+                    return Tools.GetPriceFormat(Cell.Prices[0]);
             }
         }
         return "";
@@ -156,7 +161,8 @@ export class GridComponent implements OnInit {
         }
         return "";
     }
-    public HasMoreThanOnePrice(Cell: GridCell){
-        return Array.isArray(Cell.Prices) && Cell.Prices.length > 1
+
+    public HasMoreThanOnePrice(Cell: GridCell) {
+        return Array.isArray(Cell.Prices) && Cell.Prices.length > 1 && Cell.Prices[1] != undefined && Cell.Prices[1] > 0
     }
 }

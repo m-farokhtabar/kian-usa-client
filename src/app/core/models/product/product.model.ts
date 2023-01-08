@@ -4,7 +4,7 @@ export class ProductModel {
     constructor(Id: string, Name: string, Slug: string, Inventory: number, ShortDescription: string, Description: string,
                 Prices: Array<ProductPriceModel>, Cube: number, W: number, D: number, H: number, Weight: number, BoxW: number, BoxD: number, BoxH: number,
                 Securities: Array<string>, WHQTY: string, Order: number, ImagesUrls: Array<string>, IsGroup: boolean, CategoryIds: string[],
-                Tags: string[],Groups: string[],Factories: string[]) {
+                Tags: string[],Groups: string[],Factories: string[],PiecesCount: number,ComplexItemPieces: string[],ComplexItemPriority : number) {
         this.Id = Id;
         this.Name = Name;
         this.Slug = Slug;
@@ -30,6 +30,10 @@ export class ProductModel {
         this.Tags = Tags;
         this.Groups = Groups;
         this.Factories = Factories;
+
+        this.PiecesCount = PiecesCount;
+        this.ComplexItemPieces = ComplexItemPieces;
+        this.ComplexItemPriority = ComplexItemPriority;
     }
 
     public Id: string;
@@ -61,4 +65,8 @@ export class ProductModel {
     public Tags: string[];
     public Groups: string[];
     public Factories: string[];
+
+    public PiecesCount: number;
+    public ComplexItemPieces: string[];
+    public ComplexItemPriority: number;
 }

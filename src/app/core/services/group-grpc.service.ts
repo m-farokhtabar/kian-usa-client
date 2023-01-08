@@ -1,4 +1,4 @@
-import {AccountModel} from "../models/account/account.model";
+import {AuthService} from "../models/account/auth.service";
 import {grpc} from "@improbable-eng/grpc-web";
 import {Empty} from "google-protobuf/google/protobuf/empty_pb";
 import {Constant} from "../../shared/helper/constant";
@@ -8,7 +8,7 @@ import {GroupSrv} from "../protos/generated/group/group_pb_service";
 import {GroupsResponseMessage} from "../protos/generated/group/group_pb";
 
 export class GroupGrpcService{
-    constructor(private account: AccountModel) {
+    constructor(private account: AuthService) {
     }
     public GetAll(): Promise<GroupModel[]>{
         return new Promise<GroupModel[]>((resolve, reject) =>{

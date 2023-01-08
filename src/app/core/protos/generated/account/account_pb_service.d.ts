@@ -13,9 +13,19 @@ type AccountSrcLogin = {
   readonly responseType: typeof account_pb.LoginResponseMessage;
 };
 
+type AccountSrcGetCustomersOfRep = {
+  readonly methodName: string;
+  readonly service: typeof AccountSrc;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof account_pb.CustomersOfRepRequestMessage;
+  readonly responseType: typeof account_pb.CustomersOfRepResponseMessage;
+};
+
 export class AccountSrc {
   static readonly serviceName: string;
   static readonly Login: AccountSrcLogin;
+  static readonly GetCustomersOfRep: AccountSrcGetCustomersOfRep;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -58,6 +68,15 @@ export class AccountSrcClient {
   login(
     requestMessage: account_pb.LoginRequestMessage,
     callback: (error: ServiceError|null, responseMessage: account_pb.LoginResponseMessage|null) => void
+  ): UnaryResponse;
+  getCustomersOfRep(
+    requestMessage: account_pb.CustomersOfRepRequestMessage,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: account_pb.CustomersOfRepResponseMessage|null) => void
+  ): UnaryResponse;
+  getCustomersOfRep(
+    requestMessage: account_pb.CustomersOfRepRequestMessage,
+    callback: (error: ServiceError|null, responseMessage: account_pb.CustomersOfRepResponseMessage|null) => void
   ): UnaryResponse;
 }
 

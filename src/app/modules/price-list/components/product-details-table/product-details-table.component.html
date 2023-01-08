@@ -4,13 +4,16 @@
         <tr class="Header">
             <th rowspan="2" scope="col">Item Number</th>
             <th rowspan="2" scope="col">Description</th>
-            <th rowspan="2" scope="col">WH Qty</th>
-            <th rowspan="2" scope="col" *ngFor="let PriceIndex of ProductPricesIndex">{{getPriceHeaderName(PriceIndex)}}</th>
-            <th colspan="3" scope="col">Item Dimensions (in)</th>
-            <th colspan="3" scope="col">Box Dimensions (in)</th>
+            <ng-container *ngFor="let PriceIndex of ProductPricesIndex"><th rowspan="2" scope="col" *ngIf="AccessToPriceIsValid(PriceIndex)">{{getPriceHeaderName(PriceIndex)}}</th></ng-container>
+            <th scope="col" *ngIf="AccessToPriceIsValid(999)">Container/TruckLoad</th>
             <th rowspan="2" scope="col">Cube</th>
+            <th colspan="3" scope="col">Item Dimensions (in)</th>
+            <th rowspan="2" scope="col">Weight (lbs)</th>
+            <th colspan="3" scope="col">Box Dimensions (in)</th>
+
         </tr>
         <tr class="Header">
+            <th scope="col" *ngIf="AccessToPriceIsValid(999)">Freight <input (input)="OnCostChange($event)" type="number" min="0" max="99999999" pattern="[0-9]+"/></th>
             <th scope="col">Width</th>
             <th scope="col">Depth</th>
             <th scope="col">Height</th>
@@ -21,19 +24,20 @@
         </thead>
         <tbody>
         <tr></tr>
-        <ng-container *ngFor="let product of products;">
+        <ng-container *ngFor="let product of products;let idx = index">
             <tr>
                 <td scope="row">{{product.Name}}</td>
                 <td>{{product.Description}}</td>
-                <td>{{product.WHQTY}}</td>
-                <td *ngFor="let PriceIndex of ProductPricesIndex">{{GetPriceFormat(product.Prices[PriceIndex].Value)}}</td>
+                <ng-container *ngFor="let PriceIndex of ProductPricesIndex"><td *ngIf="AccessToPriceIsValid(PriceIndex)">{{GetPriceFormat(product.Prices[PriceIndex].Value)}}</td></ng-container>
+                <td style="background-color: #fbf1cc" *ngIf="AccessToPriceIsValid(999)">{{GetPriceFormat(LandedPrices[idx])}}</td>
+                <td>{{product.Cube}}</td>
                 <td>{{product.W}}</td>
                 <td>{{product.D}}</td>
                 <td>{{product.H}}</td>
+                <td>{{product.Weight}}</td>
                 <td>{{product.BoxW}}</td>
                 <td>{{product.BoxD}}</td>
                 <td>{{product.BoxH}}</td>
-                <td>{{product.Cube}}</td>
             </tr>
         </ng-container>
         </tbody>

@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {SharedDataService} from "../../core/services/shareddata.service";
-import {AccountModel} from "../../core/models/account/account.model";
+import {AuthService} from "../../core/models/account/auth.service";
 import {Subscription} from "rxjs";
 import {CategoryGrpcService} from "../../core/services/category-grpc.service";
 import {CategoryModel} from "../../core/models/category/category.model";
@@ -26,14 +26,14 @@ export class ShopComponent implements OnInit, OnDestroy {
 
     ShippingTypes: string[] = ["sacramento-ca-warehouse", "mixed-container-from-sacramento", "direct-container-from-china"];
     CurrentGroup: string = "Categories";
-    CurrentGridStyle: string = "3,2";
+    CurrentGridStyle: string = "4,3";
     CurrentBaseUrl: string = "";
     CurrentPageNumber: number = 0;
     CurrentShippingType: string = "";
 
     private accSub: Subscription | null = null;
 
-    constructor(private router: Router, private route: ActivatedRoute, private sharedData: SharedDataService, private account: AccountModel) {
+    constructor(private router: Router, private route: ActivatedRoute, private sharedData: SharedDataService, private account: AuthService) {
     }
 
     ngOnInit(): void {
@@ -106,7 +106,7 @@ export class ShopComponent implements OnInit, OnDestroy {
         if (GridStyle != null && GridStyle.trim().length > 0) {
             return GridStyle;
         } else
-            return "3,2";
+            return "4,3";
     }
 
 
@@ -138,17 +138,18 @@ export class ShopComponent implements OnInit, OnDestroy {
                         Title: Cat.Name,
                         ShortDescription: Cat.ShortDescription,
                         ImageUrl: this.GetImage(Cat.ImagesUrl),
-                        Link: this.CurrentBaseUrl + Cat.Slug,
+                        Link: "/price-list/" + Cat.Slug,
                         Alt: Cat.Name + " - " + Cat.ShortDescription,
                         Prices: [],
-                        Quantity:""
+                        Quantity: "",
+                        Description: Cat.Description
                     };
                     Cells.push(Cell);
                 }
             }
         });
         this.CategoriesGrid = new GridViewmodel();
-        this.CategoriesGrid.GridStyle = ["3,2", "2,3"];
+        this.CategoriesGrid.GridStyle = ["4,3", "6,2"];
         this.CategoriesGrid.CellStyle = CellStyle.CardWithDescription;
         this.CategoriesGrid.Cells = Cells;
 
@@ -169,15 +170,16 @@ export class ShopComponent implements OnInit, OnDestroy {
     }
 
     private getShippingType() {
-        let ShippingType = this.route.snapshot.params['shippingType'];
-        if (ShippingType != undefined && ShippingType != null) {
-            const CurrentShippingType = this.ShippingTypes.find(x => x === ShippingType.toLocaleString());
-            if (CurrentShippingType != undefined && CurrentShippingType != null) {
-                return CurrentShippingType;
-            } else
-                return this.ShippingTypes[0];
-        } else
-            return this.ShippingTypes[0];
+        return "sacramento-ca-warehouse";
+        // let ShippingType = this.route.snapshot.params['shippingType'];
+        // if (ShippingType != undefined && ShippingType != null) {
+        //     const CurrentShippingType = this.ShippingTypes.find(x => x === ShippingType.toLocaleString());
+        //     if (CurrentShippingType != undefined && CurrentShippingType != null) {
+        //         return CurrentShippingType;
+        //     } else
+        //         return this.ShippingTypes[0];
+        // } else
+        //     return this.ShippingTypes[0];
     }
 
     private LoadTags() {
@@ -185,7 +187,8 @@ export class ShopComponent implements OnInit, OnDestroy {
         FilterService.GetAll().then(data => {
 
             //TODO: Needs Check Group for show
-            this.Filters = data.sort((a, b) => a.Order > b.Order ? 1 : -1);
+            this.Filters = data.sort((a, b) => a.Order > b.Order ? 1 : -1)
+                .filter(x => !Array.isArray(x.Groups) || x.Groups.length == 0 || x.Groups.find(y => y == null || y.trim() == "" || y.trim().toLowerCase() == "shop"));
         }).catch(data => {
         })
     }
@@ -261,7 +264,8 @@ export class ShopComponent implements OnInit, OnDestroy {
     }
 
     getBaseUrl() {
-        return "/shop/" + this.getShippingType() + "/" + this.CurrentGroup + "/";
+        //return "/shop/" + this.getShippingType() + "/" + this.CurrentGroup + "/";
+        return "/shop/" + this.CurrentGroup + "/";
     }
 
     ngOnDestroy(): void {

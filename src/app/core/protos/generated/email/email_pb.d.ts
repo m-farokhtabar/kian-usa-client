@@ -13,6 +13,9 @@ export class SendCatalogRequestMessage extends jspb.Message {
   getCategoryslug(): string;
   setCategoryslug(value: string): void;
 
+  getWhichprice(): string;
+  setWhichprice(value: string): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): SendCatalogRequestMessage.AsObject;
   static toObject(includeInstance: boolean, msg: SendCatalogRequestMessage): SendCatalogRequestMessage.AsObject;
@@ -28,6 +31,39 @@ export namespace SendCatalogRequestMessage {
     customerfullname: string,
     customeremail: string,
     categoryslug: string,
+    whichprice: string,
+  }
+}
+
+export class SendCatalogWithLandedPriceRequestMessage extends jspb.Message {
+  getCustomerfullname(): string;
+  setCustomerfullname(value: string): void;
+
+  getCustomeremail(): string;
+  setCustomeremail(value: string): void;
+
+  getCategoryslug(): string;
+  setCategoryslug(value: string): void;
+
+  getFactor(): number;
+  setFactor(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SendCatalogWithLandedPriceRequestMessage.AsObject;
+  static toObject(includeInstance: boolean, msg: SendCatalogWithLandedPriceRequestMessage): SendCatalogWithLandedPriceRequestMessage.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: SendCatalogWithLandedPriceRequestMessage, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SendCatalogWithLandedPriceRequestMessage;
+  static deserializeBinaryFromReader(message: SendCatalogWithLandedPriceRequestMessage, reader: jspb.BinaryReader): SendCatalogWithLandedPriceRequestMessage;
+}
+
+export namespace SendCatalogWithLandedPriceRequestMessage {
+  export type AsObject = {
+    customerfullname: string,
+    customeremail: string,
+    categoryslug: string,
+    factor: number,
   }
 }
 

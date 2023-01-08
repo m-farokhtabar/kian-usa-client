@@ -10,17 +10,35 @@
                     <div class="row pb-2">
                         <label class="form-label col-sm-4" for="CatalogType">Price list</label>
                         <div class="col-sm-8">
-                            <select ngModel name="CatalogType" #CatalogType="ngModel" id="CatalogType" class="form-select" required>
-                                <option value="0">{{CategoryName}} price list</option>
-                                <option value="1">All price lists</option>
+                            <select (change)="OnChange($event)" ngModel name="CatalogType" #CatalogType="ngModel" id="CatalogType" class="form-select"
+                                    [disabled]="SendingEmail" required>
+                                <option value="0">{{CategoryName}} Fob China</option>
+                                <option value="0_1">{{CategoryName}} Fob China + Fob WH</option>
+                                <option value="1_2">{{CategoryName}} Sacramento WH + Special</option>
+                                <option value="L">{{CategoryName}} Calculator to door land cost</option>
+                                <!--<option value="1">All price lists</option>-->
                             </select>
                             <div class="invalid-feedback" *ngIf="CatalogType.touched && CatalogType.invalid">Please select price list.</div>
+                        </div>
+                    </div>
+                    <div class="row pb-2" [hidden]="!IsLandedPriceSelected">
+                        <label class="form-label col-sm-4" for="CustomerName">Cost:</label>
+                        <div class="col-sm-8">
+                            <input ngModel min="1" max="99999999" type="number" name="Cost" #Cost="ngModel" class="form-control" id="Cost" pattern="[0-9]+"
+                                   [required]="IsLandedPriceSelected" [disabled]="SendingEmail"/>
+                            <div class="invalid-feedback" *ngIf="Cost.touched && Cost.invalid">
+                                <div *ngIf="Cost.errors?.['required']">Please input cost.</div>
+                                <div *ngIf="Cost.errors?.['max']">cost should be less than 99999999.</div>
+                                <div *ngIf="Cost.errors?.['min']">cost should be more than 1.</div>
+                                <div *ngIf="Cost.errors?.['pattern']">Cost is not valid. Valid format is just digits without point</div>
+                            </div>
                         </div>
                     </div>
                     <div class="row pb-2">
                         <label class="form-label col-sm-4" for="CustomerName">Customer name:</label>
                         <div class="col-sm-8">
-                            <input ngModel maxlength="100" name="CustomerFullName" #CustomerFullName="ngModel" class="form-control" id="CustomerName" type="text" required/>
+                            <input ngModel maxlength="100" name="CustomerFullName" #CustomerFullName="ngModel"  class="form-control" id="CustomerName" type="text"
+                                   [disabled]="SendingEmail" required/>
                             <div class="invalid-feedback" *ngIf="CustomerFullName.touched && CustomerFullName.invalid">
                                 <div *ngIf="CustomerFullName.errors?.['required']">Please input customer name.</div>
                                 <div *ngIf="CustomerFullName.errors?.['maxlength']">Customer name should be less than 100 character.</div>
@@ -30,7 +48,8 @@
                     <div class="row pb-2">
                         <label class="form-label col-sm-4" for="CustomerEmail">Customer email:</label>
                         <div class="col-sm-8">
-                            <input ngModel maxlength="150" name="CustomerEmail" #CustomerEmail="ngModel" placeholder="name@example.com" class="form-control" id="CustomerEmail" type="email" email required/>
+                            <input ngModel maxlength="150" name="CustomerEmail" #CustomerEmail="ngModel" placeholder="name@example.com" class="form-control" id="CustomerEmail" type="email"
+                                   [disabled]="SendingEmail" email required/>
                             <div class="invalid-feedback" *ngIf="CustomerEmail.touched && CustomerEmail.invalid">
                                 <div *ngIf="CustomerEmail.errors?.['required']">Please input customer email.</div>
                                 <div *ngIf="CustomerEmail.errors?.['maxlength']">Customer email should be less than {{CustomerEmail.errors?.['maxlength'].requiredLength}} character.</div>
@@ -41,7 +60,11 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" #ModelCloseButton>Close</button>
-                    <button class="btn btn-primary" type="submit" [disabled]="!EmailForm.valid">Send Mail</button>
+                    <button class="btn btn-primary" type="submit" [disabled]="!EmailForm.valid" [hidden]="SendingEmail">Send Mail</button>
+                    <button class="btn btn-primary" type="button" disabled [hidden]="!SendingEmail" >
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Sending...
+                    </button>
                 </div>
             </form>
         </div>
