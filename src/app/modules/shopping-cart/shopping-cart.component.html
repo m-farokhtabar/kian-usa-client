@@ -1,0 +1,100 @@
+<div class="position-fixed bg-white shopping-cart-docked-button" (click)="OnShoppingCartSideButtonClick()" *ngIf="CartModel.ShoppingCartSideButtonVisible">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" style="width:16px;height:16px;transform: rotate(90deg);margin: 7px;">
+        <!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M253.3 35.1c6.1-11.8 1.5-26.3-10.2-32.4s-26.3-1.5-32.4 10.2L117.6 192H32c-17.7 0-32 14.3-32 32s14.3 32 32 32L83.9 463.5C91 492 116.6 512 146 512H430c29.4 0 55-20 62.1-48.5L544 256c17.7 0 32-14.3 32-32s-14.3-32-32-32H458.4L365.3 12.9C359.2 1.2 344.7-3.4 332.9 2.7s-16.3 20.6-10.2 32.4L404.3 192H171.7L253.3 35.1zM192 304v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16s16 7.2 16 16zm96-16c8.8 0 16 7.2 16 16v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16zm128 16v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16s16 7.2 16 16z"/>
+    </svg>
+    <h6 style="writing-mode: vertical-rl;margin: 2px;padding: 4px;">Shopping Cart</h6>
+</div>
+<div class="position-fixed bg-white shopping-cart-container" *ngIf="CartModel.IsVisible">
+    <div class="bg-light">
+        <div class="close-button" (click)="OnCloseButton()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" style="width:18px;height:18px;">
+                <!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+                <path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z"/>
+            </svg>
+        </div>
+        <div class="hstack pt-2 ps-3">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" style="width:28px;height:28px;">
+                <!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+                <path d="M253.3 35.1c6.1-11.8 1.5-26.3-10.2-32.4s-26.3-1.5-32.4 10.2L117.6 192H32c-17.7 0-32 14.3-32 32s14.3 32 32 32L83.9 463.5C91 492 116.6 512 146 512H430c29.4 0 55-20 62.1-48.5L544 256c17.7 0 32-14.3 32-32s-14.3-32-32-32H458.4L365.3 12.9C359.2 1.2 344.7-3.4 332.9 2.7s-16.3 20.6-10.2 32.4L404.3 192H171.7L253.3 35.1zM192 304v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16s16 7.2 16 16zm96-16c8.8 0 16 7.2 16 16v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16zm128 16v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16s16 7.2 16 16z"/>
+            </svg>
+            <h5 class="ps-3 pt-2">Shopping Cart</h5>
+        </div>
+        <div class="ps-3 pe-3">
+            <hr class="w-100"/>
+        </div>
+    </div>
+    <!--Body-->
+    <div class="ps-3 pe-3">
+        <form #ShoppingCartForm="ngForm" name="SendShoppingCartForm" (ngSubmit)="OnSubmit(ShoppingCartForm)"
+              class="needs-validation">
+            <label for="Customer" class="form-label label-of-input">Customer Name</label>
+            <select ngModel #Customer="ngModel" [(ngModel)]="CartModel.Customer" id="Customer" name="Customer" class="form-select form-select-sm" required>
+                <option [value]="Customer.UserName"
+                        *ngFor="let Customer of Customers">{{Customer.Name + " " + Customer.Family + "(" + Customer.UserName + ")"}}</option>
+            </select>
+            <label for="SelectedPrice" class="form-label label-of-input">Select Price</label>
+            <select ngModel [(ngModel)]="CartModel.PriceType" (change)="OnChangePriceType($event)" #SelectedPrice="ngModel" id="SelectedPrice"
+                    name="SelectedPrice" class="form-select form-select-sm" required>
+                <option [value]="Price.Id" *ngFor="let Price of GetPricesType()">{{Price.Name}}</option>
+            </select>
+            <div class="mt-2" [hidden]="!CartModel.IsLandedPriceShow">
+                <span class="float-start me-2 label-of-input">Freight:</span>
+                <input ngModel #LandedPriceValue="ngModel" id="LandedPriceValue" name="LandedPriceValue" type="number" value="1" min="1"
+                        max="999999999" class="form-control m-0 p-0 ps-1" style="width: 100px;"
+                       [disabled]="!CartModel.IsLandedPriceShow" (input)="OnLandedPriceChange($event)" required/>
+            </div>
+            <label for="Delivery" class="form-label label-of-input" style="clear: both;">Delivery</label>
+            <select ngModel #Delivery="ngModel" [(ngModel)]="CartModel.DeliveryType" id="Delivery" name="Delivery" class="form-select form-select-sm" required
+                    [disabled]="CartModel.IsDeliveryDisabled">
+                <option [value]="Delivery.Id"
+                        *ngFor="let Delivery of CurrentDeliveryTypes">{{Delivery.Name}}</option>
+            </select>
+            <label for="Tariff" class="form-label label-of-input">Tariff</label>
+            <select ngModel #Tariff="ngModel" [(ngModel)]="CartModel.IOR" id="Tariff" name="Tariff" class="form-select form-select-sm" required
+                    [disabled]="CartModel.IsTariffDisabled">
+                <option [value]="IOR.Id" *ngFor="let IOR of CurrentIORs">{{IOR.Name}}</option>
+            </select>
+            <hr/>
+            <table class="table">
+                <thead style="font-size: 11px;">
+                <td>Item</td>
+                <td>QTY</td>
+                <td>Price</td>
+                <td>Total Price</td>
+                </thead>
+                <tbody style="font-size: 11px;">
+                <tr class="table-price-tr" *ngFor="let Order of CartModel.Orders">
+                    <td>{{Order.ProductName}}</td>
+                    <td><input type="number" min="0" max="9999" class="form-control m-0 p-0 ps-1" style="width: 70px;"
+                               [(ngModel)]="Order.Count" (ngModelChange)="OnOrderCountChange($event,Order)" [ngModelOptions]="{standalone: true}"/></td>
+                    <td>{{GetPriceFormat(GetPrice(Order))}}</td>
+                    <td>{{GetPriceFormat(GetTotalPrice(Order))}}</td>
+                </tr>
+                <tr class="table-price-tr" style="border-top:#ccc solid 2px;">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>{{GetPriceFormat(GetAllTotalPrice())}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <p class="mb-1">Total Pieces: <strong>{{GetPieces()}}</strong></p>
+            <p>Total Cubes: <strong>{{GetCubes()}}</strong></p>
+            <textarea class="form-control" rows="4" cols="50" name="Description" [(ngModel)]="CartModel.Description"></textarea>
+        </form>
+        <div class="text-end mb-2">
+            <button class="btn btn-danger mt-3 float-start" type="reset" (click)="OnCancelOrders()">
+                Cancel Orders
+            </button>
+            <button class="btn btn-primary mt-3" type="submit" [disabled]="!ShoppingCartForm.valid || !(CartModel.Orders.length>0)"
+                    [hidden]="SendingData"  (click)="OnSendOrdersClick()">
+                Send Orders
+            </button>
+            <button class="btn btn-primary mt-3" type="button" disabled [hidden]="!SendingData">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Sending...
+            </button>
+        </div>
+    </div>
+</div>

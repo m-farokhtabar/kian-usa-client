@@ -1,0 +1,49 @@
+<div class="modal fade" [id]="'Dialog_'+ CategorySlug + '_DownloadModal'" tabindex="-1" [attr.aria-labelledby]="'#Dialog_'+ CategorySlug + '_DownloadModalLabel'" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" [id]="'Dialog_'+ CategorySlug + '_DownloadModalLabel'">Download Catalog</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form #DownloadForm="ngForm" name="DownloadCatalogByForm" (ngSubmit)="OnSubmit(DownloadForm)" class="needs-validation">
+                <div class="modal-body">
+                    <div class="row pb-2">
+                        <label class="form-label col-sm-4" [for]="'CatalogType'+CategorySlug">Price list</label>
+                        <div class="col-sm-8">
+                            <select (change)="OnChange($event)" ngModel [name]="'CatalogType'+CategorySlug" #CatalogType="ngModel" [id]="'CatalogType'+CategorySlug" class="form-select" required>
+                                <option value="0">{{CategoryName}} Fob China</option>
+                                <option value="0_1">{{CategoryName}} Fob China + Fob WH</option>
+                                <option value="1_2">{{CategoryName}} Sacramento WH + Special</option>
+                                <option value="L">{{CategoryName}} Calculator to door land cost</option>
+                                <!--<option value="1">All price lists</option>-->
+                            </select>
+                            <div class="invalid-feedback" *ngIf="CatalogType.touched && CatalogType.invalid">Please select price list.</div>
+                        </div>
+                    </div>
+                    <div class="row pb-2" [hidden]="!IsLandedPriceSelected">
+                        <label class="form-label col-sm-4" [for]="'Cost'+CategorySlug">Cost:</label>
+                        <div class="col-sm-8">
+                            <input ngModel min="1" max="99999999" type="number" [name]="'Cost'+CategorySlug" #Cost="ngModel" class="form-control"
+                                   [id]="'Cost'+CategorySlug" pattern="[0-9]+" [disabled]="status == 1" [required]="IsLandedPriceSelected" (input)="OnCostChanged()" />
+                            <div class="invalid-feedback" *ngIf="Cost.touched && Cost.invalid">
+                                <div *ngIf="Cost.errors?.['required']">Please input cost.</div>
+                                <div *ngIf="Cost.errors?.['max']">cost should be less than 99999999.</div>
+                                <div *ngIf="Cost.errors?.['min']">cost should be more than 1.</div>
+                                <div *ngIf="Cost.errors?.['pattern']">Cost is not valid. Valid format is just digits without point</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" #ModelCloseButton>Close</button>
+                    <button class="btn btn-primary" type="submit" [disabled]="!DownloadForm.valid" [hidden]="status != 0">{{SubmitTitleButton}}</button>
+                    <button class="btn btn-primary" type="button" disabled [hidden]="status != 1" >
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Computing...
+                    </button>
+                    <a [href]="Url" class="btn btn-primary" target="_blank" #DownloadLink (click)="OnDownloadButton()" [hidden]="status != 2">Download</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
