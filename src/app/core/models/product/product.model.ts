@@ -1,10 +1,13 @@
 import {ProductPriceModel} from "./product-price.model";
+import {KeyValueModel} from "../common/key-value.model";
 
 export class ProductModel {
-    constructor(Id: string, Name: string, Slug: string, Inventory: number, ShortDescription: string, Description: string,
-                Prices: Array<ProductPriceModel>, Cube: number, W: number, D: number, H: number, Weight: number, BoxW: number, BoxD: number, BoxH: number,
+    constructor(Id: string, Name: string, Slug: string, Inventory: number | undefined, ShortDescription: string, Description: string,
+                Prices: Array<ProductPriceModel>, Cube: number | undefined, W: number | undefined, D: number | undefined, H: number | undefined, Weight: number | undefined,
+                BoxW: number | undefined, BoxD: number | undefined, BoxH: number | undefined,
                 Securities: Array<string>, WHQTY: string, Order: number, ImagesUrls: Array<string>, IsGroup: boolean, CategoryIds: string[],
-                Tags: string[],Groups: string[],Factories: string[],PiecesCount: number,ComplexItemPieces: string[],ComplexItemPriority : number) {
+                Tags: string[],Groups: string[],Factories: string[],PiecesCount: number,ComplexItemPieces: string[],ComplexItemPriority : number, ProductDescription :string,
+                Features : KeyValueModel[],PricePermissions : KeyValueModel[]) {
         this.Id = Id;
         this.Name = Name;
         this.Slug = Slug;
@@ -34,6 +37,10 @@ export class ProductModel {
         this.PiecesCount = PiecesCount;
         this.ComplexItemPieces = ComplexItemPieces;
         this.ComplexItemPriority = ComplexItemPriority;
+        this.ProductDescription = ProductDescription;
+
+        this.Features = Features;
+        this.PricePermissions = PricePermissions;
     }
 
     public Id: string;
@@ -69,4 +76,8 @@ export class ProductModel {
     public PiecesCount: number;
     public ComplexItemPieces: string[];
     public ComplexItemPriority: number;
+    public ProductDescription: string;
+    public Features : KeyValueModel[];
+    public PricePermissions : KeyValueModel[];
+
 }

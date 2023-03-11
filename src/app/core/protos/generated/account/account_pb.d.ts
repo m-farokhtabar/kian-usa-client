@@ -31,6 +31,16 @@ export class LoginResponseMessage extends jspb.Message {
   getToken(): string;
   setToken(value: string): void;
 
+  clearPagesList(): void;
+  getPagesList(): Array<string>;
+  setPagesList(value: Array<string>): void;
+  addPages(value: string, index?: number): string;
+
+  clearButtonsList(): void;
+  getButtonsList(): Array<string>;
+  setButtonsList(value: Array<string>): void;
+  addButtons(value: string, index?: number): string;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): LoginResponseMessage.AsObject;
   static toObject(includeInstance: boolean, msg: LoginResponseMessage): LoginResponseMessage.AsObject;
@@ -44,6 +54,8 @@ export class LoginResponseMessage extends jspb.Message {
 export namespace LoginResponseMessage {
   export type AsObject = {
     token: string,
+    pagesList: Array<string>,
+    buttonsList: Array<string>,
   }
 }
 

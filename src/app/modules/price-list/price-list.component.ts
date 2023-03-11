@@ -36,10 +36,11 @@ export class PriceListComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.accSub = this.account.UserToken.subscribe(acc => {
-            if (!acc || acc == "")
+            if (!acc || acc == "" || !this.account.HasPermissionToPage("Price List"))
                 this.router.navigateByUrl('/');
         });
         this.account.IsValid();
+
         this.urlSubscription = this.route.url.subscribe((urlSegments) => {
             window.scrollTo(0, 0);
             this.sharedData.SetMenuStatus(false);

@@ -5,6 +5,9 @@ import {ActivatedRoute} from "@angular/router";
 import {AuthService} from "../../../../core/models/account/auth.service";
 import {ProductPriceModel} from "../../../../core/models/product/product-price.model";
 import {OrderModel} from "../../../../core/models/Order/order-model";
+import {Subscription} from "rxjs";
+import {SharedDataService} from "../../../../core/services/shareddata.service";
+import {CategoryModel} from "../../../../core/models/category/category.model";
 
 @Component({
     selector: 'product-price-table',
@@ -15,20 +18,35 @@ export class ProductPriceTableComponent implements OnInit {
     @Input() products: ProductModel[] = [];
     @Input() CategorySlug: string = "";
     @Input() CategoryName: string = "";
+    @Input() Category: CategoryModel | null = null;
     @ViewChildren("orderInput") orderElements: Array<ElementRef> = [];
     Order: string = "";
     Cube: string = "";
     IsOrderTotalMessageVisible: boolean = false;
     GetPriceFormat = Tools.GetPriceFormat;
+    @Input() ShowDownloadButton: boolean = true;
+    @Input() ShowEmailButton: boolean = true;
+    @Input() UseSmallFontSize: boolean = true;
+
 
     CurrentOrders: OrderModel[] = [];
     @Output() CurrentOrdersCreated = new EventEmitter<OrderModel[]>();
 
-    constructor(private route: ActivatedRoute, private account: AuthService) {
+    private CurrentPriceType: number | null = 1; //Sac
+    private PriceTypeSub: Subscription | null = null;
+
+    constructor(private route: ActivatedRoute, public account: AuthService, private ShareData: SharedDataService) {
+        this.PriceTypeSub = ShareData.PriceTypeObservable.subscribe(data => {
+            this.CurrentPriceType = data;
+        });
     }
 
     ngOnInit(): void {
         this.route.params.subscribe(() => this.ResetOrders());
+    }
+
+    ngOnDestroy(): void {
+        this.PriceTypeSub?.unsubscribe();
     }
 
     getHeaderNames(): string[] {
@@ -38,7 +56,8 @@ export class ProductPriceTableComponent implements OnInit {
                 if (product.Prices.length > 1) {
                     return [product.Prices[0].Name, product.Prices[1].Name];
                 } else if (this.products.length === 1) {
-                    return [product.Prices[0].Name];
+                    if (product.Prices[0])
+                        return [product.Prices[0].Name];
                 }
             }
         }
@@ -92,7 +111,7 @@ export class ProductPriceTableComponent implements OnInit {
                 });
                 if (orderCount > 0) {
                     if (this.IsItemAvailable(this.products[Id]))
-                        this.CurrentOrders.push(new OrderModel(this.products[Id].Id, orderCount, this.products[Id].Name, Prices, this.products[Id].PiecesCount, this.products[Id].Cube));
+                        this.CurrentOrders.push(new OrderModel(this.products[Id].Slug, orderCount, this.products[Id].Name, Prices, this.products[Id].PiecesCount, this.products[Id].Cube, this.products[Id].Factories, this.products[Id].Weight));
                     else {
                         alert(this.products[Id].Name + " is not available any more.");
                         HasError = true;
@@ -120,21 +139,48 @@ export class ProductPriceTableComponent implements OnInit {
     }
 
     MakeItBold(ProductName: string) {
-        if (ProductName.toLowerCase().indexOf("s/l") > 0 || ProductName.toLowerCase().indexOf("sec") > 0)
+        if (ProductName.toLowerCase().indexOf("s/l") > 0 || ProductName.toLowerCase().indexOf("sec") > 0 || ProductName.toLowerCase().indexOf("chaise-bed") > 0)
             return "bold";
         else
             return "normal";
     }
 
-    AccessToPriceIsValid(PriceIndex: number): boolean {
-        const PermissionPrices: number[] | null = this.account.GetPrices();
-        if (PermissionPrices != null && Array.isArray(PermissionPrices))
-            return PermissionPrices.includes(PriceIndex);
-        else
-            return false;
+    AccessToPriceIsValid(PriceName: string): boolean {
+        let ShowThisPriceForAll = false;
+        if (Array.isArray(this.products) && this.products.length>0) {
+            this.products.forEach(x => {
+                ShowThisPriceForAll = ShowThisPriceForAll || this.account.HasPermissionToShowPrice(x.PricePermissions, PriceName);
+            });
+        }
+        return ShowThisPriceForAll;
     }
 
     IsItemAvailable(Product: ProductModel) {
-        return Product.WHQTY && Product.WHQTY.toLowerCase().trim() == "available";
+        if (this.CurrentPriceType != 0) //Fob
+        {
+            return this.CheckAvailabilityOfPrices(Product) && Product.WHQTY && Product.WHQTY.toLowerCase().trim() == "available";
+        } else
+            return this.CheckAvailabilityOfPrices(Product);
+    }
+
+    CheckAvailabilityOfPrices(Product: ProductModel): boolean {
+        if (Array.isArray(Product.Prices) && Product.Prices.length > 0) {
+            //Fob LandedPrice
+            if (this.CurrentPriceType == 0 || this.CurrentPriceType == 2) {
+                return !(Product.Prices[0] == null || Product.Prices[0] == undefined || Product.Prices[0].Value == undefined);
+                //Sac
+            } else if (this.CurrentPriceType == 1) {
+                return !((Product.Prices[1] == null || Product.Prices[1] == undefined || Product.Prices[1].Value == undefined) &&
+                    (Product.Prices[2] == null || Product.Prices[2] == undefined || Product.Prices[2].Value == undefined));
+            } else
+                return true;
+        } else
+            return false;
+    }
+    public HasPermissionToShowQuantity(): boolean {
+        return this.account.HasPermissionToShowQuantity();
+    }
+    public HasPermissionToOrder(): boolean {
+        return this.account.HasPermissionToOrder();
     }
 }

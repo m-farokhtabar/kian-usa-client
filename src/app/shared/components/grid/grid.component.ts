@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CellStyle, GridCell, GridViewmodel} from "./viewmodel/grid.viewmodel";
 import {Tools} from "../../helper/tools";
+import {GridHelper} from "./helper/grid.helper";
+import {AuthService} from "../../../core/models/account/auth.service";
 
 @Component({
     selector: 'grid',
@@ -8,6 +10,10 @@ import {Tools} from "../../helper/tools";
     styleUrls: ['./grid.component.css']
 })
 export class GridComponent implements OnInit {
+    public GetCurrentPrice = GridHelper.GetCurrentPrice;
+    public GetFirstPrice = GridHelper.GetFirstPrice;
+    public HasMoreThanOnePrice = GridHelper.HasMoreThanOnePrice;
+
     public GridCells: (GridCell[] | null)[][] = [];
 
     @Input()
@@ -32,6 +38,8 @@ export class GridComponent implements OnInit {
 
     private _Date: GridViewmodel = new GridViewmodel();
 
+    constructor(public account: AuthService) {
+    }
     public get Data(): GridViewmodel {
         return this._Date;
     }
@@ -72,7 +80,7 @@ export class GridComponent implements OnInit {
         return this.Data.CellStyle === CellStyle.CardWithDescription
     }
 
-    IsThemeShopCard() {
+    public IsThemeShopCard() {
         return this.Data.CellStyle === CellStyle.ShopCard
     }
 
@@ -139,30 +147,5 @@ export class GridComponent implements OnInit {
                 GridStyle: Style,
                 [this.ExtraQueryParameterName]: this.ExtraQueryParameterValue
             };
-    }
-
-    public GetCurrentPrice(Cell: GridCell) {
-        if (Array.isArray(Cell.Prices) && Cell.Prices.length > 0) {
-            if (Cell.Prices.length == 1) {
-                return Tools.GetPriceFormat(Cell.Prices[0]);
-            } else {
-                if (Cell.Prices[1] != undefined && Cell.Prices[1] > 0)
-                    return Tools.GetPriceFormat(Cell.Prices[1]);
-                else
-                    return Tools.GetPriceFormat(Cell.Prices[0]);
-            }
-        }
-        return "";
-    }
-
-    public GetFirstPrice(Cell: GridCell) {
-        if (Array.isArray(Cell.Prices) && Cell.Prices.length > 0) {
-            return Tools.GetPriceFormat(Cell.Prices[0]);
-        }
-        return "";
-    }
-
-    public HasMoreThanOnePrice(Cell: GridCell) {
-        return Array.isArray(Cell.Prices) && Cell.Prices.length > 1 && Cell.Prices[1] != undefined && Cell.Prices[1] > 0
     }
 }

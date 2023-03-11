@@ -14,7 +14,7 @@ export class ProductDetailsTableComponent implements OnInit {
     GetPriceFormat = Tools.GetPriceFormat;
     LandedPrices: (number|undefined)[] = [];
 
-    constructor(private account:AuthService) {
+    constructor(public account:AuthService) {
     }
 
     ngOnInit(): void {
@@ -43,11 +43,13 @@ export class ProductDetailsTableComponent implements OnInit {
             }
         }
     }
-    AccessToPriceIsValid(PriceIndex: number): boolean{
-        const PermissionPrices:number[] | null  = this.account.GetPrices();
-        if (PermissionPrices !=null && Array.isArray(PermissionPrices))
-            return PermissionPrices.includes(PriceIndex);
-        else
-            return false;
+    ThereIsAtLeastAProductWhichHasPermission(PriceName: string ) : boolean{
+        let ShowThisPriceForAll = false;
+        if (Array.isArray(this.products) && this.products.length>0) {
+            this.products.forEach(x => {
+                ShowThisPriceForAll = ShowThisPriceForAll || this.account.HasPermissionToShowPrice(x.PricePermissions, PriceName);
+            });
+        }
+        return ShowThisPriceForAll;
     }
 }

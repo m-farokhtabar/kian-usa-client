@@ -121,6 +121,19 @@ export class ProductResponseMessage extends jspb.Message {
   getComplexitempriority(): number;
   setComplexitempriority(value: number): void;
 
+  getProductdescription(): string;
+  setProductdescription(value: string): void;
+
+  clearFeaturesList(): void;
+  getFeaturesList(): Array<KeyValue>;
+  setFeaturesList(value: Array<KeyValue>): void;
+  addFeatures(value?: KeyValue, index?: number): KeyValue;
+
+  clearPricepermissionsList(): void;
+  getPricepermissionsList(): Array<KeyValue>;
+  setPricepermissionsList(value: Array<KeyValue>): void;
+  addPricepermissions(value?: KeyValue, index?: number): KeyValue;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ProductResponseMessage.AsObject;
   static toObject(includeInstance: boolean, msg: ProductResponseMessage): ProductResponseMessage.AsObject;
@@ -160,6 +173,9 @@ export namespace ProductResponseMessage {
     piecescount: number,
     complexitempiecesList: Array<string>,
     complexitempriority: number,
+    productdescription: string,
+    featuresList: Array<KeyValue.AsObject>,
+    pricepermissionsList: Array<KeyValue.AsObject>,
   }
 }
 
@@ -376,6 +392,30 @@ export namespace ProductsByGroupsTagsWithPagingRequestMessage {
     pagenumber: number,
     pagecount: number,
     isacsorder: boolean,
+  }
+}
+
+export class KeyValue extends jspb.Message {
+  getName(): string;
+  setName(value: string): void;
+
+  getValue(): string;
+  setValue(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): KeyValue.AsObject;
+  static toObject(includeInstance: boolean, msg: KeyValue): KeyValue.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: KeyValue, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): KeyValue;
+  static deserializeBinaryFromReader(message: KeyValue, reader: jspb.BinaryReader): KeyValue;
+}
+
+export namespace KeyValue {
+  export type AsObject = {
+    name: string,
+    value: string,
   }
 }
 

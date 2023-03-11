@@ -1,5 +1,6 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {VerticalMenuModel} from "./models/vertical-menu.model";
+import {VerticalLinkModel, VerticalMenuModel} from "./models/vertical-menu.model";
+import {AuthService} from "../../../core/models/account/auth.service";
 
 @Component({
     selector: 'vertical-menu',
@@ -9,6 +10,8 @@ import {VerticalMenuModel} from "./models/vertical-menu.model";
 export class VerticalMenuComponent implements OnInit {
     @ViewChild("VerticalMenuHeaderElement") VerticalMenuHeaderElement: ElementRef | null = null;
     public menu: VerticalMenuModel = new VerticalMenuModel();
+    @Input()
+    public DoesItNeedPermission: boolean = true;
     @Input()
     public set Menu(value: VerticalMenuModel) {
         this.menu = value;
@@ -20,7 +23,7 @@ export class VerticalMenuComponent implements OnInit {
         return this.menu;
     }
 
-    constructor() {
+    constructor(public account: AuthService) {
     }
 
     ngOnInit(): void {
@@ -29,5 +32,11 @@ export class VerticalMenuComponent implements OnInit {
         if (this.VerticalMenuHeaderElement != null) {
             this.VerticalMenuHeaderElement.nativeElement.innerHTML = this.menu.Header;
         }
+    }
+    NeedsPermission(link: VerticalLinkModel){
+        if (this.DoesItNeedPermission)
+            return this.account.HasPermissionToPage(link.Page);
+        else
+            return true;
     }
 }

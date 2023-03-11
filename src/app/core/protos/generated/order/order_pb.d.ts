@@ -4,8 +4,8 @@
 import * as jspb from "google-protobuf";
 
 export class ProductOrder extends jspb.Message {
-  getProductid(): string;
-  setProductid(value: string): void;
+  getProductslug(): string;
+  setProductslug(value: string): void;
 
   getCount(): number;
   setCount(value: number): void;
@@ -22,7 +22,7 @@ export class ProductOrder extends jspb.Message {
 
 export namespace ProductOrder {
   export type AsObject = {
-    productid: string,
+    productslug: string,
     count: number,
   }
 }
@@ -48,6 +48,12 @@ export class OrderRequestMessage extends jspb.Message {
   setOrdersList(value: Array<ProductOrder>): void;
   addOrders(value?: ProductOrder, index?: number): ProductOrder;
 
+  getConfirmedby(): string;
+  setConfirmedby(value: string): void;
+
+  getPonumber(): string;
+  setPonumber(value: string): void;
+
   getDescription(): string;
   setDescription(value: string): void;
 
@@ -69,6 +75,8 @@ export namespace OrderRequestMessage {
     delivery: DeliveryTypeMap[keyof DeliveryTypeMap],
     tariff: TariffTypeMap[keyof TariffTypeMap],
     ordersList: Array<ProductOrder.AsObject>,
+    confirmedby: string,
+    ponumber: string,
     description: string,
   }
 }

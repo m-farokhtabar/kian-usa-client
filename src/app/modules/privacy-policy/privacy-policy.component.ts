@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import {ParagraphViewmodel} from "../../shared/components/paragraph/viewmodel/paragraph.viewmodel";
 import {VerticalMenuModel} from "../../shared/components/vertical-menu/models/vertical-menu.model";
 import {MenuHelper} from "../../shared/helper/Menu.helper";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {SharedDataService} from "../../core/services/shareddata.service";
+import {Subscription} from "rxjs";
+import {AuthService} from "../../core/models/account/auth.service";
 
 @Component({
   selector: 'app-privacy-policy',
@@ -15,11 +17,18 @@ export class PrivacyPolicyComponent implements OnInit {
   Content: ParagraphViewmodel = new ParagraphViewmodel("");
   Header: ParagraphViewmodel = new ParagraphViewmodel("<h1 class='bg-light bg-gradient display-5 p-2'>Privacy Policy</h1>");
   VerticalMenu: VerticalMenuModel = MenuHelper.CreateVerticalMenuModelForWhoWeAre();
+  private accSub: Subscription | null = null;
 
-  constructor(private route: ActivatedRoute, private sharedData: SharedDataService) {
+  constructor(private router: Router, private route: ActivatedRoute, private sharedData: SharedDataService, private account: AuthService) {
   }
 
   ngOnInit(): void {
+    this.accSub = this.account.UserToken.subscribe(acc => {
+      if (!acc || acc == "" || !this.account.HasPermissionToPage("Privacy Policy"))
+        this.router.navigateByUrl('/');
+    });
+    this.account.IsValid();
+
     this.Content.Content += "<p>Majidi K Inc.--Last Updated: August 1, 2022</p>";
     this.Content.Content += "<p>KIAN USA  a California company (\"KIAN USA \", \"us,\" or \"we\") is strongly committed to protecting the privacy of consumers, clients and visitors. This privacy policy (this \"Policy\"), which applies to the KIAN USA company website (http://www.kianusa.com/, sometimes referred to as our \"Site\") and certain related services (collectively, the “Service”), describes how KIAN USA collects, accesses, uses and discloses information provided by and gathered about users who visit our Site and the choices that users have regarding the use of their information.</p>";
     this.Content.Content += "<p>Each time that you access or use our Site or Service, you agree to be bound by this Policy. If you do not agree to the terms of this Policy, you should discontinue using our Site and Service.</p>";
@@ -70,6 +79,7 @@ export class PrivacyPolicyComponent implements OnInit {
       this.sharedData.SetMenuStatus(false)
     });
   }
-
-
+  ngOnDestroy(): void {
+    this.accSub?.unsubscribe();
+  }
 }

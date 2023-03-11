@@ -52,10 +52,6 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     UserAccessToMenu(Menu: string): boolean{
-        const Pages = this.account.GetPages();
-        if (Array.isArray(Pages) && Pages.length > 0){
-            return Pages.includes(Menu);
-        }
-        return false;
+        return this.account.HasPermissionToPage(Menu);
     }
 }

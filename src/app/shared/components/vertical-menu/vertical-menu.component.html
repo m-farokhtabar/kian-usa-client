@@ -6,7 +6,7 @@
             <a class="list-group-item list-group-item-action"
                routerLinkActive="active"
                [routerLinkActiveOptions]="{exact: true}"
-               [routerLink]="Link.Url">{{Link.Title}}</a>
+               [routerLink]="Link.Url" *ngIf="NeedsPermission(Link)">{{Link.Title}}</a>
         </div>
     </div>
 </div>

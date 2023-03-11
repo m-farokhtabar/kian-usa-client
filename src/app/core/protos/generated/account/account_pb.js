@@ -52,7 +52,7 @@ if (goog.DEBUG && !COMPILED) {
  * @constructor
  */
 proto.LoginResponseMessage = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.LoginResponseMessage.repeatedFields_, null);
 };
 goog.inherits(proto.LoginResponseMessage, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
@@ -286,6 +286,13 @@ proto.LoginRequestMessage.prototype.setPassword = function(value) {
 
 
 
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.LoginResponseMessage.repeatedFields_ = [2,3];
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -317,7 +324,9 @@ proto.LoginResponseMessage.prototype.toObject = function(opt_includeInstance) {
  */
 proto.LoginResponseMessage.toObject = function(includeInstance, msg) {
   var f, obj = {
-    token: jspb.Message.getFieldWithDefault(msg, 1, "")
+    token: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    pagesList: (f = jspb.Message.getRepeatedField(msg, 2)) == null ? undefined : f,
+    buttonsList: (f = jspb.Message.getRepeatedField(msg, 3)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -358,6 +367,14 @@ proto.LoginResponseMessage.deserializeBinaryFromReader = function(msg, reader) {
       var value = /** @type {string} */ (reader.readString());
       msg.setToken(value);
       break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addPages(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addButtons(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -394,6 +411,20 @@ proto.LoginResponseMessage.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = message.getPagesList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      2,
+      f
+    );
+  }
+  f = message.getButtonsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      3,
+      f
+    );
+  }
 };
 
 
@@ -412,6 +443,80 @@ proto.LoginResponseMessage.prototype.getToken = function() {
  */
 proto.LoginResponseMessage.prototype.setToken = function(value) {
   return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * repeated string Pages = 2;
+ * @return {!Array<string>}
+ */
+proto.LoginResponseMessage.prototype.getPagesList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 2));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.LoginResponseMessage} returns this
+ */
+proto.LoginResponseMessage.prototype.setPagesList = function(value) {
+  return jspb.Message.setField(this, 2, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.LoginResponseMessage} returns this
+ */
+proto.LoginResponseMessage.prototype.addPages = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 2, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.LoginResponseMessage} returns this
+ */
+proto.LoginResponseMessage.prototype.clearPagesList = function() {
+  return this.setPagesList([]);
+};
+
+
+/**
+ * repeated string Buttons = 3;
+ * @return {!Array<string>}
+ */
+proto.LoginResponseMessage.prototype.getButtonsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 3));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.LoginResponseMessage} returns this
+ */
+proto.LoginResponseMessage.prototype.setButtonsList = function(value) {
+  return jspb.Message.setField(this, 3, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.LoginResponseMessage} returns this
+ */
+proto.LoginResponseMessage.prototype.addButtons = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 3, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.LoginResponseMessage} returns this
+ */
+proto.LoginResponseMessage.prototype.clearButtonsList = function() {
+  return this.setButtonsList([]);
 };
 
 

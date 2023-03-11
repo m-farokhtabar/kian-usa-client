@@ -44,7 +44,8 @@ export class CategoryGrpcService {
                                 Features: this.CategoryParameterResponseMessageMapToCategoryParameterModel(x.featuresList),
                                 ImagesUrl: x.imagesurlList,
                                 Children: this.ChildrenCategoryResponseMessageMapToCategoryChildModel(x.childrenList),
-                                Tags:x.tagsList
+                                Tags:x.tagsList,
+                                Securities: x.securitiesList
                             });
                             return resolve(categories);
                         }
@@ -80,7 +81,8 @@ export class CategoryGrpcService {
                                 Features: this.CategoryParameterResponseMessageMapToCategoryParameterModel(x.featuresList),
                                 ImagesUrl: x.imagesurlList,
                                 Children: this.ChildrenCategoryResponseMessageMapToCategoryChildModel(x.childrenList),
-                                Tags:x.tagsList
+                                Tags:x.tagsList,
+                                Securities: x.securitiesList
                             });
                             return resolve(categories);
                         }
@@ -136,7 +138,8 @@ export class CategoryGrpcService {
                                 this.CategoryParameterResponseMessageMapToCategoryParameterModel(result.featuresList),
                                 result.imagesurlList,
                                 this.ChildrenCategoryResponseMessageMapToCategoryChildModel(result.childrenList),
-                                result.tagsList);
+                                result.tagsList,
+                                result.securitiesList);
                             return resolve(Category);
                         }
                         else
@@ -170,7 +173,8 @@ export class CategoryGrpcService {
                                 this.CategoryParameterResponseMessageMapToCategoryParameterModel(result.featuresList),
                                 result.imagesurlList,
                                 this.ChildrenCategoryResponseMessageMapToCategoryChildModel(result.childrenList),
-                                result.tagsList);
+                                result.tagsList,
+                                result.securitiesList);
                             return resolve(Category);
                         }
                         else
@@ -210,7 +214,8 @@ export class CategoryGrpcService {
                                 Features: this.CategoryParameterResponseMessageMapToCategoryParameterModel(x.featuresList),
                                 ImagesUrl: x.imagesurlList,
                                 Children: this.ChildrenCategoryResponseMessageMapToCategoryChildModel(x.childrenList),
-                                Tags:x.tagsList
+                                Tags:x.tagsList,
+                                Securities:x.securitiesList
                             });
                             return resolve(categories);
                         }

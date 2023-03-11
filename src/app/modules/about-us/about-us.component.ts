@@ -1,9 +1,11 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {ParagraphViewmodel} from "../../shared/components/paragraph/viewmodel/paragraph.viewmodel";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {SharedDataService} from "../../core/services/shareddata.service";
 import {VerticalMenuModel} from "../../shared/components/vertical-menu/models/vertical-menu.model";
 import {MenuHelper} from "../../shared/helper/Menu.helper";
+import {AuthService} from "../../core/models/account/auth.service";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'about-us',
@@ -14,11 +16,18 @@ export class AboutUsComponent implements OnInit {
     AboutUsContent: ParagraphViewmodel = new ParagraphViewmodel("");
     Header: ParagraphViewmodel = new ParagraphViewmodel("<h1 class='bg-light bg-gradient display-5 p-2'>About <strong>KIAN USA</strong></h1>");
     VerticalMenu: VerticalMenuModel = MenuHelper.CreateVerticalMenuModelForWhoWeAre();
+    private accSub: Subscription | null = null;
 
-    constructor(private route: ActivatedRoute, private sharedData: SharedDataService) {
+    constructor(private router: Router, private route: ActivatedRoute, private sharedData: SharedDataService, private account: AuthService) {
     }
 
     ngOnInit(): void {
+        this.accSub = this.account.UserToken.subscribe(acc => {
+            if (!acc || acc == "" || !this.account.HasPermissionToPage("About US"))
+                this.router.navigateByUrl('/');
+        });
+        this.account.IsValid();
+
         this.AboutUsContent.Content = "<p>We are a USA based company that specializes in motion furniture. Our core values are comfort, style, and value.</p>";
         this.AboutUsContent.Content += "<p>We offer our products to our dealers either through direct containers, or our conveniently placed distribution centers.</p>";
         this.AboutUsContent.Content += "<p>The Kian Motion line is made to provide comfort at the highest level.</p>";
@@ -29,5 +38,8 @@ export class AboutUsComponent implements OnInit {
         this.route.params.subscribe(() => {
             this.sharedData.SetMenuStatus(false)
         });
+    }
+    ngOnDestroy(): void {
+        this.accSub?.unsubscribe();
     }
 }

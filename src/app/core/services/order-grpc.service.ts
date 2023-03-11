@@ -20,14 +20,16 @@ export class OrderGrpcService{
             request.setCost(Model.LandedPrice);
             this.GetDelivery(request, Model.DeliveryType!);
             this.GetTariff(request, Model.IOR!);
+            request.setConfirmedby(Model.ConfirmedBy);
             request.setDescription(Model.Description);
+            request.setPonumber(Model.PoNumber);
             this.GetOrders(request, Model.Orders);
-            console.log(request);
+
             const metadata = ServiceHelper.CreateAuthToken(this.account);
             if (metadata != undefined) {
                 client.sendOrder(request, metadata, (error: ServiceError | null, response: OrderResponseMessage | null) => {
                     if (error != null) {
-                        return reject();
+                        return reject(ServiceHelper.CreateMessageBasedOnGrpcCodeError(error));
                     }
                     if (response == null) {
                         return reject();
@@ -41,33 +43,33 @@ export class OrderGrpcService{
     }
 
     private GetPriceType(request: OrderRequestMessage, PriceType: number){
-        if (PriceType == 0)
-            request.setPricetype(0);
+        if (PriceType == 2)
+            request.setPricetype(2);
         else if (PriceType == 1)
             request.setPricetype(1);
         else
-            request.setPricetype(2);
+            request.setPricetype(0);
     }
     private GetDelivery(request: OrderRequestMessage, DeliveryType: number){
-        if (DeliveryType == 0)
-            request.setDelivery(0);
+        if (DeliveryType == 2)
+            request.setDelivery(2);
         else if (DeliveryType == 1)
             request.setDelivery(1);
         else
-            request.setDelivery(2);
+            request.setDelivery(0);
     }
     private GetTariff(request: OrderRequestMessage, Tariff: number){
-        if (Tariff == 0)
-            request.setTariff(0);
-        else
+        if (Tariff == 1)
             request.setTariff(1);
+        else
+            request.setTariff(0);
     }
     private GetOrders(request: OrderRequestMessage, Orders: OrderModel[]){
         let RequestOrders: Array<ProductOrder> = [];
         Orders.forEach(x=> {
             const Ord: ProductOrder = new ProductOrder();
             Ord.setCount(x.Count);
-            Ord.setProductid(x.ProductId);
+            Ord.setProductslug(x.ProductSlug);
             RequestOrders.push(Ord);
         });
         request.setOrdersList(RequestOrders);

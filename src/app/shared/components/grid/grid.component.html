@@ -128,9 +128,10 @@
                                 </p>
                             </ng-template>
                             <h6 style="clear: both;" class="text-start"
-                                [ngClass]="{'text-danger':HasMoreThanOnePrice(Cell)}">{{GetCurrentPrice(Cell)}} <span
-                                    *ngIf="HasMoreThanOnePrice(Cell);">&nbsp;&nbsp;<span
-                                    class="text-dark text-decoration-line-through">{{GetFirstPrice(Cell)}}</span></span>
+                                [ngClass]="{'text-danger':HasMoreThanOnePrice(Cell,account)}">&nbsp;{{GetCurrentPrice(Cell,account)}}
+                                <span *ngIf="HasMoreThanOnePrice(Cell,account);">&nbsp;&nbsp;
+                                    <span class="text-dark text-decoration-line-through">{{GetFirstPrice(Cell,account)}}</span>
+                                </span>
                             </h6>
                         </div>
                     </ng-template>

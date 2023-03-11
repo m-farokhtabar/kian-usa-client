@@ -100,7 +100,8 @@
                        <!--routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"-->
                        <!--[routerLink]="['/price-list']">PRICE LIST</a>-->
                 <!--</li>-->
-                <li class="nav-item dropdown" *ngIf="AccountIsValid" [hidden]="!UserAccessToMenu('Price List')">
+                <!--<li class="nav-item dropdown" *ngIf="AccountIsValid" [hidden]="!UserAccessToMenu('Price List')">-->
+                <li class="nav-item dropdown" [hidden]="!UserAccessToMenu('Price List')">
                     <a class="nav-link dropdown-toggle fs-6  fw-bold" href="#" id="navbarDropdownMenuLink" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         VIP TOOLS

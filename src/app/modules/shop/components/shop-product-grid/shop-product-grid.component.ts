@@ -4,6 +4,7 @@ import {AuthService} from "../../../../core/models/account/auth.service";
 import {ProductModel} from "../../../../core/models/product/product.model";
 import {CellStyle, GridCell, GridViewmodel} from "../../../../shared/components/grid/viewmodel/grid.viewmodel";
 import {Constant} from "../../../../shared/helper/constant";
+import {ShopHelper} from "../../helper/shop-helper";
 
 @Component({
     selector: 'app-shop-product-grid',
@@ -105,17 +106,19 @@ export class ShopProductGridComponent implements OnInit {
                 this.Products = data.Products.sort((a, b) => a.Order < b.Order ? 1 : -1);
                 const Cells: GridCell[] = [];
                 for (let i = 0; i < this.PageNumber * this.PageCount; i++)
-                    Cells.push(new GridCell("", "", "", "", "", [],"",""));
+                    Cells.push(new GridCell("", "", "", "", "", [],"","", [],[]));
                 this.Products.forEach(prd => {
                     const Cell: GridCell = {
                         Title: prd.Name,
                         ShortDescription: prd.ShortDescription,
-                        ImageUrl: this.GetImage(prd.ImagesUrls),
+                        ImageUrl: ShopHelper.GetImage(prd.ImagesUrls),
                         Link: this.BaseUrl + prd.Slug,
                         Alt: prd.Name + " - " + prd.ShortDescription,
-                        Prices: this.GetPrices(prd),
+                        Prices: ShopHelper.GetPrices(prd, this.CurrentShippingType),
                         Quantity: prd.WHQTY,
-                        Description: prd.Description
+                        Description: prd.Description,
+                        PriceNames: ShopHelper.GetPriceNames(prd),
+                        PricePermissions: prd.PricePermissions
                     };
                     Cells.push(Cell);
                 });
@@ -130,14 +133,6 @@ export class ShopProductGridComponent implements OnInit {
         }
     }
 
-    private GetImage(ImageUrls: Array<string>): string {
-        if (Array.isArray(ImageUrls) && ImageUrls.length > 0) {
-            const SortedImageUrls = ImageUrls.sort((a, b) => a.substring(a.lastIndexOf("_")).localeCompare(b.substring(b.lastIndexOf("_"))));
-            return Constant.ImageHost + SortedImageUrls[0];
-        } else
-            return Constant.ImageHost + Constant.DefaultImageFileName;
-    }
-
     private SetGridStyle() {
         this.ViewModel.CellsPerRow = 2;
         this.ViewModel.MaxRowPerPage = 6;
@@ -150,22 +145,5 @@ export class ShopProductGridComponent implements OnInit {
         }
     }
 
-    private GetPrices(Product: ProductModel): (number | undefined)[] {
-        const Prices: (number | undefined)[] = [];
-        switch (this.CurrentShippingType.trim().toLowerCase()) {
-            case "direct-container-from-china":
-                Prices.push(Product.Prices[0].Value);
-                break;
-            case "sacramento-ca-warehouse":
-                Prices.push(Product.Prices[1].Value);
-                if (Product.Prices.length > 2)
-                    Prices.push(Product.Prices[2].Value);
-                break;
-            case "mixed-container-from-sacramento":
-                Prices.push(Product.Prices[3].Value);
-                break;
-        }
-        return Prices;
-    }
 
 }

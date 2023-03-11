@@ -30,6 +30,8 @@ import { GroupComponent } from './modules/shop/components/group/group.component'
 import { ShopProductGridComponent } from './modules/shop/components/shop-product-grid/shop-product-grid.component';
 import { PriceListDownloadDialogComponent } from './modules/price-list/components/price-list-download-dialog/price-list-download-dialog.component';
 import { ShoppingCartComponent } from './modules/shopping-cart/shopping-cart.component';
+import { ProductDetailsComponent } from './modules/shop/components/product-details/product-details.component';
+import { HorizontalSliderComponent } from './shared/components/horizontal-slider/horizontal-slider.component';
 
 const appRoutes: Routes = [
     {path: '', component: HomeComponent},
@@ -42,7 +44,8 @@ const appRoutes: Routes = [
     {path: 'shop', component: ShopComponent},
     //{path: 'shop/:shippingType', component: ShopComponent},
     //{path: 'shop/:shippingType/:group', component: ShopComponent},
-    {path: 'shop/:group', component: ShopComponent}
+    {path: 'shop/:group', component: ShopComponent},
+    {path: 'shop/:group/:slug', component: ProductDetailsComponent}
 ];
 
 @NgModule({
@@ -71,7 +74,9 @@ const appRoutes: Routes = [
         GroupComponent,
         ShopProductGridComponent,
         PriceListDownloadDialogComponent,
-        ShoppingCartComponent
+        ShoppingCartComponent,
+        ProductDetailsComponent,
+        HorizontalSliderComponent
     ],
     imports: [
         BrowserModule,

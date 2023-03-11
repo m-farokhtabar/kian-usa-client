@@ -5,5 +5,6 @@ export class VerticalMenuModel {
 
 export class VerticalLinkModel {
     public Title: string = "";
+    public Page: string = "";
     public Url: string = "";
 }

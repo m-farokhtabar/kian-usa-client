@@ -65,7 +65,9 @@ export class GroupGridFilterComponent implements OnInit {
                     Alt: Cat.Name + " - " + Cat.ShortDescription,
                     Prices: [],
                     Quantity: "",
-                    Description: ""
+                    Description: "",
+                    PriceNames: [],
+                    PricePermissions: []
                 };
                 Cells.push(Cell);
             }
@@ -79,7 +81,9 @@ export class GroupGridFilterComponent implements OnInit {
                 Alt: this.SelectedTags.toString(),
                 Prices: [],
                 Quantity: "",
-                Description: ""
+                Description: "",
+                PriceNames: [],
+                PricePermissions: []
             };
             Cells.unshift(Cell);
         }

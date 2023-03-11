@@ -11,14 +11,14 @@
                                   [DefaultImage]="DefaultImageSlider" [Sliders]="SliderImages[Idx]"></image-slider>
                 </div>
                 <div class="col-lg-5 col-md-12 col-sm-12 col-12">
-                    <product-price-table [CategoryName]="Category.Name" [CategorySlug]="Category.Slug"
+                    <product-price-table [CategoryName]="Category.Name" [CategorySlug]="Category.Slug" [Category]="Category"
                                          [products]="Products[Idx]" (CurrentOrdersCreated)="OnAddOrders($event)"></product-price-table>
                     <div>
                         <!--<a [href]="GetCurrentCategoryCatalogUrl(Idx)" target="_blank"-->
                         <!--class="btn btn-light btn-outline-secondary btn-sm me-1 mb-1 SmallFontSize">Download Current</a>-->
                         <button class="btn btn-light btn-outline-secondary btn-sm me-1 mb-1 SmallFontSize" type="button"
                                 data-bs-toggle="modal"
-                                [hidden]="!account.AccessToDownloadOneCatOrAllCat()[1]"
+                                [hidden]="!account.HasPermissionToButton('DownloadCat')"
                                 [attr.data-bs-target]="'#Dialog_'+ Category.Slug + '_DownloadModal'">
                             Download Current
                         </button>
@@ -26,7 +26,7 @@
                            <!--class="btn btn-light btn-outline-secondary btn-sm me-1 mb-1 SmallFontSize">Download All</a>-->
                         <button class="btn btn-light btn-outline-primary btn-sm mb-1 SmallFontSize" type="button"
                                 data-bs-toggle="modal"
-                                [hidden]="!account.AccessToEmailOneCatOrAllCat()[1]"
+                                [hidden]="!account.HasPermissionToButton('SendEmailCat')"
                                 [attr.data-bs-target]="'#Dialog_'+ Category.Slug + '_SendMailModal'">
                             Send Email
                         </button>
@@ -63,12 +63,12 @@
             <div>
                 <button class="btn btn-light btn-outline-secondary btn-sm me-1 mb-1 SmallFontSize" type="button"
                         data-bs-toggle="modal" [attr.data-bs-target]="'#Dialog_All_Cat_DownloadModal'"
-                        [hidden]="!account.AccessToDownloadOneCatOrAllCat()[0]">
+                        [hidden]="!account.HasPermissionToButton('DownloadAllCat')">
                     Download Catalog of Categories
                 </button>
                 <button class="btn btn-light btn-outline-primary btn-sm mb-1 SmallFontSize" type="button"
                         data-bs-toggle="modal" [attr.data-bs-target]="'#Dialog_All_Cat_SendMailModal'"
-                        [hidden]="!account.AccessToEmailOneCatOrAllCat()[0]">
+                        [hidden]="!account.HasPermissionToButton('SendEmailAllCat')">
                     Send Catalog of Categories by Email
                 </button>
                 <app-send-products-catalog-by-email-dialog [CategoryName]="'All'"

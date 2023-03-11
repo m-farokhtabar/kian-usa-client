@@ -10,6 +10,7 @@ import {CellStyle, GridCell, GridViewmodel} from "../../shared/components/grid/v
 import {Constant} from "../../shared/helper/constant";
 import {FilterGrpcService} from "../../core/services/filter-grpc.service";
 import {FilterModel} from "../../core/models/filter/filter.model";
+import {OrderModel} from "../../core/models/Order/order-model";
 
 @Component({
     selector: 'app-shop',
@@ -38,10 +39,11 @@ export class ShopComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.accSub = this.account.UserToken.subscribe(acc => {
-            if (!acc || acc == "")
+            if (!acc || acc == "" || !this.account.HasPermissionToPage("Shop"))
                 this.router.navigateByUrl('/');
         });
         this.account.IsValid();
+
         this.LoadData();
         this.route.queryParams.subscribe(() => {
             this.sharedData.SetMenuStatus(false);
@@ -142,7 +144,9 @@ export class ShopComponent implements OnInit, OnDestroy {
                         Alt: Cat.Name + " - " + Cat.ShortDescription,
                         Prices: [],
                         Quantity: "",
-                        Description: Cat.Description
+                        Description: Cat.Description,
+                        PriceNames: [],
+                        PricePermissions: []
                     };
                     Cells.push(Cell);
                 }

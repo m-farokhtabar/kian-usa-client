@@ -7,18 +7,22 @@ export class MenuHelper{
             Links: [
                 {
                     Title: "About US",
+                    Page: "About US",
                     Url: "/about-us"
                 },
                 {
                     Title: "Visit Us at Market",
+                    Page: "Visit Us at Market",
                     Url: "/visit-us-at-market"
                 },
                 {
                     Title: "Privacy Policy",
+                    Page: "Privacy Policy",
                     Url: "/privacy-policy"
                 },
                 {
                     Title: "Contact US",
+                    Page: "Contact US",
                     Url: "/contact-us"
                 }
             ]
@@ -30,15 +34,18 @@ export class MenuHelper{
             Links: [
                 {
                     Title: "New Customer",
-                    Url: "/"
+                    Page: "New Customer",
+                    Url: "/new-customer"
                 },
                 {
                     Title: "Shipping Programs",
+                    Page: "Shipping Programs",
                     Url: "/shipping-programs"
                 },
                 {
                     Title: "Claim Policy",
-                    Url: "/"
+                    Page: "Claim Policy",
+                    Url: "/claim-policy"
                 }
             ]
         };

@@ -221,7 +221,7 @@ if (goog.DEBUG && !COMPILED) {
  * @private {!Array<number>}
  * @const
  */
-proto.CategoryResponseMessage.repeatedFields_ = [6,7,8,10,11];
+proto.CategoryResponseMessage.repeatedFields_ = [6,7,8,10,11,12];
 
 
 
@@ -267,7 +267,8 @@ proto.CategoryResponseMessage.toObject = function(includeInstance, msg) {
     proto.ChildrenCategoryResponseMessage.toObject, includeInstance),
     order: jspb.Message.getFieldWithDefault(msg, 9, 0),
     imagesurlList: (f = jspb.Message.getRepeatedField(msg, 10)) == null ? undefined : f,
-    tagsList: (f = jspb.Message.getRepeatedField(msg, 11)) == null ? undefined : f
+    tagsList: (f = jspb.Message.getRepeatedField(msg, 11)) == null ? undefined : f,
+    securitiesList: (f = jspb.Message.getRepeatedField(msg, 12)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -350,6 +351,10 @@ proto.CategoryResponseMessage.deserializeBinaryFromReader = function(msg, reader
     case 11:
       var value = /** @type {string} */ (reader.readString());
       msg.addTags(value);
+      break;
+    case 12:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addSecurities(value);
       break;
     default:
       reader.skipField();
@@ -457,6 +462,13 @@ proto.CategoryResponseMessage.serializeBinaryToWriter = function(message, writer
   if (f.length > 0) {
     writer.writeRepeatedString(
       11,
+      f
+    );
+  }
+  f = message.getSecuritiesList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      12,
       f
     );
   }
@@ -756,6 +768,43 @@ proto.CategoryResponseMessage.prototype.addTags = function(value, opt_index) {
  */
 proto.CategoryResponseMessage.prototype.clearTagsList = function() {
   return this.setTagsList([]);
+};
+
+
+/**
+ * repeated string Securities = 12;
+ * @return {!Array<string>}
+ */
+proto.CategoryResponseMessage.prototype.getSecuritiesList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 12));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.CategoryResponseMessage} returns this
+ */
+proto.CategoryResponseMessage.prototype.setSecuritiesList = function(value) {
+  return jspb.Message.setField(this, 12, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.CategoryResponseMessage} returns this
+ */
+proto.CategoryResponseMessage.prototype.addSecurities = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 12, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.CategoryResponseMessage} returns this
+ */
+proto.CategoryResponseMessage.prototype.clearSecuritiesList = function() {
+  return this.setSecuritiesList([]);
 };
 
 

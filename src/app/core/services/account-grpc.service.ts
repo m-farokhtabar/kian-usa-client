@@ -9,13 +9,14 @@ import {
 import {AuthService} from "../models/account/auth.service";
 import {CustomersOfRepModel} from "../models/account/customers-of-rep-model";
 import {ServiceHelper} from "./service.helper";
+import {AccountModel} from "../models/account/account.model";
 
 export class AccountGrpcService {
     constructor(private account: AuthService | null) {
     }
 
-    Login(Username: string, Password: string): Promise<string> {
-        return new Promise<string>((resolve, reject) => {
+    Login(Username: string, Password: string): Promise<AccountModel> {
+        return new Promise<AccountModel>((resolve, reject) => {
             const client = new AccountSrcClient(Constant.ServiceHost);
             const request = new LoginRequestMessage();
             request.setUsername(Username);
@@ -28,7 +29,7 @@ export class AccountGrpcService {
                 if (response == null) {
                     return reject("Server does not response properly.");
                 }
-                return resolve(response.getToken());
+                return resolve(new AccountModel(response.getToken(), response.getPagesList(), response.getButtonsList()));
             });
         });
     }

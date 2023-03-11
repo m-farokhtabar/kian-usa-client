@@ -17,7 +17,7 @@ export class EmailGrpcService {
     }
 
     SendCatalog(Model: EmailCatalogModel): Promise<boolean> {
-        return new Promise<boolean>((resolve,reject) =>{
+        return new Promise<boolean>((resolve, reject) => {
             const client = new EmailSrvClient(Constant.ServiceHost);
             const request = new SendCatalogRequestMessage();
             request.setCategoryslug(Model.CategorySlug);
@@ -35,13 +35,13 @@ export class EmailGrpcService {
                     }
                     return resolve(response.getPutinemailqueue());
                 });
-            }
-            else
+            } else
                 alert("Please login.");
-        } );
+        });
     }
+
     SendCatalogWithLandedPrice(Model: EmailCatalogWithLandedPriceModel): Promise<boolean> {
-        return new Promise<boolean>((resolve,reject) =>{
+        return new Promise<boolean>((resolve, reject) => {
             const client = new EmailSrvClient(Constant.ServiceHost);
             const request = new SendCatalogWithLandedPriceRequestMessage();
             request.setCategoryslug(Model.CategorySlug);
@@ -59,13 +59,13 @@ export class EmailGrpcService {
                     }
                     return resolve(response.getPutinemailqueue());
                 });
-            }
-            else
+            } else
                 alert("Please login.");
-        } );
+        });
     }
+
     SendContactUs(Model: EmailContactusModel): Promise<boolean> {
-        return new Promise<boolean>((resolve,reject) =>{
+        return new Promise<boolean>((resolve, reject) => {
             const client = new EmailSrvClient(Constant.ServiceHost);
             const request = new SendContactUsRequestMessage();
             request.setName(Model.Name);
@@ -73,21 +73,17 @@ export class EmailGrpcService {
             request.setPhone(Model.Phone);
             request.setEmail(Model.Email);
             request.setComment(Model.Comment);
-            const metadata = ServiceHelper.CreateAuthToken(this.account);
-            if (metadata != undefined) {
-                client.sendContactUs(request, metadata, (error: ServiceError | null, response: SendResponseMessage | null) => {
-                    if (error != null) {
-                        return reject();
-                    }
-                    if (response == null) {
-                        return reject();
-                    }
-                    return resolve(response.getPutinemailqueue());
-                });
-            }
-            else
-                alert("Please login.");
-        } );
+            //const metadata = ServiceHelper.CreateAuthToken(this.account);
+            client.sendContactUs(request, (error: ServiceError | null, response: SendResponseMessage | null) => {
+                if (error != null) {
+                    return reject();
+                }
+                if (response == null) {
+                    return reject();
+                }
+                return resolve(response.getPutinemailqueue());
+            });
+        });
     }
 
 }

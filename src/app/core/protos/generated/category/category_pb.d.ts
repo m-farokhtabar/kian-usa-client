@@ -48,6 +48,11 @@ export class CategoryResponseMessage extends jspb.Message {
   setTagsList(value: Array<string>): void;
   addTags(value: string, index?: number): string;
 
+  clearSecuritiesList(): void;
+  getSecuritiesList(): Array<string>;
+  setSecuritiesList(value: Array<string>): void;
+  addSecurities(value: string, index?: number): string;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CategoryResponseMessage.AsObject;
   static toObject(includeInstance: boolean, msg: CategoryResponseMessage): CategoryResponseMessage.AsObject;
@@ -71,6 +76,7 @@ export namespace CategoryResponseMessage {
     order: number,
     imagesurlList: Array<string>,
     tagsList: Array<string>,
+    securitiesList: Array<string>,
   }
 }
 

@@ -1,3 +1,5 @@
+import {KeyValueModel} from "../../../../core/models/common/key-value.model";
+
 export class GridViewmodel {
     public Cells: GridCell[] = [];
     public CellsPerRow: number = 4;
@@ -14,9 +16,12 @@ export class GridCell {
     public ImageUrl: string;
     public Link: string;
     public Prices: (number | undefined)[];
+    public PriceNames: string[];
+    public PricePermissions : KeyValueModel[];
     public Quantity: string;
 
-    constructor(Title: string, Alt: string, ImageUrl: string, Link: string, ShortDescription: string, Prices: (number | undefined)[], Quantity: string, Description: string) {
+    constructor(Title: string, Alt: string, ImageUrl: string, Link: string, ShortDescription: string, Prices: (number | undefined)[], Quantity: string, Description: string,
+                PriceNames : string[], PricePermissions : KeyValueModel[]) {
         this.Title = Title;
         this.Alt = Alt;
         this.ImageUrl = ImageUrl;
@@ -25,6 +30,8 @@ export class GridCell {
         this.Prices = Prices;
         this.Quantity = Quantity;
         this.Description = Description;
+        this.PriceNames = PriceNames;
+        this.PricePermissions = PricePermissions;
     }
 }
 

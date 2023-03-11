@@ -116,7 +116,7 @@ proto.ProductOrder.prototype.toObject = function(opt_includeInstance) {
  */
 proto.ProductOrder.toObject = function(includeInstance, msg) {
   var f, obj = {
-    productid: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    productslug: jspb.Message.getFieldWithDefault(msg, 1, ""),
     count: jspb.Message.getFloatingPointFieldWithDefault(msg, 2, 0.0)
   };
 
@@ -156,7 +156,7 @@ proto.ProductOrder.deserializeBinaryFromReader = function(msg, reader) {
     switch (field) {
     case 1:
       var value = /** @type {string} */ (reader.readString());
-      msg.setProductid(value);
+      msg.setProductslug(value);
       break;
     case 2:
       var value = /** @type {number} */ (reader.readDouble());
@@ -191,7 +191,7 @@ proto.ProductOrder.prototype.serializeBinary = function() {
  */
 proto.ProductOrder.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getProductid();
+  f = message.getProductslug();
   if (f.length > 0) {
     writer.writeString(
       1,
@@ -209,10 +209,10 @@ proto.ProductOrder.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional string ProductId = 1;
+ * optional string ProductSlug = 1;
  * @return {string}
  */
-proto.ProductOrder.prototype.getProductid = function() {
+proto.ProductOrder.prototype.getProductslug = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
@@ -221,7 +221,7 @@ proto.ProductOrder.prototype.getProductid = function() {
  * @param {string} value
  * @return {!proto.ProductOrder} returns this
  */
-proto.ProductOrder.prototype.setProductid = function(value) {
+proto.ProductOrder.prototype.setProductslug = function(value) {
   return jspb.Message.setProto3StringField(this, 1, value);
 };
 
@@ -290,7 +290,9 @@ proto.OrderRequestMessage.toObject = function(includeInstance, msg) {
     tariff: jspb.Message.getFieldWithDefault(msg, 5, 0),
     ordersList: jspb.Message.toObjectList(msg.getOrdersList(),
     proto.ProductOrder.toObject, includeInstance),
-    description: jspb.Message.getFieldWithDefault(msg, 7, "")
+    confirmedby: jspb.Message.getFieldWithDefault(msg, 7, ""),
+    ponumber: jspb.Message.getFieldWithDefault(msg, 8, ""),
+    description: jspb.Message.getFieldWithDefault(msg, 9, "")
   };
 
   if (includeInstance) {
@@ -353,6 +355,14 @@ proto.OrderRequestMessage.deserializeBinaryFromReader = function(msg, reader) {
       msg.addOrders(value);
       break;
     case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setConfirmedby(value);
+      break;
+    case 8:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPonumber(value);
+      break;
+    case 9:
       var value = /** @type {string} */ (reader.readString());
       msg.setDescription(value);
       break;
@@ -428,10 +438,24 @@ proto.OrderRequestMessage.serializeBinaryToWriter = function(message, writer) {
       proto.ProductOrder.serializeBinaryToWriter
     );
   }
-  f = message.getDescription();
+  f = message.getConfirmedby();
   if (f.length > 0) {
     writer.writeString(
       7,
+      f
+    );
+  }
+  f = message.getPonumber();
+  if (f.length > 0) {
+    writer.writeString(
+      8,
+      f
+    );
+  }
+  f = message.getDescription();
+  if (f.length > 0) {
+    writer.writeString(
+      9,
       f
     );
   }
@@ -567,10 +591,10 @@ proto.OrderRequestMessage.prototype.clearOrdersList = function() {
 
 
 /**
- * optional string Description = 7;
+ * optional string ConfirmedBy = 7;
  * @return {string}
  */
-proto.OrderRequestMessage.prototype.getDescription = function() {
+proto.OrderRequestMessage.prototype.getConfirmedby = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
 };
 
@@ -579,8 +603,44 @@ proto.OrderRequestMessage.prototype.getDescription = function() {
  * @param {string} value
  * @return {!proto.OrderRequestMessage} returns this
  */
-proto.OrderRequestMessage.prototype.setDescription = function(value) {
+proto.OrderRequestMessage.prototype.setConfirmedby = function(value) {
   return jspb.Message.setProto3StringField(this, 7, value);
+};
+
+
+/**
+ * optional string PoNumber = 8;
+ * @return {string}
+ */
+proto.OrderRequestMessage.prototype.getPonumber = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.OrderRequestMessage} returns this
+ */
+proto.OrderRequestMessage.prototype.setPonumber = function(value) {
+  return jspb.Message.setProto3StringField(this, 8, value);
+};
+
+
+/**
+ * optional string Description = 9;
+ * @return {string}
+ */
+proto.OrderRequestMessage.prototype.getDescription = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 9, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.OrderRequestMessage} returns this
+ */
+proto.OrderRequestMessage.prototype.setDescription = function(value) {
+  return jspb.Message.setProto3StringField(this, 9, value);
 };
 
 
