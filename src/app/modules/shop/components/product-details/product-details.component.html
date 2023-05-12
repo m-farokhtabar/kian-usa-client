@@ -1,0 +1,49 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-6 col-md-12 col-sm-12 col-12 pt-5">
+            <image-slider [ShowDialogForFullScreen]="false" [SliderName]="'Slider_' + Product.Slug"
+                          [DefaultAlt]="'Kian USA ' + Product.Name + ' ' + Product.Description"
+                          [DefaultImage]="DefaultImageSlider" [Sliders]="Sliders"></image-slider>
+        </div>
+        <div class="col-lg-6 col-md-12 col-sm-12 col-12 pt-5">
+            <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
+                 aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a [routerLink]="['/shop']">Shop</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a
+                            [routerLink]="['/shop/' + Group]">{{Group}}</a></li>
+                </ol>
+            </nav>
+            <h1 class="display-5">{{Product.Name}}</h1>
+            <h3>Product Description</h3>
+            <p>{{Product.ProductDescription}}</p>
+            <h3>Weight & Dimensions</h3>
+            <ul>
+                <li *ngIf="Product.Weight">Overall Weight: {{Product.Weight}} lbs</li>
+                <li *ngIf="Product.Cube">Overall Cube: {{Product.Cube}}</li>
+                <li *ngIf="Product.W && Product.D && Product.H">Overall
+                    Dimension: {{Tools.ConvertDataToProperString(Product.W) + 'x' + Tools.ConvertDataToProperString(Product.D) + 'x' + Tools.ConvertDataToProperString(Product.H) + 'H'}}</li>
+                <li *ngIf="Product.BoxW && Product.BoxD && Product.BoxH">Overall
+                    Dimension(Box): {{Tools.ConvertDataToProperString(Product.BoxW) + 'x' + Tools.ConvertDataToProperString(Product.BoxD) + 'x' + Tools.ConvertDataToProperString(Product.BoxH) + 'H'}}</li>
+            </ul>
+            <ng-container *ngIf="CanShowFeatures(Product.Features)">
+                <h3>Features</h3>
+                <ul>
+                    <ng-container *ngFor="let feature of Product.Features">
+                        <li *ngIf="feature && feature.Value">{{feature.Name}}: {{feature.Value}}</li>
+                    </ng-container>
+                </ul>
+            </ng-container>
+            <product-price-table [Category]="null" [CategoryName]="Product.Name" [CategorySlug]="Product.Slug" [UseSmallFontSize]="false"
+                                 [ShowDownloadButton]="false" [ShowEmailButton]="false" [products]="[Product]"
+                                 (CurrentOrdersCreated)="OnAddOrders($event)"></product-price-table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <horizontal-slider [ZoomOnImageWhenMouseOver]="true" [Cells]="RelatedProducts"
+                               [ZoomOnImageWhenMouseOver]="true" [UseDescription]="true"></horizontal-slider>
+        </div>
+    </div>
+</div>
+<app-shopping-cart [NewOrders]="AddOrders"></app-shopping-cart>

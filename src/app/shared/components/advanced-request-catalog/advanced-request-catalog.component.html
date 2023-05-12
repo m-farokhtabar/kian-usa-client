@@ -1,0 +1,121 @@
+<div class="modal fade" [id]="'Dialog_AdvancedRequestCatalog'" tabindex="-1" [attr.aria-labelledby]="'#Dialog_AdvancedRequestCatalogModalLabel'" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered text-start">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Advanced {{Type}} catalog</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form #AdvancedRequestForm="ngForm" name="sendCatalogByEmailForm" (ngSubmit)="OnSubmit(AdvancedRequestForm)" class="needs-validation">
+                <div class="modal-body">
+                    <div class="row pb-2">
+                        <label class="form-label col-sm-4">Choosing type</label>
+                        <div class="col-sm-8 text-start">
+                            <input  [(ngModel)]="CategorySelectedType" [checked]="CategorySelectedType == 0"  class="me-1" name="ChoosingType" type="radio" [value]="0"/><span class="pe-3">All</span>
+                            <input  [(ngModel)]="CategorySelectedType" [checked]="CategorySelectedType == 1" class="me-1" name="ChoosingType" type="radio" [value]="1"/><span>Individual</span>
+                        </div>
+                    </div>
+                    <div class="row pb-2" [hidden]="CategorySelectedType == 0">
+                        <label class="form-label col-sm-4">Select categories</label>
+                        <div class="col-sm-8 text-start">
+                            <ng-select
+                                    [items]="Categories"
+                                    bindLabel="name"
+                                    placeholder="Select categories"
+                                    appendTo="body"
+                                    ngModel
+                                    name="SelectedCategories"
+                                    [multiple]="true"
+                                    [disabled]="CategorySelectedType == 0" required>
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="row pb-2" [hidden]="CategorySelectedType == 1" >
+                        <label class="form-label col-sm-4">Select factories</label>
+                        <div class="col-sm-8 text-start">
+                            <ng-select
+                                    [items]="Factories"
+                                    bindLabel="name"
+                                    placeholder="Select factories"
+                                    appendTo="body"
+                                    ngModel
+                                    name="SelectedFactories"
+                                    [multiple]="true" [disabled]="CategorySelectedType == 1">
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="row pb-2">
+                        <label class="form-label col-sm-4">Select prices</label>
+                        <div class="col-sm-8 text-start">
+                            <ng-select
+                                    [items]="Prices"
+                                    bindLabel="name"
+                                    placeholder="Select prices"
+                                    appendTo="body"
+                                    ngModel
+                                    name="SelectedPrices"
+                                    (ngModelChange) = "IfSelectLandedPriceShowTextPrice($event);IsFOBPriceSelected($event);"
+                                    [multiple]="true">
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="row pb-2" [hidden]="!IsLandedPriceTextBoxEnabled">
+                        <label class="form-label col-sm-4" for="LandedPriceValue">Cost:</label>
+                        <div class="col-sm-8">
+                            <input ngModel min="1" max="99999999" type="number" name="LandedPriceValue" #LandedPriceValue="ngModel" class="form-control" id="LandedPriceValue" pattern="[0-9]+"
+                                   [required]="IsLandedPriceTextBoxEnabled" [disabled]="!IsLandedPriceTextBoxEnabled"/>
+                            <div class="invalid-feedback" *ngIf="LandedPriceValue.touched && LandedPriceValue.invalid">
+                                <div *ngIf="LandedPriceValue.errors?.['required']">Please input cost.</div>
+                                <div *ngIf="LandedPriceValue.errors?.['max']">cost should be less than 99999999.</div>
+                                <div *ngIf="LandedPriceValue.errors?.['min']">cost should be more than 1.</div>
+                                <div *ngIf="LandedPriceValue.errors?.['pattern']">Cost is not valid. Valid format is just digits without point</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pb-2" [hidden]="Type=='download'">
+                        <label class="form-label col-sm-4" for="AdvancedCustomerFullName">Customer name:</label>
+                        <div class="col-sm-8">
+                            <input ngModel maxlength="100" name="AdvancedCustomerFullName" #AdvancedCustomerFullName="ngModel"  class="form-control" id="AdvancedCustomerFullName" type="text"
+                                   [disabled]="Processing || Type=='download'" required/>
+                            <div class="invalid-feedback" *ngIf="AdvancedCustomerFullName.touched && AdvancedCustomerFullName.invalid">
+                                <div *ngIf="AdvancedCustomerFullName.errors?.['required']">Please input customer name.</div>
+                                <div *ngIf="AdvancedCustomerFullName.errors?.['maxlength']">Customer name should be less than 100 character.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pb-2" [hidden]="Type=='download'">
+                        <label class="form-label col-sm-4" for="AdvancedCustomerEmail">Customer email:</label>
+                        <div class="col-sm-8">
+                            <input ngModel maxlength="150" name="AdvancedCustomerEmail" #AdvancedCustomerEmail="ngModel" placeholder="name@example.com" class="form-control" id="AdvancedCustomerEmail" type="email"
+                                   [disabled]="Processing || Type=='download'"  email required/>
+                            <div class="invalid-feedback" *ngIf="AdvancedCustomerEmail.touched && AdvancedCustomerEmail.invalid">
+                                <div *ngIf="AdvancedCustomerEmail.errors?.['required']">Please input customer email.</div>
+                                <div *ngIf="AdvancedCustomerEmail.errors?.['maxlength']">Customer email should be less than {{AdvancedCustomerEmail.errors?.['maxlength'].requiredLength}} character.</div>
+                                <div *ngIf="AdvancedCustomerEmail.errors?.['email']">Customer email is not valid.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pb-2" [hidden]="AvaialbleItemsNeedsToBeDisabled" >
+                        <div class="col-12">
+                            <input ngModel name="AvaialbleItems" type="checkbox" value="1" class="me-2" [disabled]="AvaialbleItemsNeedsToBeDisabled"><label class="form-label">Available items</label>
+                        </div>
+                    </div>
+                    <div class="row pb-2" [hidden]="Type=='download'">
+                        <div class="col-12">
+                            <input ngModel name="IncludeExtraPictures" type="checkbox" value="1" class="me-2"><label class="form-label">Include the extra pictures just for email</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" #ModelCloseButton>Close</button>
+                    <button class="btn btn-primary" type="submit" [disabled]="!AdvancedRequestForm.valid" [hidden]="Type!='download'|| Processing || DownloadLinkIsReady">Download Request</button>
+                    <button class="btn btn-primary" type="submit" [disabled]="!AdvancedRequestForm.valid" [hidden]="Type!='email'|| Processing || DownloadLinkIsReady">Send Mail</button>
+                    <button class="btn btn-primary" type="button" disabled [hidden]="!Processing" >
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Processing...
+                    </button>
+                    <a [href]="DownloadUrl" class="btn btn-primary" target="_blank" #DownloadLink (click)="OnDownloadButton()" [hidden]="!DownloadLinkIsReady">Download</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

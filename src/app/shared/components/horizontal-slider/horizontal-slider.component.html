@@ -1,0 +1,64 @@
+<div style="overflow-x: auto;white-space: nowrap;cursor:pointer;"
+     id="hor-slider-container"
+     #HorSliderContainer
+     (mousedown)="OnMouseDown($event, HorSliderContainer)"
+     (mouseup)="OnMouseUp(HorSliderContainer)"
+     (mouseleave)="OnMouseLeave(HorSliderContainer)"
+     (mousemove)="OnMouseMoveEvent($event, HorSliderContainer)">
+    <div *ngFor="let Cell of Cells" style="text-align: center;max-width: 300px; height: auto; display: inline-block;" class="pt-5 me-3 pb-1">
+        <a style="color:#000;text-decoration: none;" (click)="OnMouseClick($event, Cell.Link)">
+            <ng-container *ngIf="!IsThemeCard(); else CardTheme">
+                <h5 *ngIf="IsThemeUp()" class="card-title">{{Cell.Title}}</h5>
+                <img class="shadow-sm rounded  img-fluid" [src]="Cell.ImageUrl" [alt]="Cell.Alt"/>
+                <h5 *ngIf="!IsThemeUp()" style="font-weight: normal;">{{Cell.Title}}</h5>
+            </ng-container>
+            <ng-template #CardTheme>
+                <div class="card shadow-sm overflow-hidden">
+                    <div class="overflow-hidden">
+                        <img [src]="Cell.ImageUrl" class="card-img-top img-zoom" [alt]="Cell.Alt"
+                             *ngIf="ZoomOnImageWhenMouseOver; else imgWithoutZoom">
+                        <ng-template #imgWithoutZoom>
+                            <img [src]="Cell.ImageUrl" class="card-img-top" [alt]="Cell.Alt">
+                        </ng-template>
+                    </div>
+                    <ng-container *ngIf="!IsThemeShopCard(); else ShopCardTheme">
+                        <div class="card-body">
+                            <h5 class="card-title">{{Cell.Title}}</h5>
+                            <p class="card-text" *ngIf="UseDescription; else ShortDescription">
+                                {{Cell.Description != "" ? Cell.Description : "&nbsp;"}}
+                            </p>
+                            <ng-template #ShortDescription>
+                                <p class="card-text"
+                                   [ngClass]="{'AlertShortDescription':IsUseShortDescriptionAsAnAlert}"
+                                   *ngIf="IsThemeCardWithDescription()">{{Cell.ShortDescription != "" ? Cell.ShortDescription : "&nbsp;"}}</p>
+                            </ng-template>
+                        </div>
+                    </ng-container>
+                    <ng-template #ShopCardTheme>
+                        <div class="card-body">
+                            <div>
+                                <h5 class="card-title text-start float-start">{{Cell.Title}}</h5>
+                                <span class="float-end small" style="color:navy;">{{Cell.Quantity}}</span>
+                            </div>
+                            <p style="clear: both;" class="card-text text-start"
+                               [ngClass]="{'AlertShortDescription':IsUseShortDescriptionAsAnAlert}"
+                               *ngIf="!UseDescription; else ShowShortDescription">
+                                {{Cell.ShortDescription != "" ? Cell.ShortDescription : "&nbsp;"}}
+                            </p>
+                            <ng-template #ShowShortDescription>
+                                <p style="clear: both;text-overflow: ellipsis;overflow:hidden;" class="card-text text-start" *ngIf="UseDescription">
+                                    {{Cell.Description != "" ? Cell.Description : "&nbsp;"}}
+                                </p>
+                            </ng-template>
+                            <h6 style="clear: both;" class="text-start"
+                                [ngClass]="{'text-danger':HasMoreThanOnePrice(Cell,account)}">&nbsp;{{GetCurrentPrice(Cell,account)}} <span
+                                    *ngIf="HasMoreThanOnePrice(Cell,account);">&nbsp;&nbsp;<span
+                                    class="text-dark text-decoration-line-through">{{GetFirstPrice(Cell, account)}}</span></span>
+                            </h6>
+                        </div>
+                    </ng-template>
+                </div>
+            </ng-template>
+        </a>
+    </div>
+</div>
