@@ -1,5 +1,6 @@
 import {Constant} from "../../shared/helper/constant";
 import {
+    SendAdvancedCatalogRequest,
     SendCatalogRequestMessage, SendCatalogWithLandedPriceRequestMessage,
     SendContactUsRequestMessage,
     SendResponseMessage
@@ -11,6 +12,7 @@ import {AuthService} from "../models/account/auth.service";
 import {ServiceHelper} from "./service.helper";
 import {EmailContactusModel} from "../models/email/email.contactus.model";
 import {EmailCatalogWithLandedPriceModel} from "../models/email/email-catalog-with-landed-price.model";
+import {EmailAdvancedCatalogModel} from "../models/email/email-advanced-catalog-model";
 
 export class EmailGrpcService {
     constructor(private account: AuthService) {
@@ -85,5 +87,31 @@ export class EmailGrpcService {
             });
         });
     }
-
+    SendAdvanceCatalog(Model: EmailAdvancedCatalogModel): Promise<boolean> {
+        return new Promise<boolean>((resolve, reject) => {
+            const client = new EmailSrvClient(Constant.ServiceHost);
+            const request = new SendAdvancedCatalogRequest();
+            request.setCategoriesslugList(Model.CategoriesSlug);
+            request.setFactoriesList(Model.Factories);
+            request.setPricesList(Model.Prices);
+            request.setJustavailable(Model.JustAvailable);
+            request.setLandedprice(Model.LandedPrice);
+            request.setCustomerfullname(Model.CustomerFullName);
+            request.setCustomeremail(Model.CustomerEmail);
+            request.setIncludeextrapictures(Model.IncludeExtraPictures);
+            const metadata = ServiceHelper.CreateAuthToken(this.account);
+            if (metadata != undefined) {
+                client.sendCatalogAdvanced(request, metadata, (error: ServiceError | null, response: SendResponseMessage | null) => {
+                    if (error != null) {
+                        return reject();
+                    }
+                    if (response == null) {
+                        return reject();
+                    }
+                    return resolve(response.getPutinemailqueue());
+                });
+            } else
+                alert("Please login.");
+        });
+    }
 }

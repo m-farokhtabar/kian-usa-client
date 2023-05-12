@@ -29,7 +29,10 @@ export class PriceListComponent implements OnInit, OnDestroy {
     private RandomNumberForUrl = Math.random();
     JustShowGroupList: boolean = true;
     private urlSubscription: Subscription | null = null;
-
+    public openAdvancedRequestDialogForDownloadOrEmail:string = "download";
+    public AdvReqCatNeedsToReset = 0;
+    public DownloadDialogNeedsToReset = 0;
+    public EmailDialogNeedsToReset = 0;
 
     constructor(private router: Router, private route: ActivatedRoute, public account: AuthService, private sharedData: SharedDataService) {
     }

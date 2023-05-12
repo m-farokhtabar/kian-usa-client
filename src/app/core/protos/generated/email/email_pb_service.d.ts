@@ -13,6 +13,15 @@ type EmailSrvSendCatalog = {
   readonly responseType: typeof email_pb.SendResponseMessage;
 };
 
+type EmailSrvSendCatalogAdvanced = {
+  readonly methodName: string;
+  readonly service: typeof EmailSrv;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof email_pb.SendAdvancedCatalogRequest;
+  readonly responseType: typeof email_pb.SendResponseMessage;
+};
+
 type EmailSrvSendCatalogWithLandedPrice = {
   readonly methodName: string;
   readonly service: typeof EmailSrv;
@@ -34,6 +43,7 @@ type EmailSrvSendContactUs = {
 export class EmailSrv {
   static readonly serviceName: string;
   static readonly SendCatalog: EmailSrvSendCatalog;
+  static readonly SendCatalogAdvanced: EmailSrvSendCatalogAdvanced;
   static readonly SendCatalogWithLandedPrice: EmailSrvSendCatalogWithLandedPrice;
   static readonly SendContactUs: EmailSrvSendContactUs;
 }
@@ -77,6 +87,15 @@ export class EmailSrvClient {
   ): UnaryResponse;
   sendCatalog(
     requestMessage: email_pb.SendCatalogRequestMessage,
+    callback: (error: ServiceError|null, responseMessage: email_pb.SendResponseMessage|null) => void
+  ): UnaryResponse;
+  sendCatalogAdvanced(
+    requestMessage: email_pb.SendAdvancedCatalogRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: email_pb.SendResponseMessage|null) => void
+  ): UnaryResponse;
+  sendCatalogAdvanced(
+    requestMessage: email_pb.SendAdvancedCatalogRequest,
     callback: (error: ServiceError|null, responseMessage: email_pb.SendResponseMessage|null) => void
   ): UnaryResponse;
   sendCatalogWithLandedPrice(

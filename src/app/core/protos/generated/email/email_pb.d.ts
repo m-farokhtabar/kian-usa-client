@@ -123,3 +123,57 @@ export namespace SendContactUsRequestMessage {
   }
 }
 
+export class SendAdvancedCatalogRequest extends jspb.Message {
+  clearCategoriesslugList(): void;
+  getCategoriesslugList(): Array<string>;
+  setCategoriesslugList(value: Array<string>): void;
+  addCategoriesslug(value: string, index?: number): string;
+
+  clearPricesList(): void;
+  getPricesList(): Array<number>;
+  setPricesList(value: Array<number>): void;
+  addPrices(value: number, index?: number): number;
+
+  clearFactoriesList(): void;
+  getFactoriesList(): Array<string>;
+  setFactoriesList(value: Array<string>): void;
+  addFactories(value: string, index?: number): string;
+
+  getLandedprice(): number;
+  setLandedprice(value: number): void;
+
+  getJustavailable(): boolean;
+  setJustavailable(value: boolean): void;
+
+  getCustomerfullname(): string;
+  setCustomerfullname(value: string): void;
+
+  getCustomeremail(): string;
+  setCustomeremail(value: string): void;
+
+  getIncludeextrapictures(): boolean;
+  setIncludeextrapictures(value: boolean): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SendAdvancedCatalogRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: SendAdvancedCatalogRequest): SendAdvancedCatalogRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: SendAdvancedCatalogRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SendAdvancedCatalogRequest;
+  static deserializeBinaryFromReader(message: SendAdvancedCatalogRequest, reader: jspb.BinaryReader): SendAdvancedCatalogRequest;
+}
+
+export namespace SendAdvancedCatalogRequest {
+  export type AsObject = {
+    categoriesslugList: Array<string>,
+    pricesList: Array<number>,
+    factoriesList: Array<string>,
+    landedprice: number,
+    justavailable: boolean,
+    customerfullname: string,
+    customeremail: string,
+    includeextrapictures: boolean,
+  }
+}
+

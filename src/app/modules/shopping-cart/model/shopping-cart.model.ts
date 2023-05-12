@@ -14,6 +14,6 @@ export class ShoppingCartModel{
     ConfirmedBy: string = "";
     PoNumber: string = "";
     Description: string = "";
-    IsVisible: boolean = true;
-    ShoppingCartSideButtonVisible: boolean = false;
+    //IsVisible: boolean = false;
+    //ShoppingCartSideButtonVisible: boolean = true;
 }

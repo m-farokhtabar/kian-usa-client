@@ -12,6 +12,8 @@ import {ShoppingCartModel} from "./model/shopping-cart.model";
 import {OrderGrpcService} from 'src/app/core/services/order-grpc.service';
 import {SharedDataService} from "../../core/services/shareddata.service";
 import {FactoryInfo} from "./model/FactoryInfo";
+import {ActivatedRoute} from "@angular/router";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'app-shopping-cart',
@@ -34,12 +36,18 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
     PrevPriceType: number | null = 1;
     IsShoppingCartLoadFromStorage: boolean = false;
 
+    IsVisible: boolean = false;
+    ShoppingCartSideButtonVisible: boolean = true;
+    @Input()
+    FullViewMode: boolean = false;
     @Input()
     public set NewOrders(NewOrders: OrderModel[]) {
         if (Array.isArray(NewOrders) && NewOrders.length > 0) {
             this.CheckFactoriesIfPriceIsFob(NewOrders);
-            if (!this.CartModel.IsVisible)
-                this.CartModel.IsVisible = true;
+            //چون نمی خواد نمایش داده شود
+            //if (!this.CartModel.IsVisible) {
+                //this.CartModel.IsVisible = true;
+            //}
             NewOrders.forEach(x => {
                 if (x.Price[0] != undefined && this.CartModel.PriceType == 0 /*Fob*/ && this.CartModel.IOR == 1 /*IOR Customer*/){
                     x.Price[0] = (x.Price[0] + 120) / 100;
@@ -99,7 +107,16 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
 
     SendingData: boolean = false;
 
-    constructor(public account: AuthService, private ShareData: SharedDataService) {
+    private urlSubscription: Subscription | null = null;
+    constructor(private route: ActivatedRoute, public account: AuthService, private ShareData: SharedDataService) {
+        this.urlSubscription = this.route.url.subscribe((urlSegments) => {
+            this.IsVisible = false;
+            this.ShoppingCartSideButtonVisible = true;
+        });
+
+    }
+    ngOnDestroy(): void {
+        this.urlSubscription?.unsubscribe();
     }
 
     ngDoCheck() {
@@ -347,15 +364,22 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
     // }
 
     OnCloseButton() {
-        this.CartModel.IsVisible = false;
-        this.CartModel.ShoppingCartSideButtonVisible = true;
+        //this.CartModel.IsVisible = false;
+        //this.CartModel.ShoppingCartSideButtonVisible = true;
+        this.IsVisible = false;
+        this.ShoppingCartSideButtonVisible = true;
     }
 
     OnShoppingCartSideButtonClick() {
-        if (!this.CartModel.IsVisible && this.CartModel.ShoppingCartSideButtonVisible) {
-            this.CartModel.IsVisible = true;
-            this.CartModel.ShoppingCartSideButtonVisible = false;
+        if (!this.IsVisible && this.ShoppingCartSideButtonVisible) {
+            this.IsVisible = true;
+            this.ShoppingCartSideButtonVisible = false;
         }
+
+        // if (!this.CartModel.IsVisible && this.CartModel.ShoppingCartSideButtonVisible) {
+        //     this.CartModel.IsVisible = true;
+        //     this.CartModel.ShoppingCartSideButtonVisible = false;
+        // }
     }
 
     OnCancelOrders() {

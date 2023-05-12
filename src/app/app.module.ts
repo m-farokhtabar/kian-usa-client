@@ -32,6 +32,9 @@ import { PriceListDownloadDialogComponent } from './modules/price-list/component
 import { ShoppingCartComponent } from './modules/shopping-cart/shopping-cart.component';
 import { ProductDetailsComponent } from './modules/shop/components/product-details/product-details.component';
 import { HorizontalSliderComponent } from './shared/components/horizontal-slider/horizontal-slider.component';
+import { CheckOutComponent } from './modules/check-out/check-out.component';
+import { AdvancedRequestCatalogComponent } from './shared/components/advanced-request-catalog/advanced-request-catalog.component';
+import { NgSelectModule } from "@ng-select/ng-select";
 
 const appRoutes: Routes = [
     {path: '', component: HomeComponent},
@@ -45,7 +48,8 @@ const appRoutes: Routes = [
     //{path: 'shop/:shippingType', component: ShopComponent},
     //{path: 'shop/:shippingType/:group', component: ShopComponent},
     {path: 'shop/:group', component: ShopComponent},
-    {path: 'shop/:group/:slug', component: ProductDetailsComponent}
+    {path: 'shop/:group/:slug', component: ProductDetailsComponent},
+    {path: 'checkout', component: CheckOutComponent}
 ];
 
 @NgModule({
@@ -76,13 +80,16 @@ const appRoutes: Routes = [
         PriceListDownloadDialogComponent,
         ShoppingCartComponent,
         ProductDetailsComponent,
-        HorizontalSliderComponent
+        HorizontalSliderComponent,
+        CheckOutComponent,
+        AdvancedRequestCatalogComponent
     ],
     imports: [
         BrowserModule,
         RouterModule.forRoot(appRoutes),
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        NgSelectModule
     ],
     providers: [AuthService, SharedDataService],
     bootstrap: [AppComponent]

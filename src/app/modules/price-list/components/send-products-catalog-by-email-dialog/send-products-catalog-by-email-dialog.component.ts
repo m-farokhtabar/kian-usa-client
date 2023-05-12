@@ -11,9 +11,17 @@ import {EmailCatalogWithLandedPriceModel} from "../../../../core/models/email/em
     styleUrls: ['./send-products-catalog-by-email-dialog.component.css']
 })
 export class SendProductsCatalogByEmailDialogComponent implements OnInit {
+    @Input()
+    public set ResetTrigger(value:number){
+        this.SendingEmail = false;
+        this.IsLandedPriceSelected = false;
+        this.Form!.resetForm();
+    }
+
     @Input() CategorySlug: string = "";
     @Input() CategoryName: string = "";
     @ViewChild('ModelCloseButton') ModelCloseButton: ElementRef | null = null;
+    @ViewChild('DownloadForm') Form: NgForm | null = null;
     IsLandedPriceSelected: boolean = false;
     SendingEmail = false;
 

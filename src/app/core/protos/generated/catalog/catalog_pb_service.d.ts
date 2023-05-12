@@ -13,9 +13,29 @@ type CatalogSrvGetLandedPriceCatalogUrl = {
   readonly responseType: typeof catalog_pb.CatalogResponseMessage;
 };
 
+type CatalogSrvDownloadCatalog = {
+  readonly methodName: string;
+  readonly service: typeof CatalogSrv;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof catalog_pb.DownloadCatalogRequest;
+  readonly responseType: typeof catalog_pb.DownloadCatalogResponse;
+};
+
+type CatalogSrvDownloadAdvanceCatalog = {
+  readonly methodName: string;
+  readonly service: typeof CatalogSrv;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof catalog_pb.DownloadAdvanceCatalogRequest;
+  readonly responseType: typeof catalog_pb.DownloadCatalogResponse;
+};
+
 export class CatalogSrv {
   static readonly serviceName: string;
   static readonly GetLandedPriceCatalogUrl: CatalogSrvGetLandedPriceCatalogUrl;
+  static readonly DownloadCatalog: CatalogSrvDownloadCatalog;
+  static readonly DownloadAdvanceCatalog: CatalogSrvDownloadAdvanceCatalog;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -58,6 +78,24 @@ export class CatalogSrvClient {
   getLandedPriceCatalogUrl(
     requestMessage: catalog_pb.LandedPriceCatalogRequestMessage,
     callback: (error: ServiceError|null, responseMessage: catalog_pb.CatalogResponseMessage|null) => void
+  ): UnaryResponse;
+  downloadCatalog(
+    requestMessage: catalog_pb.DownloadCatalogRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: catalog_pb.DownloadCatalogResponse|null) => void
+  ): UnaryResponse;
+  downloadCatalog(
+    requestMessage: catalog_pb.DownloadCatalogRequest,
+    callback: (error: ServiceError|null, responseMessage: catalog_pb.DownloadCatalogResponse|null) => void
+  ): UnaryResponse;
+  downloadAdvanceCatalog(
+    requestMessage: catalog_pb.DownloadAdvanceCatalogRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: catalog_pb.DownloadCatalogResponse|null) => void
+  ): UnaryResponse;
+  downloadAdvanceCatalog(
+    requestMessage: catalog_pb.DownloadAdvanceCatalogRequest,
+    callback: (error: ServiceError|null, responseMessage: catalog_pb.DownloadCatalogResponse|null) => void
   ): UnaryResponse;
 }
 

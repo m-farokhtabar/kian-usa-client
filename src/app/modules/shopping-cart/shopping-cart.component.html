@@ -1,12 +1,15 @@
-<div class="position-fixed bg-white shopping-cart-docked-button" (click)="OnShoppingCartSideButtonClick()" *ngIf="CartModel.ShoppingCartSideButtonVisible && account.HasPermissionToOrder()">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" style="width:16px;height:16px;transform: rotate(90deg);margin: 7px;">
+<div class="position-fixed bg-white shopping-cart-docked-button" (click)="OnShoppingCartSideButtonClick()"
+     *ngIf="!FullViewMode && ShoppingCartSideButtonVisible && account.HasPermissionToOrder()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"
+         style="width:16px;height:16px;transform: rotate(90deg);margin: 7px;">
         <!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
         <path d="M253.3 35.1c6.1-11.8 1.5-26.3-10.2-32.4s-26.3-1.5-32.4 10.2L117.6 192H32c-17.7 0-32 14.3-32 32s14.3 32 32 32L83.9 463.5C91 492 116.6 512 146 512H430c29.4 0 55-20 62.1-48.5L544 256c17.7 0 32-14.3 32-32s-14.3-32-32-32H458.4L365.3 12.9C359.2 1.2 344.7-3.4 332.9 2.7s-16.3 20.6-10.2 32.4L404.3 192H171.7L253.3 35.1zM192 304v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16s16 7.2 16 16zm96-16c8.8 0 16 7.2 16 16v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16zm128 16v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16s16 7.2 16 16z"/>
     </svg>
     <h6 style="writing-mode: vertical-rl;margin: 2px;padding: 4px;">Shopping Cart</h6>
 </div>
-<div class="position-fixed bg-white shopping-cart-container" *ngIf="CartModel.IsVisible && account.HasPermissionToOrder()">
-    <div class="bg-light">
+<div [ngClass]="{'position-fixed bg-white shopping-cart-container':!FullViewMode}"
+     *ngIf="FullViewMode || (IsVisible && account.HasPermissionToOrder())">
+    <div class="bg-light" *ngIf="!FullViewMode">
         <div class="close-button" (click)="OnCloseButton()">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" style="width:18px;height:18px;">
                 <!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
@@ -24,38 +27,103 @@
             <hr class="w-100"/>
         </div>
     </div>
+    <div *ngIf="FullViewMode" class="mt-5 mb-2">
+        <h1 class="display-5 ps-2">Order Details</h1>
+        <div class="ps-3"><hr class="w-50"/></div>
+    </div>
     <!--Body-->
     <div class="ps-3 pe-3">
         <form #ShoppingCartForm="ngForm" name="SendShoppingCartForm" (ngSubmit)="OnSubmit(ShoppingCartForm)"
               class="needs-validation">
-            <label for="Customer" class="form-label label-of-input">Customer Name</label>
-            <select ngModel #Customer="ngModel" [(ngModel)]="CartModel.Customer" id="Customer" name="Customer" class="form-select form-select-sm" required>
-                <option [value]="Customer.UserName"
-                        *ngFor="let Customer of Customers">{{Customer.Name + " " + Customer.Family + "(" + Customer.UserName + ")"}}</option>
-            </select>
-            <label for="SelectedPrice" class="form-label label-of-input">Select Price</label>
-            <select ngModel [(ngModel)]="CartModel.PriceType" (change)="OnChangePriceType($event)" #SelectedPrice="ngModel" id="SelectedPrice"
-                    name="SelectedPrice" class="form-select form-select-sm" required>
-                <option [value]="Price.Id" *ngFor="let Price of GetPricesType()">{{Price.Name}}</option>
-            </select>
+            <ng-container *ngIf="!FullViewMode else FullViewModeRow1">
+                <label for="Customer" class="form-label label-of-input">Customer Name</label>
+                <select ngModel #Customer="ngModel" [(ngModel)]="CartModel.Customer" id="Customer"
+                        name="Customer"
+                        class="form-select form-select-sm" required>
+                    <option [value]="Customer.UserName"
+                            *ngFor="let Customer of Customers">{{Customer.Name + " " + Customer.Family + "(" + Customer.UserName + ")"}}</option>
+                </select>
+                <label for="SelectedPrice" class="form-label label-of-input">Select Price</label>
+                <select ngModel [(ngModel)]="CartModel.PriceType" (change)="OnChangePriceType($event)"
+                        #SelectedPrice="ngModel" id="SelectedPrice"
+                        name="SelectedPrice" class="form-select form-select-sm" required>
+                    <option [value]="Price.Id" *ngFor="let Price of GetPricesType()">{{Price.Name}}</option>
+                </select>
+            </ng-container>
+            <ng-template #FullViewModeRow1>
+                <div class="row">
+                    <div class="col-lg-6 col-sm-12">
+                        <label for="Customer" class="form-label label-of-input">Customer Name</label>
+                        <select ngModel #Customer="ngModel" [(ngModel)]="CartModel.Customer" id="Customer"
+                                name="Customer"
+                                class="form-select form-select-sm" required>
+                            <option [value]="Customer.UserName"
+                                    *ngFor="let Customer of Customers">{{Customer.Name + " " + Customer.Family + "(" + Customer.UserName + ")"}}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                        <label for="SelectedPrice" class="form-label label-of-input">Select Price</label>
+                        <select ngModel [(ngModel)]="CartModel.PriceType" (change)="OnChangePriceType($event)"
+                                #SelectedPrice="ngModel" id="SelectedPrice"
+                                name="SelectedPrice" class="form-select form-select-sm" required>
+                            <option [value]="Price.Id" *ngFor="let Price of GetPricesType()">{{Price.Name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </ng-template>
             <div class="mt-2" [hidden]="!CartModel.IsLandedPriceShow">
                 <span class="float-start me-2 label-of-input">Freight:</span>
-                <input ngModel #LandedPriceValue="ngModel" [(ngModel)]="CartModel.LandedPrice" id="LandedPriceValue" name="LandedPriceValue" type="number" value="1" min="1"
-                        max="999999999" class="form-control m-0 p-0 ps-1" style="width: 100px;"
+                <input ngModel #LandedPriceValue="ngModel" [(ngModel)]="CartModel.LandedPrice" id="LandedPriceValue"
+                       name="LandedPriceValue" type="number" value="1" min="1"
+                       max="999999999" class="form-control m-0 p-0 ps-1" style="width: 100px;"
                        [disabled]="!CartModel.IsLandedPriceShow" required/>
             </div>
-            <label for="Delivery" class="form-label label-of-input" style="clear: both;" [hidden]="CartModel.IsDeliveryDisabled">Delivery</label>
-            <select ngModel #Delivery="ngModel" [(ngModel)]="CartModel.DeliveryType" id="Delivery" name="Delivery" class="form-select form-select-sm" required
-                    [disabled]="CartModel.IsDeliveryDisabled" [hidden]="CartModel.IsDeliveryDisabled">
-                <option [value]="Delivery.Id"
-                        *ngFor="let Delivery of CurrentDeliveryTypes">{{Delivery.Name}}</option>
-            </select>
-            <label for="Tariff" class="form-label label-of-input" [hidden]="CartModel.IsTariffDisabled">Tariff</label>
-            <select ngModel #Tariff="ngModel" [(ngModel)]="CartModel.IOR" id="Tariff" name="Tariff" class="form-select form-select-sm" required
-                    [disabled]="CartModel.IsTariffDisabled" [hidden]="CartModel.IsTariffDisabled">
-                <option [value]="IOR.Id" *ngFor="let IOR of CurrentIORs">{{IOR.Name}}</option>
-            </select>
-            <span style="color:red;font-size:11px;" [hidden]="!(CartModel.PriceType == 0 && CartModel.IOR == 1)" ><strong>20% discount applied for duty</strong></span>
+            <ng-container *ngIf="!FullViewMode else FullViewModeRow2">
+
+                <label for="Delivery" class="form-label label-of-input" style="clear: both;"
+                       [hidden]="CartModel.IsDeliveryDisabled">Delivery</label>
+                <select ngModel #Delivery="ngModel" [(ngModel)]="CartModel.DeliveryType" id="Delivery"
+                        name="Delivery"
+                        class="form-select form-select-sm" required
+                        [disabled]="CartModel.IsDeliveryDisabled" [hidden]="CartModel.IsDeliveryDisabled">
+                    <option [value]="Delivery.Id"
+                            *ngFor="let Delivery of CurrentDeliveryTypes">{{Delivery.Name}}</option>
+                </select>
+
+                <label for="Tariff" class="form-label label-of-input"
+                       [hidden]="CartModel.IsTariffDisabled">Tariff</label>
+                <select ngModel #Tariff="ngModel" [(ngModel)]="CartModel.IOR" id="Tariff" name="Tariff"
+                        class="form-select form-select-sm" required
+                        [disabled]="CartModel.IsTariffDisabled" [hidden]="CartModel.IsTariffDisabled">
+                    <option [value]="IOR.Id" *ngFor="let IOR of CurrentIORs">{{IOR.Name}}</option>
+                </select>
+            </ng-container>
+            <ng-template #FullViewModeRow2>
+                <div class="row">
+                    <div class="col-lg-6 col-sm-12">
+                        <label for="Delivery" class="form-label label-of-input" style="clear: both;"
+                               [hidden]="CartModel.IsDeliveryDisabled">Delivery</label>
+                        <select ngModel #Delivery="ngModel" [(ngModel)]="CartModel.DeliveryType" id="Delivery"
+                                name="Delivery"
+                                class="form-select form-select-sm" required
+                                [disabled]="CartModel.IsDeliveryDisabled" [hidden]="CartModel.IsDeliveryDisabled">
+                            <option [value]="Delivery.Id"
+                                    *ngFor="let Delivery of CurrentDeliveryTypes">{{Delivery.Name}}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                        <label for="Tariff" class="form-label label-of-input"
+                               [hidden]="CartModel.IsTariffDisabled">Tariff</label>
+                        <select ngModel #Tariff="ngModel" [(ngModel)]="CartModel.IOR" id="Tariff" name="Tariff"
+                                class="form-select form-select-sm" required
+                                [disabled]="CartModel.IsTariffDisabled" [hidden]="CartModel.IsTariffDisabled">
+                            <option [value]="IOR.Id" *ngFor="let IOR of CurrentIORs">{{IOR.Name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </ng-template>
+            <span style="color:red;font-size:11px;"
+                  [hidden]="!(CartModel.PriceType == 0 && CartModel.IOR == 1)"><strong>20% discount applied for duty</strong></span>
             <hr/>
             <table class="table">
                 <thead style="font-size: 11px;">
@@ -67,10 +135,18 @@
                 </thead>
                 <tbody style="font-size: 11px;">
                 <tr class="table-price-tr" *ngFor="let Order of CartModel.Orders">
-                    <td><svg (click)="Order.Count=0;OnOrderCountChange(0,Order);" _ngcontent-sry-c60="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" style="fill:red;width: 15px; height: 15px;cursor:pointer;"><path _ngcontent-sry-c60="" d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z"></path></svg></td>
+                    <td>
+                        <svg (click)="Order.Count=0;OnOrderCountChange(0,Order);" _ngcontent-sry-c60=""
+                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"
+                             style="fill:red;width: 15px; height: 15px;cursor:pointer;">
+                            <path _ngcontent-sry-c60=""
+                                  d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z"></path>
+                        </svg>
+                    </td>
                     <td>{{Order.ProductName}}</td>
                     <td><input type="number" min="0" max="9999" class="form-control m-0 p-0 ps-1" style="width: 70px;"
-                               [(ngModel)]="Order.Count" (ngModelChange)="OnOrderCountChange($event,Order)" [ngModelOptions]="{standalone: true}"/></td>
+                               [(ngModel)]="Order.Count" (ngModelChange)="OnOrderCountChange($event,Order)"
+                               [ngModelOptions]="{standalone: true}"/></td>
                     <td>{{GetPriceFormat(GetPrice(Order))}}</td>
                     <td>{{GetPriceFormat(GetTotalPrice(Order))}}</td>
                 </tr>
@@ -83,25 +159,29 @@
                 </tbody>
             </table>
             <p class="mb-1">Total Pieces: <strong>{{GetPieces()}}</strong></p>
-            <p class="mb-1">Total Cubes: <strong>{{GetCubes()}}</strong> </p>
+            <p class="mb-1">Total Cubes: <strong>{{GetCubes()}}</strong></p>
             <!--<p class="mb-1">Total Containers: <strong>{{GetContainers()}}</strong>(<strong style="color:navy;">{{GetRoundContainers()}}</strong>)</p>-->
             <p class="mb-1">Total Weight: <strong>{{GetWeight()}}</strong></p>
             <span style="font-size: 13px;" *ngIf="CartModel.PriceType==PriceTypes[0].Id">5% More or less of quality & amounts is allowed</span>
-            <textarea class="form-control" rows="4" cols="50" name="Description" [(ngModel)]="CartModel.Description"></textarea>
+            <textarea class="form-control" rows="4" cols="50" name="Description"
+                      [(ngModel)]="CartModel.Description"></textarea>
             <label for="ConfirmedBy" class="form-label label-of-input">Confirmed By</label>
-            <input ngModel #ConfirmedBy="ngModel" [(ngModel)]="CartModel.ConfirmedBy" class="form-control" type="text" maxlength="100" name="ConfirmedBy" id="ConfirmedBy" required/>
+            <input ngModel #ConfirmedBy="ngModel" [(ngModel)]="CartModel.ConfirmedBy" class="form-control" type="text"
+                   maxlength="100" name="ConfirmedBy" id="ConfirmedBy" required/>
             <div class="invalid-feedback" *ngIf="ConfirmedBy.touched && ConfirmedBy.invalid">
                 <div *ngIf="ConfirmedBy.errors?.['required']">Please input Confirmed By.</div>
             </div>
             <label for="PoNumber" class="form-label label-of-input">PO Number</label>
-            <input ngModel #PoNumber="ngModel" [(ngModel)]="CartModel.PoNumber" class="form-control" type="text" maxlength="100" name="PoNumber" id="PoNumber" />
+            <input ngModel #PoNumber="ngModel" [(ngModel)]="CartModel.PoNumber" class="form-control" type="text"
+                   maxlength="100" name="PoNumber" id="PoNumber"/>
         </form>
         <div class="text-end mb-2">
             <button class="btn btn-danger mt-3 float-start" type="reset" (click)="OnCancelOrders()">
                 Cancel Orders
             </button>
-            <button class="btn btn-primary mt-3" type="submit" [disabled]="!ShoppingCartForm.valid || !(CartModel.Orders.length>0)"
-                    [hidden]="SendingData"  (click)="OnSendOrdersClick()">
+            <button class="btn btn-primary mt-3" type="submit"
+                    [disabled]="!ShoppingCartForm.valid || !(CartModel.Orders.length>0)"
+                    [hidden]="SendingData" (click)="OnSendOrdersClick()">
                 Send Orders
             </button>
             <button class="btn btn-primary mt-3" type="button" disabled [hidden]="!SendingData">
