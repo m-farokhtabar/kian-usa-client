@@ -62,19 +62,35 @@
         <div class="row text-end">
             <div>
                 <button class="btn btn-light btn-outline-secondary btn-sm me-1 mb-1 SmallFontSize" type="button"
+                        (click)="openAdvancedRequestDialogForDownloadOrEmail = 'download';AdvReqCatNeedsToReset=AdvReqCatNeedsToReset+1;"
+                        data-bs-toggle="modal" [attr.data-bs-target]="'#Dialog_AdvancedRequestCatalog'"
+                        [hidden]="!account.HasPermissionToButton('AdvancedDownloadCatalogs')" >
+                    Advanced Download Catalog of Categories
+                </button>
+                <button  class="btn btn-light btn-outline-primary btn-sm me-1 mb-1 SmallFontSize" type="button"
+                        data-bs-toggle="modal" [attr.data-bs-target]="'#Dialog_AdvancedRequestCatalog'"
+                        [hidden]="!account.HasPermissionToButton('AdvancedSendCatalogs')"
+                        (click)="openAdvancedRequestDialogForDownloadOrEmail = 'email';AdvReqCatNeedsToReset=AdvReqCatNeedsToReset+1;">
+                    Advanced Send Catalog of Categories by Email
+                </button>
+                <button class="btn btn-light btn-outline-secondary btn-sm me-1 mb-1 SmallFontSize" type="button"
                         data-bs-toggle="modal" [attr.data-bs-target]="'#Dialog_All_Cat_DownloadModal'"
-                        [hidden]="!account.HasPermissionToButton('DownloadAllCat')">
+                        [hidden]="!account.HasPermissionToButton('DownloadAllCat')"
+                        (click)="DownloadDialogNeedsToReset = DownloadDialogNeedsToReset + 1">
                     Download Catalog of Categories
                 </button>
                 <button class="btn btn-light btn-outline-primary btn-sm mb-1 SmallFontSize" type="button"
                         data-bs-toggle="modal" [attr.data-bs-target]="'#Dialog_All_Cat_SendMailModal'"
-                        [hidden]="!account.HasPermissionToButton('SendEmailAllCat')">
+                        [hidden]="!account.HasPermissionToButton('SendEmailAllCat')"
+                        (click)="EmailDialogNeedsToReset = EmailDialogNeedsToReset + 1">
                     Send Catalog of Categories by Email
                 </button>
                 <app-send-products-catalog-by-email-dialog [CategoryName]="'All'"
-                                                           [CategorySlug]="'All_Cat'"></app-send-products-catalog-by-email-dialog>
+                                                           [CategorySlug]="'All_Cat'" [ResetTrigger] = "EmailDialogNeedsToReset"></app-send-products-catalog-by-email-dialog>
                 <price-list-download-dialog [CategoryName]="'All'"
-                                            [CategorySlug]="'All_Cat'"></price-list-download-dialog>
+                                            [CategorySlug]="'All_Cat'" [ResetTrigger] = "DownloadDialogNeedsToReset"></price-list-download-dialog>
+                <advanced-request-catalog [Type] = "openAdvancedRequestDialogForDownloadOrEmail" [ResetTrigger] = "AdvReqCatNeedsToReset"></advanced-request-catalog>
+
             </div>
         </div>
         <div class="row">
