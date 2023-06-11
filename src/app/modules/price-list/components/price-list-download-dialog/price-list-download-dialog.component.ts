@@ -112,7 +112,8 @@ export class PriceListDownloadDialogComponent implements OnInit {
     public Reset(){
         this.status = 0;
         this.IsLandedPriceSelected = false;
-        this.Form!.resetForm();
+        if (this.Form)
+            this.Form!.resetForm();
     }
     public OnCostChanged() {
         this.status = 0;

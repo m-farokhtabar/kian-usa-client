@@ -29,9 +29,11 @@ export class AdvancedRequestCatalogComponent implements OnInit  {
     public DownloadUrl : string| null = null;
     public Categories = [{id: "", name: ""}];
     public Factories = [{id: "LY", name: "LY"},{id: "DB", name: "DB"},{id: "KF", name: "KF"}];
-    public Prices= [{id: [0], name: "FOB"},{id: [1,2], name: "Sacramento"},{id: [], name: "LandedPrice"}];
+    //public Prices= [{id: [0], name: "FOB"},{id: [1,2], name: "Sacramento"},{id: [], name: "LandedPrice"}];
+    public Prices= [{id: [0], name: "FOB" , description: ""},{id: [1,2], name: "Sacramento", description: ""},{id: [], name:"Mix Container", description: "Landed"}];
     public CategorySelectedType: number = 0;
     public AvaialbleItemsNeedsToBeDisabled:boolean = true;
+    //public CustomText: number = 1;
 
 
     constructor(private route: ActivatedRoute, private account: AuthService,private cd: ChangeDetectorRef) {
@@ -54,7 +56,7 @@ export class AdvancedRequestCatalogComponent implements OnInit  {
     }
     IfSelectLandedPriceShowTextPrice(data:any) : void{
         if (Array.isArray(data) && data.length>0) {
-            if (data.find((x)=>  x.name === "LandedPrice" )) {
+            if (data.find((x)=>  x.name === "Mix Container" )) { //LandedPrice
                 this.IsLandedPriceTextBoxEnabled =  true;
                 return
             }
@@ -87,7 +89,8 @@ export class AdvancedRequestCatalogComponent implements OnInit  {
             let LandedPrice = 0;
             let CustomerFullName = Form.value.AdvancedCustomerFullName;
             let CustomerEmail = Form.value.AdvancedCustomerEmail;
-            let IncludeExtraPictures = false;
+            let CustomTextBody = Form.value.CustomTextBody;
+            let IncludeExtraPictures = false;            
             if (Array.isArray(Form.value.SelectedCategories) && Form.value.SelectedCategories.length>0)
             {
                 Form.value.SelectedCategories.forEach((x:any)=>{
@@ -133,7 +136,7 @@ export class AdvancedRequestCatalogComponent implements OnInit  {
                 });
             }
             else {
-                const Model = new EmailAdvancedCatalogModel(SelectedCategories,SelectedFactories,SelectedPrices,JustAvailable,LandedPrice,CustomerFullName,CustomerEmail,IncludeExtraPictures);
+                const Model = new EmailAdvancedCatalogModel(SelectedCategories,SelectedFactories,SelectedPrices,JustAvailable,LandedPrice,CustomerFullName, CustomerEmail, CustomTextBody,IncludeExtraPictures);
                 const Service = new EmailGrpcService(this.account);
                 Service.SendAdvanceCatalog(Model).then(data => {
                     alert("The email has been successfully sent to " + CustomerEmail + ".");
@@ -158,10 +161,12 @@ export class AdvancedRequestCatalogComponent implements OnInit  {
         this.DownloadLinkIsReady = false;
         //اگر این کد را نزارم ردیور باتن خالی میشه
         this.CategorySelectedType = 1;
+        //this.CustomText = 0;
         this.cd.detectChanges();
-
-        this.Form!.resetForm();
+        if (this.Form)
+            this.Form.resetForm();
         this.CategorySelectedType = 0;
+        //this.CustomText = 1;
     }
 
 }

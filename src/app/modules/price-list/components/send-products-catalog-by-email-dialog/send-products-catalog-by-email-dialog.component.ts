@@ -15,7 +15,8 @@ export class SendProductsCatalogByEmailDialogComponent implements OnInit {
     public set ResetTrigger(value:number){
         this.SendingEmail = false;
         this.IsLandedPriceSelected = false;
-        this.Form!.resetForm();
+        if (this.Form)
+            this.Form!.resetForm();
     }
 
     @Input() CategorySlug: string = "";

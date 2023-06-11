@@ -99,6 +99,7 @@ export class EmailGrpcService {
             request.setCustomerfullname(Model.CustomerFullName);
             request.setCustomeremail(Model.CustomerEmail);
             request.setIncludeextrapictures(Model.IncludeExtraPictures);
+            request.setCustombodytext(Model.CustomTextBody);
             const metadata = ServiceHelper.CreateAuthToken(this.account);
             if (metadata != undefined) {
                 client.sendCatalogAdvanced(request, metadata, (error: ServiceError | null, response: SendResponseMessage | null) => {

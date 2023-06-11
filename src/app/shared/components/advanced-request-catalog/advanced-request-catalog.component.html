@@ -10,8 +10,8 @@
                     <div class="row pb-2">
                         <label class="form-label col-sm-4">Choosing type</label>
                         <div class="col-sm-8 text-start">
-                            <input  [(ngModel)]="CategorySelectedType" [checked]="CategorySelectedType == 0"  class="me-1" name="ChoosingType" type="radio" [value]="0"/><span class="pe-3">All</span>
-                            <input  [(ngModel)]="CategorySelectedType" [checked]="CategorySelectedType == 1" class="me-1" name="ChoosingType" type="radio" [value]="1"/><span>Individual</span>
+                            <input [(ngModel)]="CategorySelectedType" [checked]="CategorySelectedType == 0"  class="form-check-input me-1" name="ChoosingType" type="radio" [value]="0"/><span class="pe-3">All</span>
+                            <input [(ngModel)]="CategorySelectedType" [checked]="CategorySelectedType == 1" class="form-check-input me-1" name="ChoosingType" type="radio" [value]="1"/><span>Individual</span>
                         </div>
                     </div>
                     <div class="row pb-2" [hidden]="CategorySelectedType == 0">
@@ -55,6 +55,10 @@
                                     name="SelectedPrices"
                                     (ngModelChange) = "IfSelectLandedPriceShowTextPrice($event);IsFOBPriceSelected($event);"
                                     [multiple]="true">
+                                    <ng-template ng-option-tmp let-item="item">
+                                        <div class="line">{{item.name}}</div>
+                                        <div class="line">{{item.description}}</div>
+                                    </ng-template>
                             </ng-select>
                         </div>
                     </div>
@@ -68,17 +72,6 @@
                                 <div *ngIf="LandedPriceValue.errors?.['max']">cost should be less than 99999999.</div>
                                 <div *ngIf="LandedPriceValue.errors?.['min']">cost should be more than 1.</div>
                                 <div *ngIf="LandedPriceValue.errors?.['pattern']">Cost is not valid. Valid format is just digits without point</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row pb-2" [hidden]="Type=='download'">
-                        <label class="form-label col-sm-4" for="AdvancedCustomerFullName">Customer name:</label>
-                        <div class="col-sm-8">
-                            <input ngModel maxlength="100" name="AdvancedCustomerFullName" #AdvancedCustomerFullName="ngModel"  class="form-control" id="AdvancedCustomerFullName" type="text"
-                                   [disabled]="Processing || Type=='download'" required/>
-                            <div class="invalid-feedback" *ngIf="AdvancedCustomerFullName.touched && AdvancedCustomerFullName.invalid">
-                                <div *ngIf="AdvancedCustomerFullName.errors?.['required']">Please input customer name.</div>
-                                <div *ngIf="AdvancedCustomerFullName.errors?.['maxlength']">Customer name should be less than 100 character.</div>
                             </div>
                         </div>
                     </div>
@@ -99,11 +92,35 @@
                             <input ngModel name="AvaialbleItems" type="checkbox" value="1" class="me-2" [disabled]="AvaialbleItemsNeedsToBeDisabled"><label class="form-label">Available items</label>
                         </div>
                     </div>
+                    <!-- <div class="row pb-2" [hidden]="Type=='download'">
+                        <label class="form-label col-sm-4">Custom text:</label>
+                        <div class="col-sm-8">
+                            <input type="radio" class="form-check-input" [(ngModel)]="CustomText" [checked]="CustomText == 0" name="CustomText" [value]="0"/><span class="pe-3"> Yes</span>
+                            <input type="radio" class="form-check-input" [(ngModel)]="CustomText" [checked]="CustomText == 1" name="CustomText" [value]="1"/><span> No choose the default</span>
+                        </div>
+                    </div> -->
                     <div class="row pb-2" [hidden]="Type=='download'">
+                        <label class="form-label col-sm-4" for="AdvancedCustomerFullName">Customer name:</label>
+                        <div class="col-sm-8">
+                            <input ngModel maxlength="100" name="AdvancedCustomerFullName" #AdvancedCustomerFullName="ngModel"  class="form-control" id="AdvancedCustomerFullName" type="text"
+                                   [disabled]="Processing || Type=='download'" required/>
+                            <div class="invalid-feedback" *ngIf="AdvancedCustomerFullName.touched && AdvancedCustomerFullName.invalid">
+                                <div *ngIf="AdvancedCustomerFullName.errors?.['required']">Please input customer name.</div>
+                                <div *ngIf="AdvancedCustomerFullName.errors?.['maxlength']">Customer name should be less than 100 character.</div>
+                            </div>
+                        </div>
+                    </div>                    
+                    <div class="row pb-2" [hidden]="Type=='download'">
+                        <div class="col-12">
+                            <textarea ngModel name="CustomTextBody" maxlength="5000" class="form-control" placeholder="Please input additional text"
+                            [disabled]="Processing || Type=='download'"></textarea>
+                        </div>
+                    </div>                
+                    <!-- <div class="row pb-2" [hidden]="Type=='download'">
                         <div class="col-12">
                             <input ngModel name="IncludeExtraPictures" type="checkbox" value="1" class="me-2"><label class="form-label">Include the extra pictures just for email</label>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" #ModelCloseButton>Close</button>

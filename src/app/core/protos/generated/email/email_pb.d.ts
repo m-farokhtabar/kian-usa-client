@@ -148,6 +148,9 @@ export class SendAdvancedCatalogRequest extends jspb.Message {
   getCustomerfullname(): string;
   setCustomerfullname(value: string): void;
 
+  getCustombodytext(): string;
+  setCustombodytext(value: string): void;
+
   getCustomeremail(): string;
   setCustomeremail(value: string): void;
 
@@ -172,6 +175,7 @@ export namespace SendAdvancedCatalogRequest {
     landedprice: number,
     justavailable: boolean,
     customerfullname: string,
+    custombodytext: string,
     customeremail: string,
     includeextrapictures: boolean,
   }

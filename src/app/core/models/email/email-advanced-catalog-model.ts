@@ -1,5 +1,6 @@
 export class EmailAdvancedCatalogModel{
-    constructor(CategoriesSlug: string[], Factories: string[], Prices: number[], JustAvailable: boolean, LandedPrice: number, CustomerFullName: string, CustomerEmail: string, IncludeExtraPictures: boolean) {
+    constructor(CategoriesSlug: string[], Factories: string[], Prices: number[], JustAvailable: boolean, LandedPrice: number, 
+                CustomerFullName: string, CustomerEmail: string, CustomTextBody: string, IncludeExtraPictures: boolean) {
         this.CategoriesSlug = CategoriesSlug;
         this.Factories = Factories;
         this.Prices = Prices;
@@ -7,7 +8,8 @@ export class EmailAdvancedCatalogModel{
         this.LandedPrice = LandedPrice;
         this.CustomerFullName = CustomerFullName;
         this.CustomerEmail = CustomerEmail;
-        this.IncludeExtraPictures = IncludeExtraPictures;
+        this.CustomTextBody = CustomTextBody;
+        this.IncludeExtraPictures = IncludeExtraPictures;        
     }
 
     public CategoriesSlug: string[];
@@ -17,5 +19,6 @@ export class EmailAdvancedCatalogModel{
     public LandedPrice: number;
     public CustomerFullName: string;
     public CustomerEmail: string;
+    public CustomTextBody: string;
     public IncludeExtraPictures: boolean;
 }

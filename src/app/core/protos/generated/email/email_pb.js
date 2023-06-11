@@ -990,8 +990,9 @@ proto.SendAdvancedCatalogRequest.toObject = function(includeInstance, msg) {
     landedprice: jspb.Message.getFloatingPointFieldWithDefault(msg, 4, 0.0),
     justavailable: jspb.Message.getBooleanFieldWithDefault(msg, 5, false),
     customerfullname: jspb.Message.getFieldWithDefault(msg, 6, ""),
-    customeremail: jspb.Message.getFieldWithDefault(msg, 7, ""),
-    includeextrapictures: jspb.Message.getBooleanFieldWithDefault(msg, 8, false)
+    custombodytext: jspb.Message.getFieldWithDefault(msg, 7, ""),
+    customeremail: jspb.Message.getFieldWithDefault(msg, 8, ""),
+    includeextrapictures: jspb.Message.getBooleanFieldWithDefault(msg, 9, false)
   };
 
   if (includeInstance) {
@@ -1056,9 +1057,13 @@ proto.SendAdvancedCatalogRequest.deserializeBinaryFromReader = function(msg, rea
       break;
     case 7:
       var value = /** @type {string} */ (reader.readString());
-      msg.setCustomeremail(value);
+      msg.setCustombodytext(value);
       break;
     case 8:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCustomeremail(value);
+      break;
+    case 9:
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setIncludeextrapictures(value);
       break;
@@ -1133,17 +1138,24 @@ proto.SendAdvancedCatalogRequest.serializeBinaryToWriter = function(message, wri
       f
     );
   }
-  f = message.getCustomeremail();
+  f = message.getCustombodytext();
   if (f.length > 0) {
     writer.writeString(
       7,
       f
     );
   }
+  f = message.getCustomeremail();
+  if (f.length > 0) {
+    writer.writeString(
+      8,
+      f
+    );
+  }
   f = message.getIncludeextrapictures();
   if (f) {
     writer.writeBool(
-      8,
+      9,
       f
     );
   }
@@ -1316,10 +1328,10 @@ proto.SendAdvancedCatalogRequest.prototype.setCustomerfullname = function(value)
 
 
 /**
- * optional string CustomerEmail = 7;
+ * optional string CustomBodyText = 7;
  * @return {string}
  */
-proto.SendAdvancedCatalogRequest.prototype.getCustomeremail = function() {
+proto.SendAdvancedCatalogRequest.prototype.getCustombodytext = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
 };
 
@@ -1328,17 +1340,35 @@ proto.SendAdvancedCatalogRequest.prototype.getCustomeremail = function() {
  * @param {string} value
  * @return {!proto.SendAdvancedCatalogRequest} returns this
  */
-proto.SendAdvancedCatalogRequest.prototype.setCustomeremail = function(value) {
+proto.SendAdvancedCatalogRequest.prototype.setCustombodytext = function(value) {
   return jspb.Message.setProto3StringField(this, 7, value);
 };
 
 
 /**
- * optional bool IncludeExtraPictures = 8;
+ * optional string CustomerEmail = 8;
+ * @return {string}
+ */
+proto.SendAdvancedCatalogRequest.prototype.getCustomeremail = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.SendAdvancedCatalogRequest} returns this
+ */
+proto.SendAdvancedCatalogRequest.prototype.setCustomeremail = function(value) {
+  return jspb.Message.setProto3StringField(this, 8, value);
+};
+
+
+/**
+ * optional bool IncludeExtraPictures = 9;
  * @return {boolean}
  */
 proto.SendAdvancedCatalogRequest.prototype.getIncludeextrapictures = function() {
-  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 8, false));
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 9, false));
 };
 
 
@@ -1347,7 +1377,7 @@ proto.SendAdvancedCatalogRequest.prototype.getIncludeextrapictures = function() 
  * @return {!proto.SendAdvancedCatalogRequest} returns this
  */
 proto.SendAdvancedCatalogRequest.prototype.setIncludeextrapictures = function(value) {
-  return jspb.Message.setProto3BooleanField(this, 8, value);
+  return jspb.Message.setProto3BooleanField(this, 9, value);
 };
 
 
