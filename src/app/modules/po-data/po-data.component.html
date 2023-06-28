@@ -1,0 +1,112 @@
+<div class="container-fluid p-2 p-sm-5">    
+    <div class="row justify-content-end">
+        <div class="col-xxl-3 col-xl-3 col-lg-4 col-md-5 col-sm-6 col-xs-12">
+            <input type="text" class="form-control" placeholder="Search" (input)="OnSearchData($event)">
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="table-responsive" style="max-height: 500px;">
+            <form>
+            <table class="table table-striped table-hover small" style="border-collapse: separate;border-spacing: 0;">
+                <thead class="bg-white sticky-top" style="border-color: black;">
+                    <tr>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('User')">User</th>                        
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Date')">Date</th>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Name')">Name</th>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('PO Number')">PO Number</th>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Estimate Number')">Estimate Number</th>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Required Shipping Date')">Required Shipping Date</th>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Customer PO')">Customer PO</th>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Item Group')">Item Group</th>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Forwarder')">Forwarder</th>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('IOR')">IOR</th>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Ship To')">Ship To</th>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Shipping Carrier')">Shipping Carrier</th>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Container Number')">Container Number</th>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('ETA at Port')">ETA at Port</th>
+
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Factory Status')">Factory Status</th>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Ready Date')">Ready Date</th>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Factory Booking Date')">Factory Booking Date</th>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Documents Send Out Date')">Documents Send Out Date</th>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Forwarder Name')">Forwarder Name</th>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Booking Date')">Booking Date</th>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Rate')">Rate</th>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('ETD')">ETD</th>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('ETA')">ETA</th>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Confirme Status')">Confirme Status</th>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Confirm date')">Confirm date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr *ngFor="let xlData of SearchableData">
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('User')">{{xlData.User}}</td>
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('Date')">{{xlData.Date}}</td>
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('Name')">{{xlData.Name}}</td>
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('PO Number')">{{xlData.PONumber}}</td>
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('Estimate Number')">{{xlData.EstimateNumber}}</td>
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('Required Shipping Date')">{{xlData.RequiredShippingDate}}</td>
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('Customer PO')">{{xlData.CustomerPO}}</td>
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('Item Group')">{{xlData.ItemGroup}}</td>
+                            <td scope="row" *ngIf="IsColumnAllowedToShow('Forwarder')">{{xlData.Forwarder}}</td>
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('IOR')">{{xlData.IOR}}</td>
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('Ship To')">{{xlData.ShipTo}}</td>
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('Shipping Carrier')">{{xlData.ShippingCarrier}}</td>
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('Container Number')">{{xlData.ContainerNumber}}</td>
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('ETA at Port')">{{xlData.ETAAtPort}}</td>
+
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('Factory Status')">
+                                <select class="form-select form-select-sm" aria-label="Please Select Factory Status">
+                                    <option selected>select Factory Status</option>
+                                    <option value="0">Waiting For Fabric</option>
+                                    <option value="1">In Production</option>
+                                    <option value="2">Waiting For Confirmation</option>
+                                    <option value="3">Ready To Go</option>
+                                    <option value="4">Not started</option>
+                                </select>
+                            </td>
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('Ready Date')">
+                                <input type="date" class="form-control form-control-sm" />
+                            </td>
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('Factory Booking Date')">
+                                <input type="date" class="form-control form-control-sm" />
+                            </td>
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('Documents Send Out Date')">
+                                <input type="date" class="form-control form-control-sm" />
+                            </td>
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('Forwarder Name')">
+                                <select class="form-select form-select-sm" aria-label="Please Select Forwarder Name">
+                                    <option selected>select Forwarder Name</option>
+                                    <option value="0">Apex</option>
+                                    <option value="1">Hecny</option>
+                                </select>
+                            </td>
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('Booking Date')">
+                                <input type="date" class="form-control form-control-sm" />
+                            </td>
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('Rate')">
+                                <input ngModel min="1" max="9999999999" type="number" name="LandedPriceValue" 
+                                #LandedPriceValue="ngModel" class="form-control form-control-sm" id="LandedPriceValue" pattern="[0-9]+"/>
+                            </td>
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('ETD')">
+                                <input type="date" class="form-control form-control-sm" />
+                            </td>
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('ETA')">
+                                <input type="date" class="form-control form-control-sm" />
+                            </td>
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('Confirme Status')">
+                                <select class="form-select form-select-sm" aria-label="Please Select Confirme Status">
+                                    <option selected>select Confirme Status</option>
+                                    <option value="0">Confirmed</option>
+                                    <option value="1">DoNotAccept</option>
+                                    <option value="2">HoldTheBooking</option>
+                                </select>
+                            </td>
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('Confirm date')">{{xlData.ConfirmDate}}</td>                            
+                        </tr>
+                </tbody>
+            </table>
+        </form>
+        </div>
+    </div>
+</div>

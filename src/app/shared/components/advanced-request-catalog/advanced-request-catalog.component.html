@@ -63,7 +63,7 @@
                         </div>
                     </div>
                     <div class="row pb-2" [hidden]="!IsLandedPriceTextBoxEnabled">
-                        <label class="form-label col-sm-4" for="LandedPriceValue">Cost:</label>
+                        <label class="form-label col-sm-4" for="LandedPriceValue">Fright Cost:</label>
                         <div class="col-sm-8">
                             <input ngModel min="1" max="99999999" type="number" name="LandedPriceValue" #LandedPriceValue="ngModel" class="form-control" id="LandedPriceValue" pattern="[0-9]+"
                                    [required]="IsLandedPriceTextBoxEnabled" [disabled]="!IsLandedPriceTextBoxEnabled"/>
@@ -112,7 +112,8 @@
                     </div>                    
                     <div class="row pb-2" [hidden]="Type=='download'">
                         <div class="col-12">
-                            <textarea ngModel name="CustomTextBody" maxlength="5000" class="form-control" placeholder="Please input additional text"
+                            <textarea ngModel name="CustomTextBody" maxlength="5000" class="form-control" 
+                            placeholder="Additional information"
                             [disabled]="Processing || Type=='download'"></textarea>
                         </div>
                     </div>                

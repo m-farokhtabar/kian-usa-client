@@ -111,7 +111,11 @@
                                routerLinkActive="active"
                                [routerLinkActiveOptions]="{exact: true}"
                                [routerLink]="['/price-list']">Price List</a></li>
-                    </ul>
+                        <li (click)="HideMenu()" [hidden]="!UserAccessToMenu('PoData')"><a class="dropdown-item" (click)="HideMenu()"
+                                routerLinkActive="active"
+                                [routerLinkActiveOptions]="{exact: true}"
+                                [routerLink]="['/po-data']">Po Data</a></li>
+                     </ul>
                 </li>
                 <li class="nav-item" class="ms-md-4 ms-sm-0">
                     <a class="nav-link fs-6  fw-bold"

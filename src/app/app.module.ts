@@ -35,6 +35,7 @@ import { HorizontalSliderComponent } from './shared/components/horizontal-slider
 import { CheckOutComponent } from './modules/check-out/check-out.component';
 import { AdvancedRequestCatalogComponent } from './shared/components/advanced-request-catalog/advanced-request-catalog.component';
 import { NgSelectModule } from "@ng-select/ng-select";
+import { PoDataComponent } from './modules/po-data/po-data.component';
 
 const appRoutes: Routes = [
     {path: '', component: HomeComponent},
@@ -49,7 +50,8 @@ const appRoutes: Routes = [
     //{path: 'shop/:shippingType/:group', component: ShopComponent},
     {path: 'shop/:group', component: ShopComponent},
     {path: 'shop/:group/:slug', component: ProductDetailsComponent},
-    {path: 'checkout', component: CheckOutComponent}
+    {path: 'checkout', component: CheckOutComponent},
+    {path: 'po-data', component: PoDataComponent}
 ];
 
 @NgModule({
@@ -82,7 +84,8 @@ const appRoutes: Routes = [
         ProductDetailsComponent,
         HorizontalSliderComponent,
         CheckOutComponent,
-        AdvancedRequestCatalogComponent
+        AdvancedRequestCatalogComponent,
+        PoDataComponent        
     ],
     imports: [
         BrowserModule,

@@ -28,7 +28,8 @@ export class AdvancedRequestCatalogComponent implements OnInit  {
     public IsLandedPriceTextBoxEnabled = false;
     public DownloadUrl : string| null = null;
     public Categories = [{id: "", name: ""}];
-    public Factories = [{id: "LY", name: "LY"},{id: "DB", name: "DB"},{id: "KF", name: "KF"}];
+    //public Factories = [{id: "LY", name: "LY"},{id: "DB", name: "DB"},{id: "KF", name: "KF"}];
+    public Factories = [{id: "01", name: "01"},{id: "02", name: "02"},{id: "03", name: "03"},{id: "04", name: "04"}];
     //public Prices= [{id: [0], name: "FOB"},{id: [1,2], name: "Sacramento"},{id: [], name: "LandedPrice"}];
     public Prices= [{id: [0], name: "FOB" , description: ""},{id: [1,2], name: "Sacramento", description: ""},{id: [], name:"Mix Container", description: "Landed"}];
     public CategorySelectedType: number = 0;
