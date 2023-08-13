@@ -101,7 +101,7 @@
                        <!--[routerLink]="['/price-list']">PRICE LIST</a>-->
                 <!--</li>-->
                 <!--<li class="nav-item dropdown" *ngIf="AccountIsValid" [hidden]="!UserAccessToMenu('Price List')">-->
-                <li class="nav-item dropdown" [hidden]="!UserAccessToMenu('Price List')">
+                <li class="nav-item dropdown" [hidden]="!UserAccessToMenu('Price List') && !UserAccessToMenu('PoData')">
                     <a class="nav-link dropdown-toggle fs-6  fw-bold" href="#" id="navbarDropdownMenuLink" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         VIP TOOLS
@@ -114,7 +114,7 @@
                         <li (click)="HideMenu()" [hidden]="!UserAccessToMenu('PoData')"><a class="dropdown-item" (click)="HideMenu()"
                                 routerLinkActive="active"
                                 [routerLinkActiveOptions]="{exact: true}"
-                                [routerLink]="['/po-data']">Po Data</a></li>
+                                [routerLink]="['/po-data']">Open container orders</a></li>
                      </ul>
                 </li>
                 <li class="nav-item" class="ms-md-4 ms-sm-0">

@@ -1,12 +1,12 @@
 export class PoDataExcelModel {
     constructor(
         User: string,
-        Date: string,
+        date: string,
+        CustomerPO: string,
+        EstimateNumber: string,
         Name: string,
         PONumber: string,
-        EstimateNumber: string,
-        RequiredShippingDate: string,
-        CustomerPO: string,
+        DueDate: string,
         ItemGroup: string,
         Forwarder: string,
         IOR: string,
@@ -15,7 +15,8 @@ export class PoDataExcelModel {
         ContainerNumber: string,
         ETAAtPort: string,
         FactoryStatus: number | undefined,
-        ReadyDate: string,
+        StatusDate: string,
+        FactoryContainerNumber: string,
         FactoryBookingDate: string,
         DocumentsSendOutDate: string,
         ForwarderName: number | undefined,
@@ -23,47 +24,110 @@ export class PoDataExcelModel {
         Rate: number | undefined,
         ETD: string,
         ETA: string,
-        ConfirmeStatus: number | undefined,
+        PortOfDischarge: string,
+        DischargeStatus: number | undefined,
+        ShippmentStatus: number | undefined,
         ConfirmDate: string,
-        Searchable: string
-    ) {        
-        this.User = User;
-        this.Date = Date;
-        this.Name = Name;
-        this.PONumber = PONumber;
-        this.EstimateNumber = EstimateNumber;
-        this.RequiredShippingDate = RequiredShippingDate;
-        this.CustomerPO = CustomerPO;
-        this.ItemGroup = ItemGroup;
-        this.Forwarder = Forwarder;
-        this.IOR = IOR;
-        this.ShipTo = ShipTo;
-        this.ShippingCarrier = ShippingCarrier;
-        this.ContainerNumber = ContainerNumber;
-        this.ETAAtPort = ETAAtPort;
-        this.FactoryStatus = FactoryStatus;
-        this.ReadyDate = ReadyDate;
-        this.FactoryBookingDate = FactoryBookingDate;
-        this.DocumentsSendOutDate = DocumentsSendOutDate;
-        this.ForwarderName = ForwarderName;
-        this.BookingDate = BookingDate;
-        this.Rate = Rate;
-        this.ETD = ETD;
-        this.ETA = ETA;
-        this.ConfirmeStatus = ConfirmeStatus;
-        this.ConfirmDate = ConfirmDate;
-        this.Searchable = Searchable;
-        this.Searchable = "|" + User + "|" + Date+ "|" + Name + "|" + PONumber + "|" + EstimateNumber + "|" + RequiredShippingDate + "|" + CustomerPO + "|" +
-        ItemGroup +  "|" + Forwarder + "|" + IOR + "|" + ShipTo + "|" + ShippingCarrier + "|" + ContainerNumber + "|" + ETAAtPort;
-        this.Searchable = this.Searchable.toLowerCase();        
-    } 
+        GateIn: string,
+        EmptyDate: string,
+        GateOut: string,
+        BillDate: string,
+        FactoryStatusNeedsToHaveReadyToGO: boolean)
+        {
+        this.User = User
+                
+        this.Date = date
+        if (date)
+            this.Date_Date = new Date(date);
+        
+            this.CustomerPO = CustomerPO
+        this.EstimateNumber = EstimateNumber
+        this.Name = Name
+        this.PONumber = PONumber
+        
+        this.DueDate = DueDate
+        if (DueDate)
+            this.DueDate_Date = new Date(DueDate);
+
+        this.ItemGroup = ItemGroup
+        this.Forwarder = Forwarder
+        this.IOR = IOR
+        this.ShipTo = ShipTo
+        this.ShippingCarrier = ShippingCarrier
+        this.ContainerNumber = ContainerNumber
+        this.ETAAtPort = ETAAtPort
+        this.FactoryStatus = FactoryStatus
+
+        this.StatusDate = StatusDate
+        // if (StatusDate)
+        //     this.StatusDate_Date = new Date(StatusDate);
+        
+        this.FactoryContainerNumber = FactoryContainerNumber;
+        
+        this.FactoryBookingDate = FactoryBookingDate
+        if (FactoryBookingDate)
+            this.FactoryBookingDate_Date = new Date(FactoryBookingDate);
+
+        this.DocumentsSendOutDate = DocumentsSendOutDate
+        if (DocumentsSendOutDate)
+            this.DocumentsSendOutDate_Date = new Date(DocumentsSendOutDate);
+
+        this.ForwarderName = ForwarderName
+        this.BookingDate = BookingDate
+        //if (BookingDate)
+          //  this.BookingDate_Date = new Date(BookingDate);
+
+        this.Rate = Rate
+        
+        this.ETD = ETD
+        if (ETD)
+            this.ETD_Date = new Date(ETD);
+        
+        this.ETA = ETA
+        if (ETA)
+            this.ETA_Date = new Date(ETA);
+
+        this.PortOfDischarge = PortOfDischarge
+        this.DischargeStatus = DischargeStatus
+        this.ShippmentStatus = ShippmentStatus
+
+        this.ConfirmDate = ConfirmDate
+        // if (ConfirmDate)
+        //     this.ConfirmDate_Date = new Date(ConfirmDate);
+
+        this.GateIn = GateIn
+        if (GateIn)
+            this.GateIn_Date = new Date(GateIn);
+
+        this.EmptyDate = EmptyDate
+        if (EmptyDate)
+            this.EmptyDate_Date = new Date(EmptyDate);
+
+        this.GateOut = GateOut
+        if (GateOut)
+            this.GateOut_Date = new Date(GateOut);
+
+        this.BillDate = BillDate
+        if (BillDate)
+            this.BillDate_Date = new Date(BillDate);
+
+        this.Searchable = "|" + Name + "|" + PONumber + "|" + + CustomerPO + "|" + ItemGroup + "|" + ContainerNumber;
+        this.Searchable = this.Searchable.toLowerCase(); 
+        this.FactoryStatusNeedsToHaveReadyToGO = FactoryStatusNeedsToHaveReadyToGO;  
+    }
     public User: string;
+    
     public Date: string;
+    public Date_Date: Date | undefined;
+
+    public CustomerPO: string;
+    public EstimateNumber: string;
     public Name: string;
     public PONumber: string;
-    public EstimateNumber: string;
-    public RequiredShippingDate: string;
-    public CustomerPO: string;
+    
+    public DueDate: string;
+    public DueDate_Date: Date | undefined;
+    
     public ItemGroup: string;
     public Forwarder: string;
     public IOR: string;
@@ -73,20 +137,172 @@ export class PoDataExcelModel {
     public ETAAtPort: string;
 
     public FactoryStatus: number | undefined;
-    public ReadyDate: string;
+    public getFactoryStatusName() : string {
+        if (this.FactoryStatus)
+        {
+            switch(this.FactoryStatus){
+                case 0:{
+                    return "Not started";
+                }
+                case 1:{
+                    return "Waiting for fabric";
+                }
+                case 2:{
+                    return "In production";
+                }
+                case 3:{
+                    return "Ready To Go";
+                }
+                case 4:{
+                    return "Waiting for confirmation";
+                }
+                case 5:{
+                    return "Booked with forwarder";
+                }
+                case 6:{
+                    return "Canceled";
+                }
+            }
+        }
+        return "";
+    }
+    
+    public StatusDate_Date: Date | undefined;
+    private statusDate: string = "";    
+    public get StatusDate(){
+        return this.statusDate;
+    }
+    public set StatusDate(value: string){
+        this.statusDate = value;
+        if (value)
+            this.StatusDate_Date = new Date(value);
+    }
+    
+
+    public FactoryContainerNumber: string;
+
     public FactoryBookingDate: string;
+    public FactoryBookingDate_Date: Date | undefined;
+    
     public DocumentsSendOutDate: string;
+    public DocumentsSendOutDate_Date: Date | undefined;
+
     public ForwarderName: number | undefined;
-    public BookingDate: string;
-    public Rate: number | undefined;
+    public getForwarderName() : string {
+        if (this.ForwarderName)
+        {
+            switch(this.ForwarderName){
+                case 0:{
+                    return "Apex";
+                }
+                case 1:{
+                    return "Hecny";
+                }
+                case 2:{
+                    return "Other";
+                }
+                case 3:{
+                    return "OEC";
+                }
+                case 4:{
+                    return "Hold";
+                }
+            }
+        }
+        return "";
+    }
+        
+    public BookingDate_Date: Date | undefined;
+    private bookingDate: string = "";
+    public get BookingDate(){
+        return this.bookingDate;
+    }
+    public set BookingDate(value: string){
+        this.bookingDate = value;
+        if (value)
+            this.BookingDate_Date = new Date(value);
+    }
+
+
+    public Rate: number | undefined;    
+
     public ETD: string;
+    public ETD_Date: Date | undefined;
+
     public ETA: string;
-    public ConfirmeStatus: number | undefined;
-    public ConfirmDate: string;
+    public ETA_Date: Date | undefined;
+
+    public PortOfDischarge: string;
+    public DischargeStatus: number | undefined;
+    public getDischargeStatusName() : string {
+        if (this.DischargeStatus)
+        {
+            switch(this.DischargeStatus){
+                case 0:{
+                    return "Not arrived";
+                }
+                case 1:{
+                    return "On vassel";
+                }
+                case 2:{
+                    return "Ready for pick up";
+                }
+                case 3:{
+                    return "On hold";
+                }
+            }
+        }
+        return "";
+    }
+
+
+    public ShippmentStatus: number | undefined;
+    public getShippmentStatusName() : string {
+        if (this.ShippmentStatus)
+        {
+            switch(this.ShippmentStatus){
+                case 0:{
+                    return "Please Accept";
+                }
+                case 1:{
+                    return "Do not accept";
+                }
+                case 2:{
+                    return "Hold the booking";
+                }
+                case 3:{
+                    return "Change";
+                }
+            }
+        }
+        return "";
+    }    
+
+    public ConfirmDate_Date: Date | undefined;
+    public confirmDate: string = "";
+    public get ConfirmDate(){
+        return this.confirmDate;
+    }
+    public set ConfirmDate(value: string){
+        this.confirmDate = value;
+        if (value)
+            this.ConfirmDate_Date = new Date(value);
+    }
+
+
+    public GateIn: string;
+    public GateIn_Date: Date | undefined;
+
+    public EmptyDate: string;
+    public EmptyDate_Date: Date | undefined;
+
+    public GateOut: string;
+    public GateOut_Date: Date | undefined;
+
+    public BillDate: string;
+    public BillDate_Date: Date | undefined;
+
     public Searchable: string;
 
-    public IsContain(value: string) : boolean
-    {
-        return this.Searchable.indexOf("|"+value.toLowerCase())>0;
-    }
-}
+    public FactoryStatusNeedsToHaveReadyToGO: boolean;
+} 

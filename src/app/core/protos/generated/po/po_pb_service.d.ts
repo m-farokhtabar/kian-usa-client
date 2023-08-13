@@ -14,9 +14,19 @@ type PoSrvGet = {
   readonly responseType: typeof po_pb.PoResponse;
 };
 
+type PoSrvSave = {
+  readonly methodName: string;
+  readonly service: typeof PoSrv;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof po_pb.PoDataSaveRequest;
+  readonly responseType: typeof po_pb.PoSaveResponse;
+};
+
 export class PoSrv {
   static readonly serviceName: string;
   static readonly Get: PoSrvGet;
+  static readonly Save: PoSrvSave;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -59,6 +69,15 @@ export class PoSrvClient {
   get(
     requestMessage: google_protobuf_empty_pb.Empty,
     callback: (error: ServiceError|null, responseMessage: po_pb.PoResponse|null) => void
+  ): UnaryResponse;
+  save(
+    requestMessage: po_pb.PoDataSaveRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: po_pb.PoSaveResponse|null) => void
+  ): UnaryResponse;
+  save(
+    requestMessage: po_pb.PoDataSaveRequest,
+    callback: (error: ServiceError|null, responseMessage: po_pb.PoSaveResponse|null) => void
   ): UnaryResponse;
 }
 
