@@ -1,7 +1,7 @@
 <div class="container-fluid p-sm-5">
     <div class="row justify-content-end">
         <div class="pt-3 col-xxl-5 col-xl-4 col-lg-3 col-md-12 col-sm-12 col-xs-12">
-            <button style="min-width: 300px;" class="btn btn-primary" (click)="OnSubmit()">Submit</button>
+            <button style="min-width: 300px;" class="btn btn-primary" (click)="OnSubmit()" [hidden]="NoneOfTheColumnIsWritable()">Submit</button>
         </div>
         <div class="pt-3 col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-6 col-xs-12">
             <div class="input-group">
@@ -21,33 +21,38 @@
                     <option value="ShippingCarrier" *ngIf="IsColumnAllowedToShow('Shipping Carrier')">Shipping Carrier</option>
                     <option value="ContainerNumber" *ngIf="IsColumnAllowedToShow('Container Number')">Container Number</option>
                     <option value="ETAAtPort" *ngIf="IsColumnAllowedToShow('ETA at Port')">ETA at Port</option>
-                    <!-- <option value="FactoryStatus">Status</option>
-                    <option value="StatusDate_Date">Status Date</option>
-                    <option value="StatusDate_Date">Factory Container Number</option>
-                    <option value="FactoryBookingDate_Date">Booking Date</option>
-                    <option value="DocumentsSendOutDate_Date">Doc Send Out Date</option>
-                    <option value="ForwarderName">Forwarder Name</option>
-                    <option value="BookingDate_Date">Booking Date</option>
-                    <option value="Rate">Rate</option>
-                    <option value="ETD_Date">ETD</option>
-                    <option value="ETA_Date">ETA</option>
-                    <option value="PortOfDischarge">Port Of Discharge</option>
-                    <option value="DischargeStatus">Discharge Status</option>
-                    <option value="ShippmentStatus">Shippment Status</option>
-                    <option value="ConfirmDate_Date">Confirm date</option>
-                    <option value="GateIn_Date">Gate In</option>
-                    <option value="EmptyDate_Date">Empty Date</option>
-                    <option value="GateOut_Date">Gate out</option>
-                    <option value="BillDate_Date">Bill Date</option> -->
+                    <!--Editable-->
+                    <option value="FactoryStatus" *ngIf="IsColumnAllowedToShow('Factory Status')">Status</option>
+                    <option value="StatusDate_Date" *ngIf="IsColumnAllowedToShow('Status Date')">Status Date</option>
+                    <option value="FactoryContainerNumber" *ngIf="IsColumnAllowedToShow('Factory Container Number')">Container #</option>
+                    <option value="FactoryBookingDate_Date" *ngIf="IsColumnAllowedToShow('Factory Booking Date')">Factory Booking Date</option>
+                    <option value="DocumentsSendOutDate_Date" *ngIf="IsColumnAllowedToShow('Doc Send Out Date')">Doc Send Out Date</option>
+                    
+                    <option value="ForwarderName" *ngIf="IsColumnAllowedToShow('Forwarder Name')">Forwarder Name</option>
+                    
+                    <option value="BookingDate_Date" *ngIf="IsColumnAllowedToShow('Booking Date')">Booking Date</option>
+                    <option value="Rate" *ngIf="IsColumnAllowedToShow('Rate')">Rate</option>
+                    <option value="ETD_Date" *ngIf="IsColumnAllowedToShow('ETD')">ETD</option>
+                    <option value="ETA_Date" *ngIf="IsColumnAllowedToShow('ETA')">ETA</option>
+                    <option value="PortOfDischarge" *ngIf="IsColumnAllowedToShow('Port Of Discharge')">Port Of Discharge</option>
+                    <option value="DischargeStatus" *ngIf="IsColumnAllowedToShow('Discharge Status')">Discharge Status</option>
+                    <option value="ShippmentStatus" *ngIf="IsColumnAllowedToShow('Shippment Status')">Shippment Status</option>
+                    <option value="ConfirmDate_Date" *ngIf="IsColumnAllowedToShow('Confirm date')">Confirm date</option>
+                    <option value="GateIn_Date" *ngIf="IsColumnAllowedToShow('Gate In')">Gate In</option>
+                    <option value="EmptyDate_Date" *ngIf="IsColumnAllowedToShow('Empty Date')">Empty Date</option>
+                    <option value="GateOut_Date" *ngIf="IsColumnAllowedToShow('Gate out')">Gate out</option>
+                    <option value="BillDate_Date" *ngIf="IsColumnAllowedToShow('Bill Date')"> Bill Date</option>                    
+                    
+                    
                 </select>
                 <select style="max-width: 135px;" class="form-select" aria-label="Sort Type" [(ngModel)]="SortType" (change)="OnSortData()">
-                    <option value="0">High to low</option>
-                    <option value="1">Low to high</option>
+                    <option value="0">Low to high</option>
+                    <option value="1">High to low</option>
                 </select>
             </div>
         </div>
         <div class="pt-3 col-xxl-3 col-xl-3 col-lg-4 col-md-5 col-sm-6 col-xs-12">
-            <input type="text" class="form-control" placeholder="Search" (input)="OnSearchData()" [(ngModel)]="SearchContent">
+            <input type="text" class="form-control" placeholder="Search" (input)="OnSearchData()" [(ngModel)]="SearchContent" (focus)="OnFocusSearchButton()">
         </div>
     </div>
     <div class="row mt-3">
@@ -58,8 +63,7 @@
                     <tr class="table-dark">
                         <th [attr.colspan]="GetColColspanForGroupColumn(['User','Date','Customer PO','Estimate Number',
                         'Name','PO Number','Due Date','Item Group','Forwarder','IOR','Ship To','Shipping Carrier','Container Number', 'ETA at Port'])"class="border-end text-center" 
-                        *ngIf="GetColColspanForGroupColumn(['User','Date','Customer PO','Estimate Number',
-                        'Name','PO Number','Due Date','Item Group','Forwarder','IOR','Ship To','Shipping Carrier','Container Number', 'ETA at Port'])>0">Data</th>
+                        *ngIf="GetColColspanForGroupColumn(['User','Date','Customer PO','Estimate Number','Name','PO Number','Due Date','Item Group','Forwarder','IOR','Ship To','Shipping Carrier','Container Number', 'ETA at Port'])>0">Data</th>
                         <th [attr.colspan]="GetColColspanForGroupColumn(['Factory Status','Status Date','Factory Container Number','Factory Booking Date','Doc Send Out Date'])"
                             class="border-end text-center"                            
                             *ngIf="GetColColspanForGroupColumn(['Factory Status','Status Date','Factory Container Number','Factory Booking Date','Doc Send Out Date'])>0">Factory</th>
@@ -134,7 +138,7 @@
                             <td scope="col" *ngIf="IsColumnAllowedToShow('ETA at Port')">{{xlData.ETAAtPort}}</td>
 
                             <td scope="col" *ngIf="IsColumnAllowedToShow('Factory Status')">
-                                <select (change)="OnFactoryStatusChanged(i)" formControlName="FactoryStatus" class="form-select form-select-sm" aria-label="Please Select Factory Status" 
+                                <select formControlName="FactoryStatus" class="form-select form-select-sm" aria-label="Please Select Factory Status" 
                                 *ngIf="IsColumnWritable('Factory Status') else ReadableFactoryStatus">
                                     <option selected>Select Factory Status</option>
                                     <option value="0">Not started</option>
@@ -177,15 +181,15 @@
                                 </select>
                                 <ng-template #ReadableForwarderName>{{xlData.getForwarderName()}}</ng-template>
                             </td>
-                            <td scope="col" *ngIf="IsColumnAllowedToShow('Booking Date')">                                
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('Booking Date')">
                                 <input formControlName="BookingDate" type="date" class="form-control form-control-sm" 
                                 *ngIf="IsColumnWritable('Booking Date') else ReadableBookingDate"/>
                                 <ng-template #ReadableBookingDate>{{xlData.BookingDate}}</ng-template>
                             </td>
                             <td scope="col" *ngIf="IsColumnAllowedToShow('Rate')">
-                                <input formControlName="Rate" type="text" class="form-control form-control-sm"
+                                <input formControlName="Rate" type="text" class="form-control form-control-sm" (blur)="OnBlurRateBox($event)"
                                 *ngIf="IsColumnWritable('Rate') else ReadableRate"/>
-                                <ng-template #ReadableRate>{{xlData.Rate}}</ng-template>
+                                <ng-template #ReadableRate>{{xlData.Rate}}</ng-template>                                
                             </td>
                             <td scope="col" *ngIf="IsColumnAllowedToShow('ETD')">
                                 <input formControlName="ETD" type="date" class="form-control form-control-sm"

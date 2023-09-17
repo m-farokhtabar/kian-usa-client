@@ -377,6 +377,9 @@ export class PoSaveResult extends jspb.Message {
   getMessage(): string;
   setMessage(value: string): void;
 
+  getFactorystatusneedstohavereadytogo(): boolean;
+  setFactorystatusneedstohavereadytogo(value: boolean): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): PoSaveResult.AsObject;
   static toObject(includeInstance: boolean, msg: PoSaveResult): PoSaveResult.AsObject;
@@ -394,6 +397,7 @@ export namespace PoSaveResult {
     statusdate: string,
     bookingdate: string,
     message: string,
+    factorystatusneedstohavereadytogo: boolean,
   }
 }
 

@@ -36,6 +36,7 @@ import { CheckOutComponent } from './modules/check-out/check-out.component';
 import { AdvancedRequestCatalogComponent } from './shared/components/advanced-request-catalog/advanced-request-catalog.component';
 import { NgSelectModule } from "@ng-select/ng-select";
 import { PoDataComponent } from './modules/po-data/po-data.component';
+import { CurrencyPipe } from '@angular/common';
 
 const appRoutes: Routes = [
     {path: '', component: HomeComponent},
@@ -85,16 +86,16 @@ const appRoutes: Routes = [
         HorizontalSliderComponent,
         CheckOutComponent,
         AdvancedRequestCatalogComponent,
-        PoDataComponent        
+        PoDataComponent
     ],
     imports: [
         BrowserModule,
         RouterModule.forRoot(appRoutes),
         FormsModule,
         ReactiveFormsModule,
-        NgSelectModule
+        NgSelectModule,        
     ],
-    providers: [AuthService, SharedDataService],
+    providers: [AuthService, SharedDataService, CurrencyPipe],
     bootstrap: [AppComponent]
 })
 export class AppModule {

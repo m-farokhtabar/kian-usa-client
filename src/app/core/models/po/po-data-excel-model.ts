@@ -68,9 +68,9 @@ export class PoDataExcelModel {
         if (FactoryBookingDate)
             this.FactoryBookingDate_Date = new Date(FactoryBookingDate);
 
-        this.DocumentsSendOutDate = DocumentsSendOutDate
-        if (DocumentsSendOutDate)
-            this.DocumentsSendOutDate_Date = new Date(DocumentsSendOutDate);
+        this.DocumentsSendOutDate = DocumentsSendOutDate;
+        // if (DocumentsSendOutDate)
+        //     this.DocumentsSendOutDate_Date = new Date(DocumentsSendOutDate);
 
         this.ForwarderName = ForwarderName
         this.BookingDate = BookingDate
@@ -80,12 +80,12 @@ export class PoDataExcelModel {
         this.Rate = Rate
         
         this.ETD = ETD
-        if (ETD)
-            this.ETD_Date = new Date(ETD);
+        // if (ETD)
+        //     this.ETD_Date = new Date(ETD);
         
         this.ETA = ETA
-        if (ETA)
-            this.ETA_Date = new Date(ETA);
+        // if (ETA)
+        //     this.ETA_Date = new Date(ETA);
 
         this.PortOfDischarge = PortOfDischarge
         this.DischargeStatus = DischargeStatus
@@ -96,24 +96,36 @@ export class PoDataExcelModel {
         //     this.ConfirmDate_Date = new Date(ConfirmDate);
 
         this.GateIn = GateIn
-        if (GateIn)
-            this.GateIn_Date = new Date(GateIn);
+        // if (GateIn)
+        //     this.GateIn_Date = new Date(GateIn);
 
         this.EmptyDate = EmptyDate
-        if (EmptyDate)
-            this.EmptyDate_Date = new Date(EmptyDate);
+        // if (EmptyDate)
+        //     this.EmptyDate_Date = new Date(EmptyDate);
 
         this.GateOut = GateOut
-        if (GateOut)
-            this.GateOut_Date = new Date(GateOut);
+        // if (GateOut)
+        //     this.GateOut_Date = new Date(GateOut);
 
         this.BillDate = BillDate
-        if (BillDate)
-            this.BillDate_Date = new Date(BillDate);
+        // if (BillDate)
+        //     this.BillDate_Date = new Date(BillDate);
 
-        this.Searchable = "|" + Name + "|" + PONumber + "|" + + CustomerPO + "|" + ItemGroup + "|" + ContainerNumber;
-        this.Searchable = this.Searchable.toLowerCase(); 
+        //this.Searchable = "|" + Name + "|" + PONumber + "|" + + CustomerPO + "|" + ItemGroup + "|" + ContainerNumber;
+        //this.Searchable = this.Searchable.toLowerCase(); 
+        this.Searchable = "";
+        this.MakeSearchableValue();
         this.FactoryStatusNeedsToHaveReadyToGO = FactoryStatusNeedsToHaveReadyToGO;  
+    }
+    public MakeSearchableValue(){
+        this.Searchable = "|" + this.User + "|" + this.Date + "|" + this.CustomerPO + "|" + this.EstimateNumber + "|" + this.Name +
+        "|" + this.PONumber + "|" + this.DueDate + "|" + this.ItemGroup + "|" + this.Forwarder + "|" + this.IOR +
+        "|" + this.ShipTo + "|" + this.ShippingCarrier + "|" + this.ContainerNumber + "|" + this.ETAAtPort + "|" + this.getFactoryStatusName() +
+        "|" + this.statusDate + "|" + this.FactoryContainerNumber + "|" + this.FactoryBookingDate + "|" + this.documentsSendOutDate + "|" + this.getForwarderName() +
+        "|" + this.bookingDate + "|" + this.Rate + "|" + this.eTD + "|" + this.eTA + "|" + this.PortOfDischarge +
+        "|" + this.getDischargeStatusName() + "|" + this.getShippmentStatusName() + "|" + this.confirmDate + "|" + this.gateIn + "|" + this.emptyDate +
+        "|" + this.gateOut + "|" + this.billDate;
+        this.Searchable = this.Searchable.toLowerCase();
     }
     public User: string;
     
@@ -138,7 +150,7 @@ export class PoDataExcelModel {
 
     public FactoryStatus: number | undefined;
     public getFactoryStatusName() : string {
-        if (this.FactoryStatus)
+        if (this.FactoryStatus != undefined && this.FactoryStatus>=0)        
         {
             switch(this.FactoryStatus){
                 case 0:{
@@ -168,7 +180,7 @@ export class PoDataExcelModel {
     }
     
     public StatusDate_Date: Date | undefined;
-    private statusDate: string = "";    
+    private statusDate: string = "";
     public get StatusDate(){
         return this.statusDate;
     }
@@ -184,13 +196,21 @@ export class PoDataExcelModel {
     public FactoryBookingDate: string;
     public FactoryBookingDate_Date: Date | undefined;
     
-    public DocumentsSendOutDate: string;
     public DocumentsSendOutDate_Date: Date | undefined;
+    public documentsSendOutDate: string = "";
+    public get DocumentsSendOutDate(){
+        return this.documentsSendOutDate;
+    }
+    public set DocumentsSendOutDate(value: string){
+        this.documentsSendOutDate = value;
+        if (value)
+            this.DocumentsSendOutDate_Date = new Date(value);
+    }
 
     public ForwarderName: number | undefined;
     public getForwarderName() : string {
-        if (this.ForwarderName)
-        {
+        if (this.ForwarderName != undefined && this.ForwarderName>=0)
+        {            
             switch(this.ForwarderName){
                 case 0:{
                     return "Apex";
@@ -225,17 +245,33 @@ export class PoDataExcelModel {
 
 
     public Rate: number | undefined;    
-
-    public ETD: string;
+    
     public ETD_Date: Date | undefined;
-
-    public ETA: string;
+    public eTD: string = "";
+    public get ETD(){
+        return this.eTD;
+    }
+    public set ETD(value: string){
+        this.eTD = value;
+        if (value)
+            this.ETD_Date = new Date(value);
+    }
+    
     public ETA_Date: Date | undefined;
+    public eTA: string = "";
+    public get ETA(){
+        return this.eTA;
+    }
+    public set ETA(value: string){
+        this.eTA = value;
+        if (value)
+            this.ETA_Date = new Date(value);
+    }
 
     public PortOfDischarge: string;
     public DischargeStatus: number | undefined;
     public getDischargeStatusName() : string {
-        if (this.DischargeStatus)
+        if (this.DischargeStatus != undefined && this.DischargeStatus>=0)        
         {
             switch(this.DischargeStatus){
                 case 0:{
@@ -258,7 +294,7 @@ export class PoDataExcelModel {
 
     public ShippmentStatus: number | undefined;
     public getShippmentStatusName() : string {
-        if (this.ShippmentStatus)
+        if (this.ShippmentStatus != undefined && this.ShippmentStatus>=0)
         {
             switch(this.ShippmentStatus){
                 case 0:{
@@ -290,18 +326,51 @@ export class PoDataExcelModel {
     }
 
 
-    public GateIn: string;
+    
     public GateIn_Date: Date | undefined;
-
-    public EmptyDate: string;
+    public gateIn: string = "";
+    public get GateIn(){
+        return this.gateIn;
+    }
+    public set GateIn(value: string){
+        this.gateIn = value;
+        if (value)
+            this.GateIn_Date = new Date(value);
+    }
+    
     public EmptyDate_Date: Date | undefined;
-
-    public GateOut: string;
+    public emptyDate: string = "";
+    public get EmptyDate(){
+        return this.emptyDate;
+    }
+    public set EmptyDate(value: string){
+        this.emptyDate = value;
+        if (value)
+            this.EmptyDate_Date = new Date(value);
+    }
+    
     public GateOut_Date: Date | undefined;
-
-    public BillDate: string;
+    public gateOut: string = "";
+    public get GateOut(){
+        return this.gateOut;
+    }
+    public set GateOut(value: string){
+        this.gateOut = value;
+        if (value)
+            this.GateOut_Date = new Date(value);
+    }
+    
     public BillDate_Date: Date | undefined;
-
+    public billDate: string = "";
+    public get BillDate(){
+        return this.billDate;
+    }
+    public set BillDate(value: string){
+        this.billDate = value;
+        if (value)
+            this.BillDate_Date = new Date(value);
+    }
+    
     public Searchable: string;
 
     public FactoryStatusNeedsToHaveReadyToGO: boolean;

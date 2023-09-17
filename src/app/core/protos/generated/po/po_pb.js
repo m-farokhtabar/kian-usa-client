@@ -2872,7 +2872,8 @@ proto.PoSaveResult.toObject = function(includeInstance, msg) {
     confirmdate: jspb.Message.getFieldWithDefault(msg, 2, ""),
     statusdate: jspb.Message.getFieldWithDefault(msg, 3, ""),
     bookingdate: jspb.Message.getFieldWithDefault(msg, 4, ""),
-    message: jspb.Message.getFieldWithDefault(msg, 5, "")
+    message: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    factorystatusneedstohavereadytogo: jspb.Message.getBooleanFieldWithDefault(msg, 6, false)
   };
 
   if (includeInstance) {
@@ -2928,6 +2929,10 @@ proto.PoSaveResult.deserializeBinaryFromReader = function(msg, reader) {
     case 5:
       var value = /** @type {string} */ (reader.readString());
       msg.setMessage(value);
+      break;
+    case 6:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setFactorystatusneedstohavereadytogo(value);
       break;
     default:
       reader.skipField();
@@ -2990,6 +2995,13 @@ proto.PoSaveResult.serializeBinaryToWriter = function(message, writer) {
   if (f.length > 0) {
     writer.writeString(
       5,
+      f
+    );
+  }
+  f = message.getFactorystatusneedstohavereadytogo();
+  if (f) {
+    writer.writeBool(
+      6,
       f
     );
   }
@@ -3083,6 +3095,24 @@ proto.PoSaveResult.prototype.getMessage = function() {
  */
 proto.PoSaveResult.prototype.setMessage = function(value) {
   return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * optional bool FactoryStatusNeedsToHaveReadyToGO = 6;
+ * @return {boolean}
+ */
+proto.PoSaveResult.prototype.getFactorystatusneedstohavereadytogo = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 6, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.PoSaveResult} returns this
+ */
+proto.PoSaveResult.prototype.setFactorystatusneedstohavereadytogo = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 6, value);
 };
 
 
