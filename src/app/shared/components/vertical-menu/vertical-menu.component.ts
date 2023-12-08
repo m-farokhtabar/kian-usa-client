@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, Output, ViewChild, EventEmitter} from '@angular/core';
 import {VerticalLinkModel, VerticalMenuModel} from "./models/vertical-menu.model";
 import {AuthService} from "../../../core/models/account/auth.service";
 
@@ -8,6 +8,7 @@ import {AuthService} from "../../../core/models/account/auth.service";
     styleUrls: ['./vertical-menu.component.css']
 })
 export class VerticalMenuComponent implements OnInit {
+    @Output() ThereIsNoMenuToShowEvent = new EventEmitter<{}>();
     @ViewChild("VerticalMenuHeaderElement") VerticalMenuHeaderElement: ElementRef | null = null;
     public menu: VerticalMenuModel = new VerticalMenuModel();
     @Input()
@@ -38,5 +39,18 @@ export class VerticalMenuComponent implements OnInit {
             return this.account.HasPermissionToPage(link.Page);
         else
             return true;
+    }
+    IfThereIsNoMenuTOShowThenVerticalMenuMustBeHidden(){
+        let showMenu : Boolean = false;
+        this.Menu.Links.forEach(x => {
+            if (this.NeedsPermission(x))
+            {
+                showMenu = true;                
+            }
+        });
+        ///alert(showMenu);
+        if (!showMenu)
+            this.ThereIsNoMenuToShowEvent.emit({});
+        return showMenu;
     }
 }

@@ -146,7 +146,8 @@ export class ShopComponent implements OnInit, OnDestroy {
                         Quantity: "",
                         Description: Cat.Description,
                         PriceNames: [],
-                        PricePermissions: []
+                        PricePermissions: [],
+                        ShowInImageDialogBox: true
                     };
                     Cells.push(Cell);
                 }

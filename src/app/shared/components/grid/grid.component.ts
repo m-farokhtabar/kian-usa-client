@@ -15,6 +15,13 @@ export class GridComponent implements OnInit {
     public HasMoreThanOnePrice = GridHelper.HasMoreThanOnePrice;
 
     public GridCells: (GridCell[] | null)[][] = [];
+    
+    //ImageDialogBox
+    @Input()
+    public IsImageDialogBoxNeeded: boolean = false;
+    public IsImageDialogVisible: boolean = false;
+    public ClickedToOpenDialog = false;
+    public ImageDialogUrl = "";
 
     @Input()
     public CurrentPageIndex: number = 0;
@@ -148,4 +155,21 @@ export class GridComponent implements OnInit {
                 [this.ExtraQueryParameterName]: this.ExtraQueryParameterValue
             };
     }
+    
+    public OnClickOutSideOfImageDialog(){        
+        if (this.IsImageDialogBoxNeeded)
+        {
+            if (!this.ClickedToOpenDialog)
+                this.IsImageDialogVisible = false;
+            this.ClickedToOpenDialog = false;
+        }
+    }
+    public OnClickLink(imageUrl:string, ShowInImageDialogBox: boolean){        
+        if (this.IsImageDialogBoxNeeded && ShowInImageDialogBox)
+        {
+            this.ClickedToOpenDialog = true;
+            this.IsImageDialogVisible = true;
+            this.ImageDialogUrl = imageUrl;
+        }
+    }    
 }

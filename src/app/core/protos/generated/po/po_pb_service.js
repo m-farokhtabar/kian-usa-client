@@ -2,7 +2,6 @@
 // file: po.proto
 
 var po_pb = require("./po_pb");
-var google_protobuf_empty_pb = require("google-protobuf/google/protobuf/empty_pb");
 var grpc = require("@improbable-eng/grpc-web").grpc;
 
 var PoSrv = (function () {
@@ -16,7 +15,7 @@ PoSrv.Get = {
   service: PoSrv,
   requestStream: false,
   responseStream: false,
-  requestType: google_protobuf_empty_pb.Empty,
+  requestType: po_pb.PoGetRequest,
   responseType: po_pb.PoResponse
 };
 

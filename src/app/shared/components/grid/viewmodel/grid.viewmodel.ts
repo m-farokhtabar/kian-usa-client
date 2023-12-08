@@ -19,9 +19,10 @@ export class GridCell {
     public PriceNames: string[];
     public PricePermissions : KeyValueModel[];
     public Quantity: string;
+    public ShowInImageDialogBox: boolean = true;
 
     constructor(Title: string, Alt: string, ImageUrl: string, Link: string, ShortDescription: string, Prices: (number | undefined)[], Quantity: string, Description: string,
-                PriceNames : string[], PricePermissions : KeyValueModel[]) {
+                PriceNames : string[], PricePermissions : KeyValueModel[], ShowInImageDialogBox: boolean) {
         this.Title = Title;
         this.Alt = Alt;
         this.ImageUrl = ImageUrl;
@@ -32,6 +33,7 @@ export class GridCell {
         this.Description = Description;
         this.PriceNames = PriceNames;
         this.PricePermissions = PricePermissions;
+        this.ShowInImageDialogBox = ShowInImageDialogBox;
     }
 }
 

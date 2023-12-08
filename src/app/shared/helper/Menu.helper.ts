@@ -3,7 +3,7 @@ import {VerticalMenuModel} from "../components/vertical-menu/models/vertical-men
 export class MenuHelper{
     public static  CreateVerticalMenuModelForWhoWeAre(): VerticalMenuModel{
         return {
-            Header: "<h4 class='pt-4'>WHO WE ARE</h4>",
+            Header: "<h4 class='pt-4'>About Us</h4>",
             Links: [
                 {
                     Title: "About US",

@@ -13,7 +13,7 @@ import {ParagraphViewmodel} from "../../shared/components/paragraph/viewmodel/pa
 })
 export class HomeComponent implements OnInit {
     DefaultImageSlider: string = Constant.DefaultImageFileName;
-    SliderImages: ImageSliderModel[] = [];
+    SliderImages: ImageSliderModel[] = [];    
 
     constructor(private route: ActivatedRoute, private sharedData: SharedDataService) {
         this.SliderImages =
@@ -21,6 +21,8 @@ export class HomeComponent implements OnInit {
                 new ImageSliderModel(Constant.HomeSlider + "kian_usa_home_slider_1.jpg", "KIAN USA Furniture"),
                 new ImageSliderModel(Constant.HomeSlider + "kian_usa_home_slider_2.jpg", "KIAN USA Furniture"),
                 new ImageSliderModel(Constant.HomeSlider + "kian_usa_home_slider_3.jpg", "KIAN USA Furniture"),
+                new ImageSliderModel(Constant.HomeSlider + "kian_usa_home_slider_4.jpg", "KIAN USA Furniture"),
+                new ImageSliderModel(Constant.HomeSlider + "kian_usa_home_slider_5.jpg", "KIAN USA Furniture")
             ]
     }
 
@@ -33,21 +35,36 @@ export class HomeComponent implements OnInit {
             Cells:
                 [
                     {
-                        Title: "Sectional",
-                        Alt: "KianUSA sectional furniture",
-                        ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_01_0001.jpg",
+                        Title: "",
+                        Alt: "KianUSA",
+                        ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_01_0001_1.jpg",
                         Link: "/",
                         ShortDescription: "",
                         Prices : [],
                         Quantity: "",
                         Description: "",
                         PriceNames: [],
-                        PricePermissions: []
+                        PricePermissions: [],
+                        ShowInImageDialogBox: true
                     },
                     {
-                        Title: "Sofa & Loveseat & chair",
-                        Alt: "KianUSA Sofa & Loveseat & chair",
-                        ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_01_0002.jpg",
+                        Title: "",
+                        Alt: "KianUSA",
+                        ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_01_0002_1.jpg",
+
+                        Link: "/contact-us",
+                        ShortDescription: "",
+                        Prices : [],
+                        Quantity: "",
+                        Description: "",
+                        PriceNames: [],
+                        PricePermissions: [],
+                        ShowInImageDialogBox: false
+                    },
+                    {
+                        Title: "",
+                        Alt: "KianUSA",
+                        ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_01_0003_1.jpg",
 
                         Link: "/",
                         ShortDescription: "",
@@ -55,10 +72,11 @@ export class HomeComponent implements OnInit {
                         Quantity: "",
                         Description: "",
                         PriceNames: [],
-                        PricePermissions: []
+                        PricePermissions: [],
+                        ShowInImageDialogBox: false
                     }
                 ],
-            CellsPerRow: 2,
+            CellsPerRow: 3,
             MaxRowPerPage: 1,
             CellStyle: CellStyle.Up,
             GridStyle: ["1,2","1,2"]
@@ -74,45 +92,126 @@ export class HomeComponent implements OnInit {
             Cells:
                 [
                     {
-                        Title: "Power Back & Seat",
-                        Alt: "KianUSA Power Back & Seat",
-                        ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_02_0001.jpg",
+                        Title: "",
+                        Alt: "KianUSA",
+                        ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_02_0001_1.jpg",
                         Link: "/",
                         ShortDescription: "",
                         Prices : [],
                         Quantity: "",
                         Description: "",
                         PriceNames: [],
-                        PricePermissions: []
+                        PricePermissions: [],
+                        ShowInImageDialogBox: true
                     },
                     {
-                        Title: "Power Seat",
-                        Alt: "KianUSA Power Seat",
-                        ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_02_0002.jpg",
+                        Title: "",
+                        Alt: "KianUSA",
+                        ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_02_0002_1.jpg",
                         Link: "/",
                         ShortDescription: "",
                         Prices : [],
                         Quantity: "",
                         Description: "",
                         PriceNames: [],
-                        PricePermissions: []
+                        PricePermissions: [],
+                        ShowInImageDialogBox: true
                     },
                     {
-                        Title: "Manual",
-                        Alt: "KianUSA Manual",
-                        ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_02_0003.jpg",
+                        Title: "",
+                        Alt: "KianUSA",
+                        ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_02_0003_1.jpg",
                         Link: "/",
                         ShortDescription: "",
                         Prices : [],
                         Quantity: "",
                         Description: "",
                         PriceNames: [],
-                        PricePermissions: []
+                        PricePermissions: [],
+                        ShowInImageDialogBox: true
+                    },
+                    {
+                        Title: "",
+                        Alt: "KianUSA",
+                        ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_02_0004_1.jpg",
+                        Link: "/",
+                        ShortDescription: "",
+                        Prices : [],
+                        Quantity: "",
+                        Description: "",
+                        PriceNames: [],
+                        PricePermissions: [],
+                        ShowInImageDialogBox: true
+                    },
+                    {
+                        Title: "",
+                        Alt: "KianUSA",
+                        ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_02_0005_1.jpg",
+                        Link: "/",
+                        ShortDescription: "",
+                        Prices : [],
+                        Quantity: "",
+                        Description: "",
+                        PriceNames: [],
+                        PricePermissions: [],
+                        ShowInImageDialogBox: true
+                    },
+                    {
+                        Title: "",
+                        Alt: "KianUSA",
+                        ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_02_0006_1.jpg",
+                        Link: "/",
+                        ShortDescription: "",
+                        Prices : [],
+                        Quantity: "",
+                        Description: "",
+                        PriceNames: [],
+                        PricePermissions: [],
+                        ShowInImageDialogBox: true
+                    },
+                    {
+                        Title: "",
+                        Alt: "KianUSA",
+                        ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_02_0007_1.jpg",
+                        Link: "/",
+                        ShortDescription: "",
+                        Prices : [],
+                        Quantity: "",
+                        Description: "",
+                        PriceNames: [],
+                        PricePermissions: [],
+                        ShowInImageDialogBox: true
+                    },
+                    {
+                        Title: "",
+                        Alt: "KianUSA",
+                        ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_02_0008_1.jpg",
+                        Link: "/",
+                        ShortDescription: "",
+                        Prices : [],
+                        Quantity: "",
+                        Description: "",
+                        PriceNames: [],
+                        PricePermissions: [],
+                        ShowInImageDialogBox: true
+                    },
+                    {
+                        Title: "",
+                        Alt: "KianUSA",
+                        ImageUrl: Constant.ImageHost + Constant.HomeGrid + "grid_02_0009_1.jpg",
+                        Link: "/",
+                        ShortDescription: "",
+                        Prices : [],
+                        Quantity: "",
+                        Description: "",
+                        PriceNames: [],
+                        PricePermissions: [],
+                        ShowInImageDialogBox: true
                     }
                 ],
             CellsPerRow: 3,
-            MaxRowPerPage: 1,
-            CellStyle: CellStyle.Up,
+            MaxRowPerPage: 3,
+            CellStyle: CellStyle.Down,
             GridStyle: ["1,3","1,3"]
         };
     }
@@ -130,7 +229,8 @@ export class HomeComponent implements OnInit {
                         Quantity: "",
                         Description: "",
                         PriceNames: [],
-                        PricePermissions: []
+                        PricePermissions: [],
+                        ShowInImageDialogBox: true
                     },
                     {
                         Title: "Visit us at Market",
@@ -142,7 +242,8 @@ export class HomeComponent implements OnInit {
                         Quantity: "",
                         Description: "",
                         PriceNames: [],
-                        PricePermissions: []
+                        PricePermissions: [],
+                        ShowInImageDialogBox: true
                     },
                     {
                         Title: "Special Request",
@@ -154,7 +255,8 @@ export class HomeComponent implements OnInit {
                         Quantity: "",
                         Description: "",
                         PriceNames: [],
-                        PricePermissions: []
+                        PricePermissions: [],
+                        ShowInImageDialogBox: true
                     },
                     {
                         Title: "Coming Soon",
@@ -166,7 +268,8 @@ export class HomeComponent implements OnInit {
                         Quantity: "",
                         Description: "",
                         PriceNames: [],
-                        PricePermissions: []
+                        PricePermissions: [],
+                        ShowInImageDialogBox: true
                     }
                 ],
             CellsPerRow: 4,
@@ -175,4 +278,5 @@ export class HomeComponent implements OnInit {
             GridStyle: ["1,4","1,4"]
         };
     }
+
 }

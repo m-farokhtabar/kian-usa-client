@@ -7,13 +7,14 @@ import {MenuHelper} from "../../shared/helper/Menu.helper";
 import {Constant} from "../../shared/helper/constant";
 import {AuthService} from "../../core/models/account/auth.service";
 import {Subscription} from "rxjs";
+import { WhoWeAreBaseComponent } from 'src/app/shared/components/who-we-are/who-we-are-base-component';
 
 @Component({
     selector: 'app-visit-us-at-market',
     templateUrl: './visit-us-at-market.component.html',
     styleUrls: ['./visit-us-at-market.component.css']
 })
-export class VisitUsAtMarketComponent implements OnInit {
+export class VisitUsAtMarketComponent extends WhoWeAreBaseComponent implements OnInit {
 
     Content: ParagraphViewmodel = new ParagraphViewmodel("");
     Header: ParagraphViewmodel = new ParagraphViewmodel("<h1 class='bg-light bg-gradient display-5 p-2'>Visit Us at Market</h1>");
@@ -23,6 +24,7 @@ export class VisitUsAtMarketComponent implements OnInit {
     private accSub: Subscription | null = null;
 
     constructor(private router: Router, private route: ActivatedRoute, private sharedData: SharedDataService, private account: AuthService) {
+        super();
     }
 
     ngOnInit(): void {

@@ -163,6 +163,26 @@ export namespace PoData {
   }
 }
 
+export class PoGetRequest extends jspb.Message {
+  getIsarchive(): boolean;
+  setIsarchive(value: boolean): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): PoGetRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: PoGetRequest): PoGetRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: PoGetRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): PoGetRequest;
+  static deserializeBinaryFromReader(message: PoGetRequest, reader: jspb.BinaryReader): PoGetRequest;
+}
+
+export namespace PoGetRequest {
+  export type AsObject = {
+    isarchive: boolean,
+  }
+}
+
 export class PoResponse extends jspb.Message {
   clearExceldataList(): void;
   getExceldataList(): Array<PoData>;

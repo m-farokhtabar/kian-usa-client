@@ -374,4 +374,6 @@ export class PoDataExcelModel {
     public Searchable: string;
 
     public FactoryStatusNeedsToHaveReadyToGO: boolean;
+
+    public RowNumberInTable: number = 0;
 } 

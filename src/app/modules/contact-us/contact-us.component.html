@@ -1,14 +1,25 @@
 <div class="container">
     <div class="row">
-        <div class="d-none d-sm-block col-sm-3">
+        <div [ngClass]="SideBarNeedsTobeHidden ? 'hidden' : 'd-none d-sm-block col-sm-3'">
             <div class="pt-5">
-                <vertical-menu [Menu]="VerticalMenu"></vertical-menu>
+                <vertical-menu [Menu]="VerticalMenu" (ThereIsNoMenuToShowEvent)="OnThereIsNoMenuToShow()"></vertical-menu>
             </div>
         </div>
-        <div class="col-12 col-sm-9">
+        <div [ngClass]="SideBarNeedsTobeHidden ? 'col-12' : 'col-12 col-sm-9'">
             <div class="row pt-5">
                 <div class="col-12">
                     <paragraph [Data]="Header"></paragraph>
+                </div>
+            </div>
+
+            <div class="row pt-5">
+                <div class="col-12">
+                    <p>
+                        We are here to help you obtain the service you require. To ensure your inquiry reaches the appropriate department, we kindly ask you to complete the form below. A customer service representative from our company will be notified accordingly.
+                    </p>
+                    <p>
+                        Kian USA is dedicated to providing quality upholstery to licensed furniture retailers only and does not sell to the general public. If you are not a licensed furniture reseller and need information about our product pricing and availability, please contact your nearest Kian USA retailer.
+                    </p>
                 </div>
             </div>
             <ng-container *ngIf="!SentSuccessfully; else SuccessfulMessage">
@@ -17,25 +28,25 @@
                     <Form [formGroup]="ContactForm" (ngSubmit)="OnSubmit();">
                         <div class="row">
                             <div class="col-12 col-md-6">
-                                <label for="Name" class="form-label">First Name</label>
+                                <label for="Name" class="form-label">Store Name</label>
                                 <input maxlength="100" id="Name" type="text" class="form-control" formControlName="Name"
                                        aria-errormessage="NameInfo" aria-describedby="NameInfo">
                                 <div id="NameInfo" class="invalid-feedback" *ngIf="Name?.touched && Name?.invalid">
-                                    <div *ngIf="Name?.errors?.['required']">Please input your name.</div>
-                                    <div *ngIf="Name?.errors?.['maxlength']">Name should be less
+                                    <div *ngIf="Name?.errors?.['required']">Please input your store name.</div>
+                                    <div *ngIf="Name?.errors?.['maxlength']">Store name should be less
                                         than {{Name?.errors?.['maxlength'].requiredLength}} character.
                                     </div>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
-                                <label for="Family" class="form-label">Last Name</label>
+                                <label for="Family" class="form-label">Contact Person</label>
                                 <input maxlength="100" id="Family" type="text" class="form-control"
                                        formControlName="Family" aria-errormessage="FamilyInfo"
                                        aria-describedby="FamilyInfo">
                                 <div id="FamilyInfo" class="invalid-feedback"
                                      *ngIf="Family?.touched && Family?.invalid">
-                                    <div *ngIf="Family?.errors?.['required']">Please input your family.</div>
-                                    <div *ngIf="Family?.errors?.['maxlength']">Family should be less
+                                    <div *ngIf="Family?.errors?.['required']">Please input your contact person.</div>
+                                    <div *ngIf="Family?.errors?.['maxlength']">Contact Person should be less
                                         than {{Family?.errors?.['maxlength'].requiredLength}} character.
                                     </div>
                                 </div>

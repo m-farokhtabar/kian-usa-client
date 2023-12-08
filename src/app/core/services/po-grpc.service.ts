@@ -5,7 +5,7 @@ import { PoSrv, PoSrvClient } from "../protos/generated/po/po_pb_service";
 import { Constant } from "src/app/shared/helper/constant";
 import {ServiceHelper} from "./service.helper";
 import {Empty} from "google-protobuf/google/protobuf/empty_pb";
-import { PoDataSave, PoDataSaveRequest, PoResponse, PoSaveResponse } from "../protos/generated/po/po_pb";
+import { PoDataSave, PoDataSaveRequest, PoGetRequest, PoResponse, PoSaveResponse } from "../protos/generated/po/po_pb";
 import { PoDataExcelModel } from "../models/po/po-data-excel-model";
 import { ServiceError } from "../protos/generated/category/category_pb_service";
 import { PoPermissionColumn } from "../models/po/po-permission-column";
@@ -14,10 +14,12 @@ import { PoSaveResultModel } from "../models/po/po-save-result-model";
 export class PoGrpcService{
     constructor(private account: AuthService) {
     }
-    public Get(): Promise<PoDataModel>{    
+    public Get(isArchive : boolean): Promise<PoDataModel>{ 
+        const req = new PoGetRequest();
+        req.setIsarchive(isArchive);
         return new Promise<PoDataModel>((resolve,reject)=>{
             grpc.unary(PoSrv.Get,{
-                request: new Empty(),
+                request: req,
                 host: Constant.ServiceHost,
                 metadata: ServiceHelper.CreateAuthToken(this.account),
                 onEnd: res =>{                    

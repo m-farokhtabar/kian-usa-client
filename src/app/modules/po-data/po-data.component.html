@@ -36,7 +36,7 @@
                     <option value="ETA_Date" *ngIf="IsColumnAllowedToShow('ETA')">ETA</option>
                     <option value="PortOfDischarge" *ngIf="IsColumnAllowedToShow('Port Of Discharge')">Port Of Discharge</option>
                     <option value="DischargeStatus" *ngIf="IsColumnAllowedToShow('Discharge Status')">Discharge Status</option>
-                    <option value="ShippmentStatus" *ngIf="IsColumnAllowedToShow('Shippment Status')">Shippment Status</option>
+                    <option value="ShippmentStatus" *ngIf="IsColumnAllowedToShow('Shippment Status')">Shipment Confirmation</option>
                     <option value="ConfirmDate_Date" *ngIf="IsColumnAllowedToShow('Confirm date')">Confirm date</option>
                     <option value="GateIn_Date" *ngIf="IsColumnAllowedToShow('Gate In')">Gate In</option>
                     <option value="EmptyDate_Date" *ngIf="IsColumnAllowedToShow('Empty Date')">Empty Date</option>
@@ -57,7 +57,7 @@
     </div>
     <div class="row mt-3">
         <div class="table-responsive" style="max-height: 480px;">
-            <form [formGroup]="PoDataForm">            
+            <form [formGroup]="PoDataForm">
             <table class="table table-striped table-hover small" style="border-collapse: separate;border-spacing: 0;">
                 <thead class="bg-white sticky-top" style="border-color: black;">
                     <tr class="table-dark">
@@ -111,7 +111,7 @@
                         <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Port Of Discharge')">Port Of Discharge</th>
                         <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Discharge Status')">Discharge Status</th>
                         
-                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Shippment Status')">Shippment Status</th>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Shippment Status')">Shipment Confirmation</th>
                         <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Confirm date')">Confirm date</th>
                         
                         <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Gate In')">Gate In</th>
@@ -121,7 +121,8 @@
                     </tr>
                 </thead>
                 <tbody formArrayName="PoDataRow">
-                        <tr *ngFor="let xlData of SearchableData;let i = index" [formGroupName]="i">
+                        <!-- <tr *ngFor="let xlData of SearchableData;let i = index" [formGroupName]="i"> -->
+                        <tr *ngFor="let xlData of SearchableData" [formGroupName]="xlData.RowNumberInTable">
                             <td scope="col" *ngIf="IsColumnAllowedToShow('User')">{{xlData.User}}</td>
                             <td scope="col" *ngIf="IsColumnAllowedToShow('Date')">{{xlData.Date}}</td>
                             <td scope="col" *ngIf="IsColumnAllowedToShow('Customer PO')">{{xlData.CustomerPO}}</td>
@@ -189,7 +190,7 @@
                             <td scope="col" *ngIf="IsColumnAllowedToShow('Rate')">
                                 <input formControlName="Rate" type="text" class="form-control form-control-sm" (blur)="OnBlurRateBox($event)"
                                 *ngIf="IsColumnWritable('Rate') else ReadableRate"/>
-                                <ng-template #ReadableRate>{{xlData.Rate}}</ng-template>                                
+                                <ng-template #ReadableRate>{{MakeNumberMoneyFormat(xlData.Rate)}}</ng-template>
                             </td>
                             <td scope="col" *ngIf="IsColumnAllowedToShow('ETD')">
                                 <input formControlName="ETD" type="date" class="form-control form-control-sm"
@@ -218,10 +219,10 @@
                                 <ng-template #ReadableDischargeStatus>{{xlData.getDischargeStatusName()}}</ng-template>
                             </td>
                             <td scope="col" *ngIf="IsColumnAllowedToShow('Shippment Status')">
-                                <select (change)="OnShippmentStatusChanged(i)" formControlName="ShippmentStatus" 
+                                <select (change)="OnShippmentStatusChanged(xlData.RowNumberInTable)" formControlName="ShippmentStatus" 
                                         class="form-select form-select-sm" aria-label="Please Select Shippment Status"
                                         *ngIf="IsColumnWritable('Shippment Status') else ReadableShippmentStatus">
-                                    <option selected>Select Shippment Status</option>
+                                    <option selected>Select Shipment Confirmation</option>
                                     <option value="0">Please Accept</option>
                                     <option value="1">Do not accept</option>
                                     <option value="2">Hold the booking</option>
@@ -247,7 +248,7 @@
                                 <ng-template #ReadableGateout>{{xlData.GateOut}}</ng-template>
                             </td>
                             <td scope="col" *ngIf="IsColumnAllowedToShow('Bill Date')">
-                                <input (input)="OnBillDate(i)" formControlName="BillDate" type="date" class="form-control form-control-sm"
+                                <input (input)="OnBillDate(xlData.RowNumberInTable)" formControlName="BillDate" type="date" class="form-control form-control-sm"
                                 *ngIf="IsColumnWritable('Bill Date') else ReadableBillDate"/>
                                 <ng-template #ReadableBillDate>{{xlData.BillDate}}</ng-template>
                             </td>

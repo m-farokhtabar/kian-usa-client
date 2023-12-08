@@ -106,7 +106,7 @@ export class ShopProductGridComponent implements OnInit {
                 this.Products = data.Products.sort((a, b) => a.Order < b.Order ? 1 : -1);
                 const Cells: GridCell[] = [];
                 for (let i = 0; i < this.PageNumber * this.PageCount; i++)
-                    Cells.push(new GridCell("", "", "", "", "", [],"","", [],[]));
+                    Cells.push(new GridCell("", "", "", "", "", [],"","", [],[], true));
                 this.Products.forEach(prd => {
                     const Cell: GridCell = {
                         Title: prd.Name,
@@ -118,7 +118,8 @@ export class ShopProductGridComponent implements OnInit {
                         Quantity: prd.WHQTY,
                         Description: prd.Description,
                         PriceNames: ShopHelper.GetPriceNames(prd),
-                        PricePermissions: prd.PricePermissions
+                        PricePermissions: prd.PricePermissions,
+                        ShowInImageDialogBox: true
                     };
                     Cells.push(Cell);
                 });

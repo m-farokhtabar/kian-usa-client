@@ -92,7 +92,8 @@ export class ProductDetailsComponent implements OnInit {
                     Quantity: prd.WHQTY,
                     Description: prd.Description,
                     PriceNames: ShopHelper.GetPriceNames(prd),
-                    PricePermissions: prd.PricePermissions
+                    PricePermissions: prd.PricePermissions,
+                    ShowInImageDialogBox: true
                 };
                 this.RelatedProducts.push(Cell);
             });

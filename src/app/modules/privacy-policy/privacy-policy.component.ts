@@ -6,13 +6,14 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {SharedDataService} from "../../core/services/shareddata.service";
 import {Subscription} from "rxjs";
 import {AuthService} from "../../core/models/account/auth.service";
+import {WhoWeAreBaseComponent} from "../../shared/components/who-we-are/who-we-are-base-component"
 
 @Component({
   selector: 'app-privacy-policy',
   templateUrl: './privacy-policy.component.html',
   styleUrls: ['./privacy-policy.component.css']
 })
-export class PrivacyPolicyComponent implements OnInit {
+export class PrivacyPolicyComponent extends WhoWeAreBaseComponent implements OnInit {
 
   Content: ParagraphViewmodel = new ParagraphViewmodel("");
   Header: ParagraphViewmodel = new ParagraphViewmodel("<h1 class='bg-light bg-gradient display-5 p-2'>Privacy Policy</h1>");
@@ -20,6 +21,7 @@ export class PrivacyPolicyComponent implements OnInit {
   private accSub: Subscription | null = null;
 
   constructor(private router: Router, private route: ActivatedRoute, private sharedData: SharedDataService, private account: AuthService) {
+    super();
   }
 
   ngOnInit(): void {

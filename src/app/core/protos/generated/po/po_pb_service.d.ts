@@ -2,7 +2,6 @@
 // file: po.proto
 
 import * as po_pb from "./po_pb";
-import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
 import {grpc} from "@improbable-eng/grpc-web";
 
 type PoSrvGet = {
@@ -10,7 +9,7 @@ type PoSrvGet = {
   readonly service: typeof PoSrv;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof google_protobuf_empty_pb.Empty;
+  readonly requestType: typeof po_pb.PoGetRequest;
   readonly responseType: typeof po_pb.PoResponse;
 };
 
@@ -62,12 +61,12 @@ export class PoSrvClient {
 
   constructor(serviceHost: string, options?: grpc.RpcOptions);
   get(
-    requestMessage: google_protobuf_empty_pb.Empty,
+    requestMessage: po_pb.PoGetRequest,
     metadata: grpc.Metadata,
     callback: (error: ServiceError|null, responseMessage: po_pb.PoResponse|null) => void
   ): UnaryResponse;
   get(
-    requestMessage: google_protobuf_empty_pb.Empty,
+    requestMessage: po_pb.PoGetRequest,
     callback: (error: ServiceError|null, responseMessage: po_pb.PoResponse|null) => void
   ): UnaryResponse;
   save(

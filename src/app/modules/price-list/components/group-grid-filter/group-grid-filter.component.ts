@@ -67,7 +67,8 @@ export class GroupGridFilterComponent implements OnInit {
                     Quantity: "",
                     Description: "",
                     PriceNames: [],
-                    PricePermissions: []
+                    PricePermissions: [],
+                    ShowInImageDialogBox: true
                 };
                 Cells.push(Cell);
             }
@@ -83,7 +84,8 @@ export class GroupGridFilterComponent implements OnInit {
                 Quantity: "",
                 Description: "",
                 PriceNames: [],
-                PricePermissions: []
+                PricePermissions: [],
+                ShowInImageDialogBox: true
             };
             Cells.unshift(Cell);
         }

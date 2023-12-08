@@ -1,8 +1,8 @@
 export const environment = {
   production: true,
-  ServiceHost: "https://sepehrsh.com/api",
-  ImageHost: "https://sepehrsh.com/api",
-  CatalogAddress: "https://sepehrsh.com/api/Catalogs/",
+  ServiceHost: "https://kianusafurniture.com/api",
+  ImageHost: "https://kianusafurniture.com/api",
+  CatalogAddress: "https://kianusafurniture.com/api/Catalogs/",
   FullCatalogFileName: "Catalog",
   DefaultImageFileName: "/Images/Products/Default/kian_usa_comming_soon.jpg",
   HomeSlider: "/Images/Home/Sliders/",

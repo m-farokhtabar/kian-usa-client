@@ -1,25 +1,25 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <image-slider [SliderAnimationInterval] = "2500" [IsFullScreen]="false" [DefaultAlt]="'Kian USA default category or product image'"
+            <image-slider [SliderAnimationInterval] = "4500" [IsFullScreen]="false" [DefaultAlt]="'Kian USA default category or product image'"
                           [DefaultImage]="DefaultImageSlider" [Sliders]="SliderImages"></image-slider>
         </div>
     </div>
 </div>
-<div class="container">
+<div class="container"> 
     <div class="row pt-5">
         <div class="col-12">
-            <grid [Data]="FirstGrid()"></grid>
+            <grid [Data]="FirstGrid()" [IsImageDialogBoxNeeded]="true"></grid>
         </div>
     </div>
     <div class="row pt-5">
         <div class="col-12">
-            <grid [Data]="SecondGrid()"></grid>
+            <grid [Data]="SecondGrid()" [IsImageDialogBoxNeeded]="true"></grid>
         </div>
     </div>
-    <div class="row pt-5">
+    <div class="row pt-5" style="display: none;">
         <div class="col-12">
-            <grid [Data]="ThirdGrid()"></grid>
+            <!-- <grid [Data]="ThirdGrid()"></grid> -->
         </div>
     </div>
 </div>

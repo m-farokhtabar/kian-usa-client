@@ -36,7 +36,7 @@ export class PoDataComponent implements OnInit {
 
   ngOnInit(): void {
     this.accSub = this.account.UserToken.subscribe(acc => {
-      if (!acc || acc == "" || !this.account.HasPermissionToPage("PoData"))
+      if (!acc || acc == "" || !this.account.HasPermissionToPage(this.GetPage()[0]))
           this.router.navigateByUrl('/');
     });
     this.route.params.subscribe(() => {
@@ -45,20 +45,32 @@ export class PoDataComponent implements OnInit {
     this.account.IsValid();
     this.LoadData();
   }
-
+  GetPage() : [pageName: string,isArchive: boolean | null]{
+    if (this.route.snapshot.url[this.route.snapshot.url.length - 1].path.toLocaleLowerCase() == 'po-data')
+      return ["PoData",false];
+    else if (this.route.snapshot.url[this.route.snapshot.url.length - 1].path.toLocaleLowerCase() == 'archive')
+      return ["PoDataArchive",true];
+    else
+      return ["",null];
+  }
   LoadData(){
     const service = new PoGrpcService(this.account);
-    service.Get().then(data => {      
-      this.PoData = data;
-      this.SearchableData = this.PoData.ExcelData;
-      this.CreateControlsOfForm(this.PoData.ExcelData);
-    }).catch(error => {
-      this.PoData = new PoDataModel([],[]);
-    })
+    const isArchive: boolean | null = this.GetPage()[1];
+    if (isArchive != null)
+    {
+      service.Get(isArchive).then(data => {
+        this.PoData = data;
+        this.SearchableData = this.PoData.ExcelData;
+        this.CreateControlsOfForm(this.PoData.ExcelData);
+      }).catch(error => {
+        this.PoData = new PoDataModel([],[]);
+      })
+    }
   }
   CreateControlsOfForm(Data: PoDataExcelModel[]){
-    const poDataRow = this.PoDataForm.get("PoDataRow") as FormArray;    
+    const poDataRow = this.PoDataForm.get("PoDataRow") as FormArray;
     for (let i = 0; i < Data.length; i++) {
+      Data[i].RowNumberInTable = i;
       let group = new FormGroup({});
       group.addControl("PONumber", new FormControl(""));
       group.patchValue({PONumber: Data[i].PONumber});
@@ -85,7 +97,7 @@ export class PoDataComponent implements OnInit {
       group.patchValue({BookingDate: this.getDefaultIfThereIsaValue(Data[i].BookingDate_Date)});
 
       group.addControl("Rate", new FormControl(""));
-      group.patchValue({Rate: this.currencyPipe.transform(Data[i].Rate, '$') });
+      group.patchValue({Rate: this.currencyPipe.transform(Data[i].Rate, '$') });      
 
       group.addControl("ETD", new FormControl(""));
       group.patchValue({ETD: this.getDefaultIfThereIsaValue(Data[i].ETD_Date)});
@@ -159,7 +171,7 @@ export class PoDataComponent implements OnInit {
     });    
     return !hasPermission;
   }
-  GetColColspanForGroupColumn(colsName: string[]) : Number{
+  GetColColspanForGroupColumn(colsName: string[]) : number{
     let count = 0;
     for(let i:number = 0; i<colsName.length;i++)
     {
@@ -170,12 +182,12 @@ export class PoDataComponent implements OnInit {
   }
   OnSortData(){
     this.UpdateDataFromInput();
-    let SortableSearchableData = [...this.SearchableData];    
+    let SortableSearchableData = [...this.SearchableData];
     SortableSearchableData.sort((a,b) => 
     {
       
        const aValue = Reflect.get(a, this.SortFiledName);
-       const bValue = Reflect.get(b, this.SortFiledName);       
+       const bValue = Reflect.get(b, this.SortFiledName);
        //Low to high
        if (this.SortType == "0")
        {
@@ -211,20 +223,28 @@ export class PoDataComponent implements OnInit {
   OnSearchData(){        
     if (this.SearchContent && this.SearchContent.trim()!="")
     {
-      let value = this.SearchContent.trim().toLowerCase();
-      this.SearchableData = this.PoData.ExcelData.filter(x=> x && x.Searchable && x.Searchable.indexOf(value)>=0);
+      let multiSearchValue = this.SearchContent.trim().toLowerCase().split(",");      
+      this.SearchableData = [];
+      multiSearchValue.forEach(value => {
+        if (value)
+        {
+          const foundData = this.PoData.ExcelData.filter(x=> x && x.Searchable && x.Searchable.indexOf(value)>=0);          
+          if (Array.isArray(foundData))
+            Array.prototype.push.apply(this.SearchableData, foundData);
+        }
+      });
     }
     else
     {
       this.SearchableData = this.PoData.ExcelData;
-    }
+    }    
   }
   OnFocusSearchButton(){
     this.UpdateDataFromInput();
-  }
+  }             
   UpdateDataFromInput()
   {
-    const poDataRows = this.PoDataForm.get("PoDataRow") as FormArray;        
+    const poDataRows = this.PoDataForm.get("PoDataRow") as FormArray;
     for (let i:number = 0; i<poDataRows.length;i++)
     {
      const element = poDataRows.at(i).value;
@@ -240,7 +260,7 @@ export class PoDataComponent implements OnInit {
        FoundedData.ForwarderName = +element.ForwarderName;
        FoundedData.BookingDate = element.BookingDate;
        if (element.Rate)
-        FoundedData.Rate = element.Rate.replace("$","").replace(",","").replace(".","");       
+        FoundedData.Rate = +(element.Rate.replace("$","").replace(",",""));
        FoundedData.ETD = element.ETD;
        FoundedData.ETA = element.ETA;
        FoundedData.PortOfDischarge = element.PortOfDischarge;
@@ -257,11 +277,13 @@ export class PoDataComponent implements OnInit {
     }
   }
   OnShippmentStatusChanged(index: number){    
-    const poDataRow = this.PoDataForm.get("PoDataRow") as FormArray;    
+    const poDataRow = this.PoDataForm.get("PoDataRow") as FormArray;
+    const rawData = this.PoDataForm.getRawValue();
     const row = poDataRow.at(index);
     const rowValue = row.value;    
     const control = row.get("Rate");
-    if (poDataRow && control && rowValue && (rowValue.ShippmentStatus === "0" || rowValue.ShippmentStatus === 0))
+    if (poDataRow && control && rowValue && (rowValue.ShippmentStatus === "0" || rowValue.ShippmentStatus === 0) ||
+       (control && rawData.PoDataRow[index] && (rawData.PoDataRow[index].ShippmentStatus == "0" || rawData.PoDataRow[index].ShippmentStatus == 0)))
     {
         control.disable();
     }
@@ -270,12 +292,18 @@ export class PoDataComponent implements OnInit {
   }
   IfFactoryStatusIsBookedAndForwardHasToBeDisabled(index: number){
     const poDataRow = this.PoDataForm.get("PoDataRow") as FormArray;
+    const rawData = this.PoDataForm.getRawValue();
+    //console.log(vo[0].FactoryStatus);
+    console.log(rawData.PoDataRow[0].FactoryStatus);
     const row = poDataRow.at(index);
     const rowValue = row.value;
     const control = row.get("FactoryStatus");
-    //Booked with forwarder
-    if (poDataRow && control && rowValue && (rowValue.FactoryStatus === "5" || rowValue.FactoryStatus === 5))
-    {      
+    //Booked with forwarder    
+    if (
+        (poDataRow && control && rowValue && (rowValue.FactoryStatus === "5" || rowValue.FactoryStatus === 5)) ||
+        (control && rawData.PoDataRow[index] && (rawData.PoDataRow[index].FactoryStatus == "5" || rawData.PoDataRow[index].FactoryStatus == 5))
+       ) 
+    {
         control.disable();
     }
     else if (control)
@@ -296,11 +324,10 @@ export class PoDataComponent implements OnInit {
       //row.enable();
     }
   }
-
   OnSubmit(){
     const poDataRows = this.PoDataForm.get("PoDataRow") as FormArray;
     const service = new PoGrpcService(this.account);
-    const values : PoDataSave[] = []; 
+    const values : PoDataSave[] = [];     
     for (let i:number = 0; i<poDataRows.length;i++)
     {
         const element = poDataRows.at(i).value;        
@@ -317,7 +344,7 @@ export class PoDataComponent implements OnInit {
             value.setFactorystatus(f);
           }
           //value.setStatusdate(element.StatusDate);
-          value.setFactorycontainernumber(element.FactoryContainerNumber);          
+          value.setFactorycontainernumber(element.FactoryContainerNumber);
           //value.setFactorybookingdate(element.FactoryBookingDate);
           value.setDocumentssendoutdate(element.DocSendOutDate);
           if (element.ForwarderName>=0)
@@ -326,11 +353,19 @@ export class PoDataComponent implements OnInit {
             fo.setValue(+element.ForwarderName);
             value.setForwardername(fo);
           }
-          value.setBookingdate(element.Bookingdate);   
+          value.setBookingdate(element.BookingDate);                
+          //به دلیل اینکه در این حالت ممکن است غیر فعال باشد ولی چون در همان لحظه ای که مقدار تغییر داده بعد غیر فعال شده پس می تواند تغییر کند
+          
           if (element.Rate)
           {
             const rt =  new DoubleValue();
-            rt.setValue(+element.Rate.replace("$","").replace(",","").replace(".",""));
+            rt.setValue(+element.Rate.replace("$","").replace(",",""));
+            value.setRate(rt);
+          }
+          else if (poDataRows.getRawValue()[i].Rate)
+          {
+            const rt =  new DoubleValue();
+            rt.setValue(+poDataRows.getRawValue()[i].Rate.replace("$","").replace(",",""));
             value.setRate(rt);
           }
           value.setEtd(element.ETD);
@@ -342,7 +377,7 @@ export class PoDataComponent implements OnInit {
             const d = new Int32Value();
             d.setValue(+element.DischargeStatus);
             value.setDischargestatus(d);
-          }          
+          }
 
           if (element.ShippmentStatus>=0)
           {
@@ -365,7 +400,7 @@ export class PoDataComponent implements OnInit {
         {
           data[2].forEach(x=>{
             //var foundedData = this.PoData.ExcelData.find(y=>y.PONumber == x.PoNumber);
-            var foundedData = this.SearchableData.find(y=>y.PONumber.toLocaleLowerCase() == x.PoNumber.toLocaleLowerCase());            
+            var foundedData = this.SearchableData.find(y=>y.PONumber.toLocaleLowerCase() == x.PoNumber.toLocaleLowerCase());      
             if (foundedData)
             {
               foundedData.ConfirmDate = x.ConfirmDate;
@@ -383,10 +418,25 @@ export class PoDataComponent implements OnInit {
       }).catch(data => { alert(data[0]);});
   }
   OnBlurRateBox(event:any)
+  {            
+    event.target.value = this.MakeStringNumberMoneyFormat(event.target.value)
+  }
+  MakeStringNumberMoneyFormat(data : string) : string | null
   {    
-    let value = event.target.value;
-    value = value.replace("$","").replace(".","").replace(",","");
-    event.target.value = this.currencyPipe.transform(value, '$');
+    if (data)
+    {
+      const number = +data.replace("$","").replace(",","");
+      return this.currencyPipe.transform(number, '$');
+    }
+    else
+      return null;
+  }
+  MakeNumberMoneyFormat(data : number | undefined) : string | null
+  {
+    if (Number != undefined && !Number.isNaN(data))
+      return this.currencyPipe.transform(data, '$');
+    else
+      return null;
   }
   ngOnDestroy(): void {
     this.accSub?.unsubscribe();

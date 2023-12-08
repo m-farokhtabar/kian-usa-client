@@ -37,6 +37,7 @@ import { AdvancedRequestCatalogComponent } from './shared/components/advanced-re
 import { NgSelectModule } from "@ng-select/ng-select";
 import { PoDataComponent } from './modules/po-data/po-data.component';
 import { CurrencyPipe } from '@angular/common';
+import { ClickedOutSideDirective } from './shared/directives/clicked-outside-directive';
 
 const appRoutes: Routes = [
     {path: '', component: HomeComponent},
@@ -52,7 +53,8 @@ const appRoutes: Routes = [
     {path: 'shop/:group', component: ShopComponent},
     {path: 'shop/:group/:slug', component: ProductDetailsComponent},
     {path: 'checkout', component: CheckOutComponent},
-    {path: 'po-data', component: PoDataComponent}
+    {path: 'po-data', component: PoDataComponent},
+    {path: 'po-data/archive', component: PoDataComponent}        
 ];
 
 @NgModule({
@@ -86,7 +88,8 @@ const appRoutes: Routes = [
         HorizontalSliderComponent,
         CheckOutComponent,
         AdvancedRequestCatalogComponent,
-        PoDataComponent
+        PoDataComponent,        
+        ClickedOutSideDirective
     ],
     imports: [
         BrowserModule,

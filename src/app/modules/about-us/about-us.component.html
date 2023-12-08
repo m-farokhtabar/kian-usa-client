@@ -1,9 +1,9 @@
 <div class="container">
     <div class="row">
-        <div class="d-none d-sm-block col-sm-3">
-            <div class="pt-5"><vertical-menu [Menu]="VerticalMenu"></vertical-menu></div>
+        <div [ngClass]="SideBarNeedsTobeHidden ? 'hidden' : 'd-none d-sm-block col-sm-3'">
+            <div class="pt-5"><vertical-menu [Menu]="VerticalMenu" (ThereIsNoMenuToShowEvent)="OnThereIsNoMenuToShow()"></vertical-menu></div>
         </div>
-        <div class="col-12 col-sm-9">
+        <div [ngClass]="SideBarNeedsTobeHidden ? 'col-12' : 'col-12 col-sm-9'">
             <div class="row pt-5">
                 <div class="col-12">
                     <paragraph [Data]="Header"></paragraph>

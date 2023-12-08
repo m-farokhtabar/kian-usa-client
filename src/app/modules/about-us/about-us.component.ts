@@ -6,19 +6,21 @@ import {VerticalMenuModel} from "../../shared/components/vertical-menu/models/ve
 import {MenuHelper} from "../../shared/helper/Menu.helper";
 import {AuthService} from "../../core/models/account/auth.service";
 import {Subscription} from "rxjs";
+import { WhoWeAreBaseComponent } from 'src/app/shared/components/who-we-are/who-we-are-base-component';
 
 @Component({
     selector: 'about-us',
     templateUrl: './about-us.component.html',
     styleUrls: ['./about-us.component.css']
 })
-export class AboutUsComponent implements OnInit {
+export class AboutUsComponent extends WhoWeAreBaseComponent implements OnInit {
     AboutUsContent: ParagraphViewmodel = new ParagraphViewmodel("");
     Header: ParagraphViewmodel = new ParagraphViewmodel("<h1 class='bg-light bg-gradient display-5 p-2'>About <strong>KIAN USA</strong></h1>");
     VerticalMenu: VerticalMenuModel = MenuHelper.CreateVerticalMenuModelForWhoWeAre();
-    private accSub: Subscription | null = null;
+    private accSub: Subscription | null = null;    
 
     constructor(private router: Router, private route: ActivatedRoute, private sharedData: SharedDataService, private account: AuthService) {
+        super();
     }
 
     ngOnInit(): void {
