@@ -142,6 +142,7 @@
                                 <select formControlName="FactoryStatus" class="form-select form-select-sm" aria-label="Please Select Factory Status" 
                                 *ngIf="IsColumnWritable('Factory Status') else ReadableFactoryStatus">
                                     <option selected>Select Factory Status</option>
+                                    <option value="999999"></option>
                                     <option value="0">Not started</option>
                                     <option value="1">Waiting for fabric</option>
                                     <option value="2">In production</option>
@@ -174,6 +175,7 @@
                                 <select formControlName="ForwarderName" class="form-select form-select-sm" aria-label="Please Select Forwarder Name"
                                 *ngIf="IsColumnWritable('Forwarder Name') else ReadableForwarderName">
                                     <option selected>Select Forwarder Name</option>
+                                    <option value="999999"></option>
                                     <option value="0">Apex</option>
                                     <option value="1">Hecny</option>
                                     <option value="2">Other</option>
@@ -211,6 +213,7 @@
                                 <select formControlName="DischargeStatus" class="form-select form-select-sm" aria-label="Please Select Port Of Discharge"
                                 *ngIf="IsColumnWritable('Discharge Status') else ReadableDischargeStatus">
                                     <option selected>Select Discharge Status</option>
+                                    <option value="999999"></option>
                                     <option value="0">Not arrived</option>
                                     <option value="1">On vassel</option>
                                     <option value="2">Ready for pick up</option>
@@ -223,6 +226,7 @@
                                         class="form-select form-select-sm" aria-label="Please Select Shippment Status"
                                         *ngIf="IsColumnWritable('Shippment Status') else ReadableShippmentStatus">
                                     <option selected>Select Shipment Confirmation</option>
+                                    <option value="999999"></option>
                                     <option value="0">Please Accept</option>
                                     <option value="1">Do not accept</option>
                                     <option value="2">Hold the booking</option>
