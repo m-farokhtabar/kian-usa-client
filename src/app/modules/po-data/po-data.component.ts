@@ -282,9 +282,11 @@ export class PoDataComponent implements OnInit {
     const row = poDataRow.at(index);
     const rowValue = row.value;    
     const control = row.get("Rate");
+    
     if (poDataRow && control && rowValue && (rowValue.ShippmentStatus === "0" || rowValue.ShippmentStatus === 0) ||
        (control && rawData.PoDataRow[index] && (rawData.PoDataRow[index].ShippmentStatus == "0" || rawData.PoDataRow[index].ShippmentStatus == 0)))
     {
+      console.log(rowValue.ShippmentStatus);
         control.disable();
     }
     else if (control)
@@ -293,8 +295,6 @@ export class PoDataComponent implements OnInit {
   IfFactoryStatusIsBookedAndForwardHasToBeDisabled(index: number){
     const poDataRow = this.PoDataForm.get("PoDataRow") as FormArray;
     const rawData = this.PoDataForm.getRawValue();
-    //console.log(vo[0].FactoryStatus);
-    console.log(rawData.PoDataRow[0].FactoryStatus);
     const row = poDataRow.at(index);
     const rowValue = row.value;
     const control = row.get("FactoryStatus");
