@@ -3025,7 +3025,8 @@ proto.PoSaveResult.toObject = function(includeInstance, msg) {
     statusdate: jspb.Message.getFieldWithDefault(msg, 3, ""),
     bookingdate: jspb.Message.getFieldWithDefault(msg, 4, ""),
     message: jspb.Message.getFieldWithDefault(msg, 5, ""),
-    factorystatusneedstohavereadytogo: jspb.Message.getBooleanFieldWithDefault(msg, 6, false)
+    factorystatusneedstohavereadytogo: jspb.Message.getBooleanFieldWithDefault(msg, 6, false),
+    rate: (f = msg.getRate()) && google_protobuf_wrappers_pb.DoubleValue.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -3085,6 +3086,11 @@ proto.PoSaveResult.deserializeBinaryFromReader = function(msg, reader) {
     case 6:
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setFactorystatusneedstohavereadytogo(value);
+      break;
+    case 7:
+      var value = new google_protobuf_wrappers_pb.DoubleValue;
+      reader.readMessage(value,google_protobuf_wrappers_pb.DoubleValue.deserializeBinaryFromReader);
+      msg.setRate(value);
       break;
     default:
       reader.skipField();
@@ -3155,6 +3161,14 @@ proto.PoSaveResult.serializeBinaryToWriter = function(message, writer) {
     writer.writeBool(
       6,
       f
+    );
+  }
+  f = message.getRate();
+  if (f != null) {
+    writer.writeMessage(
+      7,
+      f,
+      google_protobuf_wrappers_pb.DoubleValue.serializeBinaryToWriter
     );
   }
 };
@@ -3265,6 +3279,43 @@ proto.PoSaveResult.prototype.getFactorystatusneedstohavereadytogo = function() {
  */
 proto.PoSaveResult.prototype.setFactorystatusneedstohavereadytogo = function(value) {
   return jspb.Message.setProto3BooleanField(this, 6, value);
+};
+
+
+/**
+ * optional google.protobuf.DoubleValue Rate = 7;
+ * @return {?proto.google.protobuf.DoubleValue}
+ */
+proto.PoSaveResult.prototype.getRate = function() {
+  return /** @type{?proto.google.protobuf.DoubleValue} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_wrappers_pb.DoubleValue, 7));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.DoubleValue|undefined} value
+ * @return {!proto.PoSaveResult} returns this
+*/
+proto.PoSaveResult.prototype.setRate = function(value) {
+  return jspb.Message.setWrapperField(this, 7, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.PoSaveResult} returns this
+ */
+proto.PoSaveResult.prototype.clearRate = function() {
+  return this.setRate(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.PoSaveResult.prototype.hasRate = function() {
+  return jspb.Message.getField(this, 7) != null;
 };
 
 

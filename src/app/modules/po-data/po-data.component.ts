@@ -223,7 +223,7 @@ export class PoDataComponent implements OnInit {
   OnSearchData(){        
     if (this.SearchContent && this.SearchContent.trim()!="")
     {
-      let multiSearchValue = this.SearchContent.trim().toLowerCase().split(",");      
+      let multiSearchValue = this.SearchContent.trim().toLowerCase().split(",");
       this.SearchableData = [];
       multiSearchValue.forEach(value => {
         if (value)
@@ -236,7 +236,7 @@ export class PoDataComponent implements OnInit {
     }
     else
     {
-      this.SearchableData = this.PoData.ExcelData;
+      this.SearchableData = this.PoData.ExcelData;      
     }    
   }
   OnFocusSearchButton(){
@@ -285,8 +285,7 @@ export class PoDataComponent implements OnInit {
     
     if (poDataRow && control && rowValue && (rowValue.ShippmentStatus === "0" || rowValue.ShippmentStatus === 0) ||
        (control && rawData.PoDataRow[index] && (rawData.PoDataRow[index].ShippmentStatus == "0" || rawData.PoDataRow[index].ShippmentStatus == 0)))
-    {
-      console.log(rowValue.ShippmentStatus);
+    {      
         control.disable();
     }
     else if (control)
@@ -327,7 +326,7 @@ export class PoDataComponent implements OnInit {
   OnSubmit(){
     const poDataRows = this.PoDataForm.get("PoDataRow") as FormArray;
     const service = new PoGrpcService(this.account);
-    const values : PoDataSave[] = [];     
+    const values : PoDataSave[] = [];
     for (let i:number = 0; i<poDataRows.length;i++)
     {
         const element = poDataRows.at(i).value;        
@@ -405,28 +404,40 @@ export class PoDataComponent implements OnInit {
             {
               foundedData.ConfirmDate = x.ConfirmDate;
               foundedData.BookingDate = x.BookingDate;
-              foundedData.StatusDate = x.StatusDate;
+              foundedData.StatusDate = x.StatusDate;              
+              if (foundedData.Rate != x.Rate)
+                foundedData.Rate = x.Rate;
+
               foundedData.FactoryStatusNeedsToHaveReadyToGO = x.FactoryStatusNeedsToHaveReadyToGO;
             }
           });
           const poDataRows = this.PoDataForm.get("PoDataRow") as FormArray;
           for(let i: number=0;i<poDataRows.length;i++)
+          {
             this.IfFactoryStatusIsBookedAndForwardHasToBeDisabled(i);
+          }
           this.chDetect.detectChanges();
         }
         alert(data[0]);
       }).catch(data => { alert(data[0]);});
   }
-  OnBlurRateBox(event:any)
+  OnBlurRateBox(event:any, InputsRowNumber : number)
   {            
-    event.target.value = this.MakeStringNumberMoneyFormat(event.target.value)
+    const value = this.MakeStringNumberMoneyFormat(event.target.value);
+    //event.target.value = value;
+    
+    const poDataRows = this.PoDataForm.get("PoDataRow") as FormArray;
+    const row = poDataRows.at(InputsRowNumber);
+    const controlRate = row.get("Rate");
+    if(controlRate)
+      controlRate.setValue(value);
   }
   MakeStringNumberMoneyFormat(data : string) : string | null
-  {    
+  {      
     if (data)
-    {
+    {      
       const number = +data.replace("$","").replace(",","");
-      return this.currencyPipe.transform(number, '$');
+      return this.currencyPipe.transform(number, '$');      
     }
     else
       return null;

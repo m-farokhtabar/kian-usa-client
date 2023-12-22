@@ -5,7 +5,8 @@ export class PoSaveResultModel {
         StatusDate: string,
         BookingDate: string,
         Message: string,
-        FactoryStatusNeedsToHaveReadyToGO: boolean
+        FactoryStatusNeedsToHaveReadyToGO: boolean,
+        Rate: number | undefined
     ) {
         this.PoNumber = PoNumber
         this.ConfirmDate = ConfirmDate
@@ -13,10 +14,13 @@ export class PoSaveResultModel {
         this.BookingDate = BookingDate
         this.Message = Message
         this.FactoryStatusNeedsToHaveReadyToGO = FactoryStatusNeedsToHaveReadyToGO;
-    } public PoNumber: string;
+        this.Rate = Rate;
+    } 
+    public PoNumber: string;
     public ConfirmDate: string;
     public StatusDate: string;
     public BookingDate: string;
     public Message: string;
     public FactoryStatusNeedsToHaveReadyToGO: boolean;
+    public Rate: number | undefined;
 }

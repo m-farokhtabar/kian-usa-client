@@ -190,7 +190,7 @@
                                 <ng-template #ReadableBookingDate>{{xlData.BookingDate}}</ng-template>
                             </td>
                             <td scope="col" *ngIf="IsColumnAllowedToShow('Rate')">
-                                <input formControlName="Rate" type="text" class="form-control form-control-sm" (blur)="OnBlurRateBox($event)"
+                                <input formControlName="Rate" type="text" class="form-control form-control-sm" (blur)="OnBlurRateBox($event, xlData.RowNumberInTable)"
                                 *ngIf="IsColumnWritable('Rate') else ReadableRate"/>
                                 <ng-template #ReadableRate>{{MakeNumberMoneyFormat(xlData.Rate)}}</ng-template>
                             </td>
