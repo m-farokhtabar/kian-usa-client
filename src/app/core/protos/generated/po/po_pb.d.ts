@@ -400,6 +400,11 @@ export class PoSaveResult extends jspb.Message {
   getFactorystatusneedstohavereadytogo(): boolean;
   setFactorystatusneedstohavereadytogo(value: boolean): void;
 
+  hasRate(): boolean;
+  clearRate(): void;
+  getRate(): google_protobuf_wrappers_pb.DoubleValue | undefined;
+  setRate(value?: google_protobuf_wrappers_pb.DoubleValue): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): PoSaveResult.AsObject;
   static toObject(includeInstance: boolean, msg: PoSaveResult): PoSaveResult.AsObject;
@@ -418,6 +423,7 @@ export namespace PoSaveResult {
     bookingdate: string,
     message: string,
     factorystatusneedstohavereadytogo: boolean,
+    rate?: google_protobuf_wrappers_pb.DoubleValue.AsObject,
   }
 }
 

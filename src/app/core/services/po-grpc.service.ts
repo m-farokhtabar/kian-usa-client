@@ -86,7 +86,7 @@ export class PoGrpcService{
                     if (response == null) {
                         return reject();
                     }
-                    var results = response.getResultsList().map(x=> new PoSaveResultModel(x.getPonumber(),x.getConfirmdate(),x.getStatusdate(),x.getBookingdate(),x.getMessage(),x.getFactorystatusneedstohavereadytogo()));
+                    var results = response.getResultsList().map(x=> new PoSaveResultModel(x.getPonumber(),x.getConfirmdate(),x.getStatusdate(),x.getBookingdate(),x.getMessage(),x.getFactorystatusneedstohavereadytogo(), x.getRate()?.getValue()));
                     return resolve([response.getMessage(),response.getIserror(), results]);
                 });
             }
