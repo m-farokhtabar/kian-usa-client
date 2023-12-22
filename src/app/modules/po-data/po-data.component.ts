@@ -404,7 +404,7 @@ export class PoDataComponent implements OnInit {
             {
               foundedData.ConfirmDate = x.ConfirmDate;
               foundedData.BookingDate = x.BookingDate;
-              foundedData.StatusDate = x.StatusDate;              
+              foundedData.StatusDate = x.StatusDate;
               if (foundedData.Rate != x.Rate)
                 foundedData.Rate = x.Rate;
 
