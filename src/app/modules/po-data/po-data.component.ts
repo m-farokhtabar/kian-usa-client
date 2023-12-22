@@ -399,7 +399,7 @@ export class PoDataComponent implements OnInit {
         {
           data[2].forEach(x=>{
             //var foundedData = this.PoData.ExcelData.find(y=>y.PONumber == x.PoNumber);
-            var foundedData = this.SearchableData.find(y=>y.PONumber.toLocaleLowerCase() == x.PoNumber.toLocaleLowerCase());      
+            var foundedData = this.SearchableData.find(y=>y.PONumber.toLocaleLowerCase() == x.PoNumber.toLocaleLowerCase());
             if (foundedData)
             {
               foundedData.ConfirmDate = x.ConfirmDate;
