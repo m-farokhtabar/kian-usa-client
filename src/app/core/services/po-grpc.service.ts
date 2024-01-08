@@ -61,7 +61,8 @@ export class PoGrpcService{
                                 x.emptydate,
                                 x.gateout,
                                 x.billdate,
-                                x.factorystatusneedstohavereadytogo));
+                                x.factorystatusneedstohavereadytogo,
+                                x.note));
                             const perms =  result.columnshavepermissionList.map(x=> new PoPermissionColumn(x.colname,x.iswritable));
                             const poData = new PoDataModel(excelData,perms);
                             return resolve(poData);

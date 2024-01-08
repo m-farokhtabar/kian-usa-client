@@ -32,7 +32,7 @@ export class PoDataExcelModel {
         EmptyDate: string,
         GateOut: string,
         BillDate: string,
-        FactoryStatusNeedsToHaveReadyToGO: boolean)
+        FactoryStatusNeedsToHaveReadyToGO: boolean, Note: string)
         {
         this.User = User
                 
@@ -116,6 +116,7 @@ export class PoDataExcelModel {
         this.Searchable = "";
         this.MakeSearchableValue();
         this.FactoryStatusNeedsToHaveReadyToGO = FactoryStatusNeedsToHaveReadyToGO;  
+        this.Note = Note;
     }
     public MakeSearchableValue(){
         this.Searchable = "|" + this.User + "|" + this.Date + "|" + this.CustomerPO + "|" + this.EstimateNumber + "|" + this.Name +
@@ -376,4 +377,5 @@ export class PoDataExcelModel {
     public FactoryStatusNeedsToHaveReadyToGO: boolean;
 
     public RowNumberInTable: number = 0;
+    public Note: string;
 } 

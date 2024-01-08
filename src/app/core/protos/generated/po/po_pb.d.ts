@@ -115,6 +115,9 @@ export class PoData extends jspb.Message {
   getFactorystatusneedstohavereadytogo(): boolean;
   setFactorystatusneedstohavereadytogo(value: boolean): void;
 
+  getNote(): string;
+  setNote(value: string): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): PoData.AsObject;
   static toObject(includeInstance: boolean, msg: PoData): PoData.AsObject;
@@ -160,6 +163,7 @@ export namespace PoData {
     gateout: string,
     billdate: string,
     factorystatusneedstohavereadytogo: boolean,
+    note: string,
   }
 }
 
@@ -297,6 +301,9 @@ export class PoDataSave extends jspb.Message {
   getBilldate(): string;
   setBilldate(value: string): void;
 
+  getNote(): string;
+  setNote(value: string): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): PoDataSave.AsObject;
   static toObject(includeInstance: boolean, msg: PoDataSave): PoDataSave.AsObject;
@@ -326,6 +333,7 @@ export namespace PoDataSave {
     emptydate: string,
     gateout: string,
     billdate: string,
+    note: string,
   }
 }
 

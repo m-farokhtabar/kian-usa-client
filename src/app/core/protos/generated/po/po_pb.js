@@ -259,7 +259,8 @@ proto.PoData.toObject = function(includeInstance, msg) {
     emptydate: jspb.Message.getFieldWithDefault(msg, 30, ""),
     gateout: jspb.Message.getFieldWithDefault(msg, 31, ""),
     billdate: jspb.Message.getFieldWithDefault(msg, 32, ""),
-    factorystatusneedstohavereadytogo: jspb.Message.getBooleanFieldWithDefault(msg, 33, false)
+    factorystatusneedstohavereadytogo: jspb.Message.getBooleanFieldWithDefault(msg, 33, false),
+    note: jspb.Message.getFieldWithDefault(msg, 34, "")
   };
 
   if (includeInstance) {
@@ -432,6 +433,10 @@ proto.PoData.deserializeBinaryFromReader = function(msg, reader) {
     case 33:
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setFactorystatusneedstohavereadytogo(value);
+      break;
+    case 34:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNote(value);
       break;
     default:
       reader.skipField();
@@ -695,6 +700,13 @@ proto.PoData.serializeBinaryToWriter = function(message, writer) {
   if (f) {
     writer.writeBool(
       33,
+      f
+    );
+  }
+  f = message.getNote();
+  if (f.length > 0) {
+    writer.writeString(
+      34,
       f
     );
   }
@@ -1390,6 +1402,24 @@ proto.PoData.prototype.setFactorystatusneedstohavereadytogo = function(value) {
 };
 
 
+/**
+ * optional string Note = 34;
+ * @return {string}
+ */
+proto.PoData.prototype.getNote = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 34, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.PoData} returns this
+ */
+proto.PoData.prototype.setNote = function(value) {
+  return jspb.Message.setProto3StringField(this, 34, value);
+};
+
+
 
 
 
@@ -1941,7 +1971,8 @@ proto.PoDataSave.toObject = function(includeInstance, msg) {
     gatein: jspb.Message.getFieldWithDefault(msg, 14, ""),
     emptydate: jspb.Message.getFieldWithDefault(msg, 15, ""),
     gateout: jspb.Message.getFieldWithDefault(msg, 16, ""),
-    billdate: jspb.Message.getFieldWithDefault(msg, 17, "")
+    billdate: jspb.Message.getFieldWithDefault(msg, 17, ""),
+    note: jspb.Message.getFieldWithDefault(msg, 18, "")
   };
 
   if (includeInstance) {
@@ -2050,6 +2081,10 @@ proto.PoDataSave.deserializeBinaryFromReader = function(msg, reader) {
     case 17:
       var value = /** @type {string} */ (reader.readString());
       msg.setBilldate(value);
+      break;
+    case 18:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNote(value);
       break;
     default:
       reader.skipField();
@@ -2201,6 +2236,13 @@ proto.PoDataSave.serializeBinaryToWriter = function(message, writer) {
   if (f.length > 0) {
     writer.writeString(
       17,
+      f
+    );
+  }
+  f = message.getNote();
+  if (f.length > 0) {
+    writer.writeString(
+      18,
       f
     );
   }
@@ -2605,6 +2647,24 @@ proto.PoDataSave.prototype.getBilldate = function() {
  */
 proto.PoDataSave.prototype.setBilldate = function(value) {
   return jspb.Message.setProto3StringField(this, 17, value);
+};
+
+
+/**
+ * optional string Note = 18;
+ * @return {string}
+ */
+proto.PoDataSave.prototype.getNote = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 18, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.PoDataSave} returns this
+ */
+proto.PoDataSave.prototype.setNote = function(value) {
+  return jspb.Message.setProto3StringField(this, 18, value);
 };
 
 

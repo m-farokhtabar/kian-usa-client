@@ -126,6 +126,9 @@ export class PoDataComponent implements OnInit {
       group.addControl("BillDate", new FormControl(""));
       group.patchValue({BillDate: this.getDefaultIfThereIsaValue(Data[i].BillDate_Date)});
 
+      group.addControl("Note", new FormControl(""));
+      group.patchValue({Note: Data[i].Note});
+
       poDataRow.push(group);      
     }
     if (poDataRow && poDataRow.length>0)
@@ -272,6 +275,7 @@ export class PoDataComponent implements OnInit {
        FoundedData.EmptyDate = element.EmptyDate;
        FoundedData.GateOut = element.Gateout;
        FoundedData.BillDate = element.BillDate;
+       FoundedData.Note = element.Note;
        FoundedData.MakeSearchableValue();
      }
     }
@@ -332,7 +336,7 @@ export class PoDataComponent implements OnInit {
         const element = poDataRows.at(i).value;        
         if (element.FactoryStatus>= 0 || element.DocSendOutDate || element.FactoryContainerNumber ||element.ForwarderName>=0 || element.BookingDate ||
           element.Rate || element.ETD || element.ETA || element.PortOfDischarge || element.DischargeStatus>=0 || element.ShippmentStatus>=0 || 
-          element.GateIn || element.EmptyDate || element.Gateout || element.BillDate)
+          element.GateIn || element.EmptyDate || element.Gateout || element.BillDate || element.Note)
         {
           const value: PoDataSave = new PoDataSave();
           value.setPonumber(element.PONumber);
@@ -388,6 +392,7 @@ export class PoDataComponent implements OnInit {
           value.setEmptydate(element.EmptyDate);
           value.setGateout(element.Gateout);
           value.setBilldate(element.BillDate);
+          value.setNote(element.Note);
           values.push(value);
         }
     }

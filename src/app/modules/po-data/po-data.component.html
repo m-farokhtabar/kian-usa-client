@@ -41,7 +41,8 @@
                     <option value="GateIn_Date" *ngIf="IsColumnAllowedToShow('Gate In')">Gate In</option>
                     <option value="EmptyDate_Date" *ngIf="IsColumnAllowedToShow('Empty Date')">Empty Date</option>
                     <option value="GateOut_Date" *ngIf="IsColumnAllowedToShow('Gate out')">Gate out</option>
-                    <option value="BillDate_Date" *ngIf="IsColumnAllowedToShow('Bill Date')"> Bill Date</option>                    
+                    <option value="BillDate_Date" *ngIf="IsColumnAllowedToShow('Bill Date')">Bill Date</option>
+                    <option value="Note" *ngIf="IsColumnAllowedToShow('Note')">Note</option>
                     
                     
                 </select>
@@ -76,8 +77,8 @@
                         <th [attr.colspan]="GetColColspanForGroupColumn(['Shippment Status','Confirm date'])" class="border-end text-center" 
                         *ngIf="GetColColspanForGroupColumn(['Shippment Status','Confirm date'])>0">Shawn</th>
                         
-                        <th [attr.colspan]="GetColColspanForGroupColumn(['Gate In','Empty Date','Gate out','Bill Date'])" class="border-end text-center" 
-                        *ngIf="GetColColspanForGroupColumn(['Gate In','Empty Date','Gate out','Bill Date'])>0">Warehouse Record</th>
+                        <th [attr.colspan]="GetColColspanForGroupColumn(['Gate In','Empty Date','Gate out','Bill Date','Note'])" class="border-end text-center" 
+                        *ngIf="GetColColspanForGroupColumn(['Gate In','Empty Date','Gate out','Bill Date','Note'])>0">Warehouse Record</th>
                     </tr>
                     <tr>
                         <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('User')">User</th>
@@ -118,6 +119,7 @@
                         <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Empty Date')">Empty Date</th>
                         <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Gate out')">Gate out</th>
                         <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Bill Date')">Bill Date</th>
+                        <th class="min-Col-width" scope="col" *ngIf="IsColumnAllowedToShow('Note')">Note</th>
                     </tr>
                 </thead>
                 <tbody formArrayName="PoDataRow">
@@ -255,6 +257,11 @@
                                 <input (input)="OnBillDate(xlData.RowNumberInTable)" formControlName="BillDate" type="date" class="form-control form-control-sm"
                                 *ngIf="IsColumnWritable('Bill Date') else ReadableBillDate"/>
                                 <ng-template #ReadableBillDate>{{xlData.BillDate}}</ng-template>
+                            </td>
+                            <td scope="col" *ngIf="IsColumnAllowedToShow('Note')">
+                                <input formControlName="Note" type="text" class="form-control form-control-sm"
+                                *ngIf="IsColumnWritable('Note') else ReadableNote"/>
+                                <ng-template #ReadableNote>{{xlData.Note}}</ng-template>
                             </td>
                         </tr>
                 </tbody>
