@@ -332,7 +332,8 @@ proto.ProductResponseMessage.toObject = function(includeInstance, msg) {
     featuresList: jspb.Message.toObjectList(msg.getFeaturesList(),
     proto.KeyValue.toObject, includeInstance),
     pricepermissionsList: jspb.Message.toObjectList(msg.getPricepermissionsList(),
-    proto.KeyValue.toObject, includeInstance)
+    proto.KeyValue.toObject, includeInstance),
+    issample: jspb.Message.getFieldWithDefault(msg, 31, "")
   };
 
   if (includeInstance) {
@@ -500,6 +501,10 @@ proto.ProductResponseMessage.deserializeBinaryFromReader = function(msg, reader)
       var value = new proto.KeyValue;
       reader.readMessage(value,proto.KeyValue.deserializeBinaryFromReader);
       msg.addPricepermissions(value);
+      break;
+    case 31:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setIssample(value);
       break;
     default:
       reader.skipField();
@@ -750,6 +755,13 @@ proto.ProductResponseMessage.serializeBinaryToWriter = function(message, writer)
       30,
       f,
       proto.KeyValue.serializeBinaryToWriter
+    );
+  }
+  f = message.getIssample();
+  if (f.length > 0) {
+    writer.writeString(
+      31,
+      f
     );
   }
 };
@@ -1656,6 +1668,24 @@ proto.ProductResponseMessage.prototype.addPricepermissions = function(opt_value,
  */
 proto.ProductResponseMessage.prototype.clearPricepermissionsList = function() {
   return this.setPricepermissionsList([]);
+};
+
+
+/**
+ * optional string IsSample = 31;
+ * @return {string}
+ */
+proto.ProductResponseMessage.prototype.getIssample = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 31, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.ProductResponseMessage} returns this
+ */
+proto.ProductResponseMessage.prototype.setIssample = function(value) {
+  return jspb.Message.setProto3StringField(this, 31, value);
 };
 
 

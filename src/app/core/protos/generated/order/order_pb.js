@@ -15,6 +15,8 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = (function() { return this || window || global || self || Function('return this')(); }).call(null);
 
+var google_protobuf_wrappers_pb = require('google-protobuf/google/protobuf/wrappers_pb.js');
+goog.object.extend(proto, google_protobuf_wrappers_pb);
 goog.exportSymbol('proto.DeliveryType', null, global);
 goog.exportSymbol('proto.OrderRequestMessage', null, global);
 goog.exportSymbol('proto.OrderResponseMessage', null, global);
@@ -292,7 +294,10 @@ proto.OrderRequestMessage.toObject = function(includeInstance, msg) {
     proto.ProductOrder.toObject, includeInstance),
     confirmedby: jspb.Message.getFieldWithDefault(msg, 7, ""),
     ponumber: jspb.Message.getFieldWithDefault(msg, 8, ""),
-    description: jspb.Message.getFieldWithDefault(msg, 9, "")
+    description: jspb.Message.getFieldWithDefault(msg, 9, ""),
+    marketspecial: jspb.Message.getFieldWithDefault(msg, 10, ""),
+    countofcustomershareacontainer: (f = msg.getCountofcustomershareacontainer()) && google_protobuf_wrappers_pb.Int32Value.toObject(includeInstance, f),
+    adddiscounttosample: jspb.Message.getBooleanFieldWithDefault(msg, 12, false)
   };
 
   if (includeInstance) {
@@ -365,6 +370,19 @@ proto.OrderRequestMessage.deserializeBinaryFromReader = function(msg, reader) {
     case 9:
       var value = /** @type {string} */ (reader.readString());
       msg.setDescription(value);
+      break;
+    case 10:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMarketspecial(value);
+      break;
+    case 11:
+      var value = new google_protobuf_wrappers_pb.Int32Value;
+      reader.readMessage(value,google_protobuf_wrappers_pb.Int32Value.deserializeBinaryFromReader);
+      msg.setCountofcustomershareacontainer(value);
+      break;
+    case 12:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setAdddiscounttosample(value);
       break;
     default:
       reader.skipField();
@@ -456,6 +474,28 @@ proto.OrderRequestMessage.serializeBinaryToWriter = function(message, writer) {
   if (f.length > 0) {
     writer.writeString(
       9,
+      f
+    );
+  }
+  f = message.getMarketspecial();
+  if (f.length > 0) {
+    writer.writeString(
+      10,
+      f
+    );
+  }
+  f = message.getCountofcustomershareacontainer();
+  if (f != null) {
+    writer.writeMessage(
+      11,
+      f,
+      google_protobuf_wrappers_pb.Int32Value.serializeBinaryToWriter
+    );
+  }
+  f = message.getAdddiscounttosample();
+  if (f) {
+    writer.writeBool(
+      12,
       f
     );
   }
@@ -641,6 +681,79 @@ proto.OrderRequestMessage.prototype.getDescription = function() {
  */
 proto.OrderRequestMessage.prototype.setDescription = function(value) {
   return jspb.Message.setProto3StringField(this, 9, value);
+};
+
+
+/**
+ * optional string MarketSpecial = 10;
+ * @return {string}
+ */
+proto.OrderRequestMessage.prototype.getMarketspecial = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 10, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.OrderRequestMessage} returns this
+ */
+proto.OrderRequestMessage.prototype.setMarketspecial = function(value) {
+  return jspb.Message.setProto3StringField(this, 10, value);
+};
+
+
+/**
+ * optional google.protobuf.Int32Value CountOfCustomerShareAContainer = 11;
+ * @return {?proto.google.protobuf.Int32Value}
+ */
+proto.OrderRequestMessage.prototype.getCountofcustomershareacontainer = function() {
+  return /** @type{?proto.google.protobuf.Int32Value} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_wrappers_pb.Int32Value, 11));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Int32Value|undefined} value
+ * @return {!proto.OrderRequestMessage} returns this
+*/
+proto.OrderRequestMessage.prototype.setCountofcustomershareacontainer = function(value) {
+  return jspb.Message.setWrapperField(this, 11, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.OrderRequestMessage} returns this
+ */
+proto.OrderRequestMessage.prototype.clearCountofcustomershareacontainer = function() {
+  return this.setCountofcustomershareacontainer(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.OrderRequestMessage.prototype.hasCountofcustomershareacontainer = function() {
+  return jspb.Message.getField(this, 11) != null;
+};
+
+
+/**
+ * optional bool AddDiscountToSample = 12;
+ * @return {boolean}
+ */
+proto.OrderRequestMessage.prototype.getAdddiscounttosample = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 12, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.OrderRequestMessage} returns this
+ */
+proto.OrderRequestMessage.prototype.setAdddiscounttosample = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 12, value);
 };
 
 

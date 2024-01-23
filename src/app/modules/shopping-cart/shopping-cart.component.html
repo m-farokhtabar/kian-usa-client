@@ -71,8 +71,30 @@
                     </div>
                 </div>
             </ng-template>
+            <div class="mt-2" [hidden]="!(CartModel.PriceType==3)">
+                <input class="me-2 form-check-input" type="checkbox" id="AddDiscountToSample" name="AddDiscountToSample" [value]="1" [(ngModel)]="CartModel.AddDiscountToSample" />
+                <span class="me-2 form-check-label" for="AddDiscountToSample">10 % percent Discount Applied</span>
+            </div>
+            <div class="mt-2" [hidden]="!(CartModel.PriceType==1)">
+                <div>
+                    <input type="radio" name="CartModel.MarketSpecial" [(ngModel)]="CartModel.MarketSpecial" value ="1" class="me-2 form-check-input"/>
+                    <span class="me-2 form-check-label">Market special - 1 or 2 sets 5% discount</span>
+                </div>
+                <div>
+                    <input type="radio" name="CartModel.MarketSpecial" [(ngModel)]="CartModel.MarketSpecial" value="2" class="me-2 form-check-input"/>
+                    <span class="me-2 form-check-label">Market special - 3 or more sets 10% discount</span>
+                </div>
+            </div>
             <div class="mt-2" [hidden]="!CartModel.IsLandedPriceShow">
-                <span class="float-start me-2 label-of-input">Freight:</span>
+                <label for="CountOfCustomerShareAContainer" class="form-label label-of-input">Customer Share Container</label>
+                <select name="CountOfCustomerShareAContainer" id="CountOfCustomerShareAContainer" [(ngModel)]="CartModel.CountOfCustomerShareAContainer" 
+                        [disabled]="!CartModel.IsLandedPriceShow"
+                        class="form-select form-select-sm  mb-2"  required>
+                        <option [value]="3200">One</option>
+                        <option [value]="1700">Two</option>
+                        <option [value]="1200">Three</option>
+                </select>
+                <span for="LandedPriceValue" class="float-start me-2 label-of-input">Freight:</span>
                 <input ngModel #LandedPriceValue="ngModel" [(ngModel)]="CartModel.LandedPrice" id="LandedPriceValue"
                        name="LandedPriceValue" type="number" value="1" min="1"
                        max="999999999" class="form-control m-0 p-0 ps-1" style="width: 100px;"

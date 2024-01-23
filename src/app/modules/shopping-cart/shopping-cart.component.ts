@@ -1,19 +1,19 @@
-import {Component, DoCheck, Input, OnInit} from '@angular/core';
-import {NgForm} from "@angular/forms";
-import {PriceType} from "./model/price-type";
-import {AuthService} from "../../core/models/account/auth.service";
-import {DeliveryType} from "./model/delivery-type";
-import {IORType} from "./model/ior-type";
-import {CustomersOfRepModel} from "../../core/models/account/customers-of-rep-model";
-import {AccountGrpcService} from "../../core/services/account-grpc.service";
-import {OrderModel} from "../../core/models/Order/order-model";
-import {Tools} from "../../shared/helper/tools";
-import {ShoppingCartModel} from "./model/shopping-cart.model";
-import {OrderGrpcService} from 'src/app/core/services/order-grpc.service';
-import {SharedDataService} from "../../core/services/shareddata.service";
-import {FactoryInfo} from "./model/FactoryInfo";
-import {ActivatedRoute} from "@angular/router";
-import {Subscription} from "rxjs";
+import { Component, DoCheck, Input, OnInit } from '@angular/core';
+import { NgForm } from "@angular/forms";
+import { PriceType } from "./model/price-type";
+import { AuthService } from "../../core/models/account/auth.service";
+import { DeliveryType } from "./model/delivery-type";
+import { IORType } from "./model/ior-type";
+import { CustomersOfRepModel } from "../../core/models/account/customers-of-rep-model";
+import { AccountGrpcService } from "../../core/services/account-grpc.service";
+import { OrderModel } from "../../core/models/Order/order-model";
+import { Tools } from "../../shared/helper/tools";
+import { ShoppingCartModel } from "./model/shopping-cart.model";
+import { OrderGrpcService } from 'src/app/core/services/order-grpc.service';
+import { SharedDataService } from "../../core/services/shareddata.service";
+import { FactoryInfo } from "./model/FactoryInfo";
+import { ActivatedRoute } from "@angular/router";
+import { Subscription } from "rxjs";
 
 @Component({
     selector: 'app-shopping-cart',
@@ -32,6 +32,8 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
     CurrentIORs: IORType[] | null = null;
 
     PrevCartModel: string = "";
+    //مشخص می کند الان داری کدام سبد خرید را پر میکنیم به ازای هر نوع قیمت یک سبد خرید داریم    
+    AllCartModel: ShoppingCartModel[] = [new ShoppingCartModel(),new ShoppingCartModel(),new ShoppingCartModel(),new ShoppingCartModel()]; //0=> Fob, 1=> sac Based on PriceType
     CartModel: ShoppingCartModel = new ShoppingCartModel();
     PrevPriceType: number | null = 1;
     IsShoppingCartLoadFromStorage: boolean = false;
@@ -43,13 +45,17 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
     @Input()
     public set NewOrders(NewOrders: OrderModel[]) {
         if (Array.isArray(NewOrders) && NewOrders.length > 0) {
-            this.CheckFactoriesIfPriceIsFob(NewOrders);
             //چون نمی خواد نمایش داده شود
             //if (!this.CartModel.IsVisible) {
-                //this.CartModel.IsVisible = true;
+            //this.CartModel.IsVisible = true;
             //}
+            this.CheckFactoriesIfPriceIsFob(NewOrders);
+            if (this.NoMoreThanTwoCategoriesForFob(NewOrders)) {
+                alert("In China Price, You cannot add Items from more than two categories.");
+                return;
+            }
             NewOrders.forEach(x => {
-                if (x.Price[0] != undefined && this.CartModel.PriceType == 0 /*Fob*/ && this.CartModel.IOR == 1 /*IOR Customer*/){
+                if (x.Price[0] != undefined && this.CartModel.PriceType == 0 /*Fob*/ && this.CartModel.IOR == 1 /*IOR Customer*/) {
                     x.Price[0] = (x.Price[0] + 120) / 100;
                 }
                 const CurrentOrder = this.CartModel.Orders.find((Order) => {
@@ -65,12 +71,37 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
                     CurrentOrder.Factories = x.Factories;
                     CurrentOrder.Weight = x.Weight;
                 } else {
-                    this.CartModel.Orders.push(new OrderModel(x.ProductSlug, x.Count, x.ProductName, x.Price, x.Pieces, x.Cubes, x.Factories, x.Weight));
+                    this.CartModel.Orders.push(new OrderModel(x.ProductSlug, x.Count, x.ProductName, x.Price, x.Pieces, x.Cubes, x.Factories, x.Weight, x.CategoreisId));
                 }
             });
         }
     }
-
+    NoMoreThanTwoCategoriesForFob(NewOrders: OrderModel[]): boolean {
+        if (this.CartModel.PriceType == 0) { //China Price - FOB            
+            let uniqueCategoreisId: String[] = [];
+            NewOrders.forEach(x => {
+                if (Array.isArray(x.CategoreisId) && x.CategoreisId.length > 0) {
+                    x.CategoreisId.forEach(cId => {
+                        const founded = uniqueCategoreisId.find(uc => cId === uc);
+                        if (founded === undefined)
+                            uniqueCategoreisId.push(cId);
+                    });
+                }
+            });
+            this.CartModel.Orders.forEach(x => {
+                if (Array.isArray(x.CategoreisId) && x.CategoreisId.length > 0) {
+                    x.CategoreisId.forEach(cId => {
+                        const founded = uniqueCategoreisId.find(uc => cId == uc);
+                        if (founded === undefined)
+                            uniqueCategoreisId.push(cId);
+                    });
+                }
+            });
+            return uniqueCategoreisId.length > 2;
+        }
+        else
+            return false;
+    }
     CheckFactoriesIfPriceIsFob(NewOrders: OrderModel[]) {
         if (this.CartModel.PriceType == 0) //Fob
         {
@@ -101,7 +132,6 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
                     });
                 }
             }
-            console.log(AllFactories);
         }
     }
 
@@ -113,7 +143,6 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
             this.IsVisible = false;
             this.ShoppingCartSideButtonVisible = true;
         });
-
     }
     ngOnDestroy(): void {
         this.urlSubscription?.unsubscribe();
@@ -131,6 +160,8 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
 
     ngOnInit(): void {
         this.LoadCustomers();
+        if (this.account.HasPermissionToButton("ShoppingCart.Sample"))
+            this.PriceTypes.push(new PriceType("Sample", 3));
     }
 
 
@@ -138,13 +169,12 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
         const AccountService = new AccountGrpcService(this.account);
         if (this.account.GetUserName() != null) {
             AccountService.GetCustomersOfRep(this.account.GetUserName()!).then(data => {
-                if (!Array.isArray(data) || data.length == 0)
-                {
-                    this.Customers =[];
+                if (!Array.isArray(data) || data.length == 0) {
+                    this.Customers = [];
                     this.Customers.push(new CustomersOfRepModel(this.account.GetId() == null ? "" : this.account.GetId()!,
-                                                                    this.account.GetName() == null ? "" : this.account.GetName()!,
-                                                                    this.account.GetFamily()== null ? "" : this.account.GetFamily()!,
-                                                                    this.account.GetUserName()== null ? "" : this.account.GetUserName()!));
+                        this.account.GetName() == null ? "" : this.account.GetName()!,
+                        this.account.GetFamily() == null ? "" : this.account.GetFamily()!,
+                        this.account.GetUserName() == null ? "" : this.account.GetUserName()!));
                     this.CartModel.Customer = this.account.GetUserName();
                 }
                 else {
@@ -176,18 +206,20 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
         //const Prices = this.account.GetPrices();
         let Pt: PriceType[] | null = null;
         //if (!Array.isArray(Prices) || Prices.length == 0)
-          //  return Pt;
+        //  return Pt;
         Pt = [];
         //if (Prices.includes(0))
-            Pt.push(this.PriceTypes[0]);
+        Pt.push(this.PriceTypes[0]);
         //if (Prices.includes(1) || Prices.includes(2))
-            Pt.push(this.PriceTypes[1]);
+        Pt.push(this.PriceTypes[1]);
         //if (Prices.includes(999))
-            Pt.push(this.PriceTypes[2]);
+        Pt.push(this.PriceTypes[2]);
+        if (this.account.HasPermissionToButton("Sample"))
+            Pt.push(this.PriceTypes[3]);
         return Pt;
     }
-    OnChangePriceType(data:Event){
-        if (Array.isArray(this.CartModel.Orders) && this.CartModel.Orders.length>0) {
+    OnChangePriceType(data: Event) {        
+        if (Array.isArray(this.CartModel.Orders) && this.CartModel.Orders.length > 0) {
             const result = confirm("Are you sure to change Price Type from (" + this.PriceTypes[this.PrevPriceType!].Name + ") to (" + this.PriceTypes[this.CartModel.PriceType!].Name + "). If you do that all items will be removed.");
             if (result == true) {
                 this.CartModel.Orders = [];
@@ -198,14 +230,14 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
                 (<HTMLInputElement>data.target).value = this.PrevPriceType + "";
             }
         }
-        else
-        {
+        else {
             this.CartModel.Orders = [];
             this.ChangePriceType(+(<HTMLInputElement>data.target).value);
         }
     }
 
-    ChangePriceType(value: number) {
+    ChangePriceType(value: number) {        
+        //this.CartModel = this.AllCartModel[value];
         this.ShareData.SetPriceType(this.CartModel.PriceType);
         this.PrevPriceType = this.CartModel.PriceType;
         this.CartModel.CurrentPriceIndex = value;
@@ -243,11 +275,13 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
         //     }
         // }
 
-        if (value == this.PriceTypes[2].Id)
+        if (value == this.PriceTypes[2].Id) //Contianer
             this.CartModel.IsLandedPriceShow = true;
         else
             this.CartModel.IsLandedPriceShow = false;
-
+        
+        this.CartModel.MarketSpecial = "1";
+        this.CartModel.AddDiscountToSample = false;
     }
 
     GetPrice(CurrentOrder: OrderModel): (number | undefined) {
@@ -258,20 +292,42 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
         else {
             let Price: number | undefined;
             if (this.CartModel.CurrentPriceIndex == 0) {
-                if (this.CartModel.PriceType == 0 && this.CartModel.IOR == 1) //FOB IOR Customer
+                if (this.CartModel.PriceType == 0 && this.CartModel.IOR == 1) //FOB/China IOR Customer
                 {
                     Price = CurrentOrder.Price[0];
                     if (Price != undefined)
                         Price = Price - ((Price * 20) / 100);
                 } else
                     Price = CurrentOrder.Price[0];
-            } else if (this.CartModel.CurrentPriceIndex == 1) {
-                if (CurrentOrder.Price[2] == undefined || CurrentOrder.Price[2] == null || CurrentOrder.Price[2] == 0)
-                    Price = CurrentOrder.Price[1];
-                else
+            } else if (this.CartModel.CurrentPriceIndex == 1) { //Sac
+                //در صورتی که مبلغ تخفیفی نداشته باشد یعنی قسمت سوم اکسل یا همان قیمت با ایندکس 2 می تواند از تخفیف 5 یا 10 درصد استفاده کند
+                if (CurrentOrder.Price[2] == undefined || CurrentOrder.Price[2] == null || CurrentOrder.Price[2] == 0) {
+                    if (CurrentOrder.Price[1] != undefined) {
+                        if (this.CartModel.MarketSpecial == "1")
+                            Price = CurrentOrder.Price[1] - ((CurrentOrder.Price[1] * 5) / 100);
+                        else
+                            if (this.CartModel.MarketSpecial == "2")
+                                Price = CurrentOrder.Price[1] - ((CurrentOrder.Price[1] * 10) / 100);
+                            else
+                                Price = CurrentOrder.Price[1];
+                    }
+                }
+                else~
                     Price = CurrentOrder.Price[2];
             } else if (this.CartModel.CurrentPriceIndex == 2) {
                 Price = Tools.ComputeLandedPrice(CurrentOrder.Price[0], CurrentOrder.Cubes, this.CartModel.LandedPrice);
+            } else if (this.CartModel.CurrentPriceIndex == 3) { //Sample
+                //در صورتی که مبلغ تخفیفی نداشته باشد یعنی قسمت سوم اکسل یا همان قیمت با ایندکس 2 می تواند از تخفیف 10 درصد استفاده کند
+                if (CurrentOrder.Price[2] == undefined || CurrentOrder.Price[2] == null || CurrentOrder.Price[2] == 0) {
+                    if (CurrentOrder.Price[1] != undefined) {                        
+                        if (this.CartModel.AddDiscountToSample == true)
+                            Price = CurrentOrder.Price[1] - ((CurrentOrder.Price[1] * 10) / 100);
+                        else
+                            Price = CurrentOrder.Price[1];
+                    }
+                }
+                else
+                    Price = CurrentOrder.Price[2];
             } else
                 Price = undefined;
             return Price;
@@ -322,26 +378,26 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
                     Cubes = Cubes! + (x.Cubes * x.Count);
             });
         }
-         if (Cubes != undefined)
-             return Math.round(Cubes * 100) / 100;
-         else
-             return Cubes;
+        if (Cubes != undefined)
+            return Math.round(Cubes * 100) / 100;
+        else
+            return Cubes;
     }
-    GetContainers(){
+    GetContainers() {
         let Cubes = this.GetCubes();
         if (Cubes != undefined)
             return Math.round((Cubes / 2400) * 100) / 100;
         else
             return "";
     }
-    GetRoundContainers(){
+    GetRoundContainers() {
         let Cubes = this.GetCubes();
         if (Cubes != undefined)
             return Math.ceil(Cubes / 2400);
         else
             return "";
     }
-    GetWeight() : number | undefined{
+    GetWeight(): number | undefined {
         let Weight: number | undefined = undefined;
         if (Array.isArray(this.CartModel.Orders) && this.CartModel.Orders.length > 0) {
             Weight = 0;
@@ -360,7 +416,7 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
 
     // OnLandedPriceChange(data: any) {
     //     this.CartModel.LandedPrice = data.target.value;
-     // (input)="OnLandedPriceChange($event)"
+    // (input)="OnLandedPriceChange($event)"
     // }
 
     OnCloseButton() {
@@ -392,15 +448,18 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
 
     OnSendOrdersClick() {
         const Cubes = this.GetCubes();
-        if (this.CartModel.PriceType == 0 && (Cubes == undefined || Cubes<2300)) //China
+        if (this.CartModel.PriceType == 0 && (Cubes == undefined || Cubes < 2300)) //China
         {
             alert("The minimum order of 'China' container is 2300");
-            return;
+            return;            
         }
-        else{
-            if (this.CartModel.PriceType == 2 && (Cubes == undefined || Cubes<3500)) //Mix Container Landed To Door
+        else {
+            let minCapacityOFContainer = 3200;
+            if (this.CartModel.CountOfCustomerShareAContainer != null)
+                minCapacityOFContainer = this.CartModel.CountOfCustomerShareAContainer;
+            if (this.CartModel.PriceType == 2 && (Cubes == undefined || Cubes < minCapacityOFContainer)) //Mix Container Landed To Door
             {
-                alert("The minimum order of 'Mix container landed to Door' container  is 3500");
+                alert("The minimum order of 'Mix container landed to Door' container  is " + minCapacityOFContainer);
                 return;
             }
         }

@@ -6,6 +6,7 @@ import {OrderSrvClient} from "../protos/generated/order/order_pb_service";
 import { OrderRequestMessage, OrderResponseMessage, ProductOrder } from "../protos/generated/order/order_pb";
 import {ShoppingCartModel} from "../../modules/shopping-cart/model/shopping-cart.model";
 import {OrderModel} from "../models/Order/order-model";
+import { Int32Value } from "google-protobuf/google/protobuf/wrappers_pb";
 
 export class OrderGrpcService{
     constructor(private account: AuthService) {
@@ -23,6 +24,14 @@ export class OrderGrpcService{
             request.setConfirmedby(Model.ConfirmedBy);
             request.setDescription(Model.Description);
             request.setPonumber(Model.PoNumber);
+            request.setAdddiscounttosample(Model.AddDiscountToSample);
+            request.setMarketspecial(Model.MarketSpecial);            
+            if (Model.CountOfCustomerShareAContainer != null)
+            {
+                const countOfCustomerShareAContainer = new Int32Value();
+                countOfCustomerShareAContainer.setValue(Model.CountOfCustomerShareAContainer);
+                request.setCountofcustomershareacontainer(countOfCustomerShareAContainer);
+            }
             this.GetOrders(request, Model.Orders);
 
             const metadata = ServiceHelper.CreateAuthToken(this.account);

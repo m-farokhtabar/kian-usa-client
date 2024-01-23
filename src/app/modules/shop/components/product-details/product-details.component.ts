@@ -23,7 +23,7 @@ export class ProductDetailsComponent implements OnInit {
     DefaultImageSlider: string = Constant.DefaultImageFileName;
     public Product: ProductModel = new ProductModel("", "", "", 0, "", "", [],
         0, 0, 0, 0, 0, 0, 0, 0, [], "", 0, [],
-        false, [], [], [], [], 0, [], 0, "", [], []);
+        false, [], [], [], [], 0, [], 0, "", [], [], "");
     public Group: string = "";
     public Sliders: ImageSliderModel[] = [];
 

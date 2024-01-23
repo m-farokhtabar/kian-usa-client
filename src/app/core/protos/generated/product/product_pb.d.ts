@@ -134,6 +134,9 @@ export class ProductResponseMessage extends jspb.Message {
   setPricepermissionsList(value: Array<KeyValue>): void;
   addPricepermissions(value?: KeyValue, index?: number): KeyValue;
 
+  getIssample(): string;
+  setIssample(value: string): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ProductResponseMessage.AsObject;
   static toObject(includeInstance: boolean, msg: ProductResponseMessage): ProductResponseMessage.AsObject;
@@ -176,6 +179,7 @@ export namespace ProductResponseMessage {
     productdescription: string,
     featuresList: Array<KeyValue.AsObject>,
     pricepermissionsList: Array<KeyValue.AsObject>,
+    issample: string,
   }
 }
 

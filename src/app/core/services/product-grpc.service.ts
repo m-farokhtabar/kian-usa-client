@@ -63,7 +63,7 @@ export class ProductGrpcService {
                         prd.getTagsList(), prd.getGroupsList(), prd.getFactoriesList(), prd.getPiecescount(), prd.getComplexitempiecesList(), prd.getComplexitempriority(),
                         prd.getProductdescription(),
                         features,
-                        pricePermission));
+                        pricePermission, prd.getIssample()));
                 });
             } else
                 alert("Please login.");
@@ -123,7 +123,8 @@ export class ProductGrpcService {
                         PricePermissions : product.getPricepermissionsList().map(pricePermission => <KeyValueModel>{
                             Name: pricePermission.getName(),
                             Value: pricePermission.getValue()
-                        })
+                        }),
+                        IsSample: product.getIssample()
                     })));
                 });
             } else
@@ -184,7 +185,8 @@ export class ProductGrpcService {
                         PricePermissions : product.getPricepermissionsList().map(pricePermission => <KeyValueModel>{
                             Name: pricePermission.getName(),
                             Value: pricePermission.getValue()
-                        })
+                        }),
+                        IsSample: product.getIssample()
                     })));
                 });
             } else
@@ -245,7 +247,8 @@ export class ProductGrpcService {
                         PricePermissions : product.getPricepermissionsList().map(pricePermission => <KeyValueModel>{
                             Name: pricePermission.getName(),
                             Value: pricePermission.getValue()
-                        })
+                        }),
+                        IsSample: product.getIssample()
                     })));
                 });
             } else
@@ -310,7 +313,8 @@ export class ProductGrpcService {
                         PricePermissions : product.getPricepermissionsList().map(pricePermission => <KeyValueModel>{
                             Name: pricePermission.getName(),
                             Value: pricePermission.getValue()
-                        })
+                        }),
+                        IsSample: product.getIssample()
                     }));
                     let Result: ProductWithPagingModel = new ProductWithPagingModel(Products, response.getTotalitems());
                     return resolve(Result);

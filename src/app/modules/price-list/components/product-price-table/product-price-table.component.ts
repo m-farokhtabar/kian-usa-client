@@ -99,11 +99,12 @@ export class ProductPriceTableComponent implements OnInit {
         return 0;
     }
 
-    OnAddOrdersButton(): void {
+    OnAddOrdersButton(): void {        
         this.CurrentOrders = [];
         let HasError = false;
         if (this.orderElements.length > 0) {
             this.orderElements.forEach(orderElement => {
+                //debugger;
                 const Id = parseInt(orderElement.nativeElement.id.replace(this.CategorySlug + "_", ""));
                 const orderCount = parseInt(orderElement.nativeElement.value);
                 const Prices = this.products[Id].Prices.map((x) => {
@@ -111,7 +112,9 @@ export class ProductPriceTableComponent implements OnInit {
                 });
                 if (orderCount > 0) {
                     if (this.IsItemAvailable(this.products[Id]))
-                        this.CurrentOrders.push(new OrderModel(this.products[Id].Slug, orderCount, this.products[Id].Name, Prices, this.products[Id].PiecesCount, this.products[Id].Cube, this.products[Id].Factories, this.products[Id].Weight));
+                    {                        
+                        this.CurrentOrders.push(new OrderModel(this.products[Id].Slug, orderCount, this.products[Id].Name, Prices, this.products[Id].PiecesCount, this.products[Id].Cube, this.products[Id].Factories, this.products[Id].Weight,this.products[Id].CategoryIds));
+                    }
                     else {
                         alert(this.products[Id].Name + " is not available any more.");
                         HasError = true;
@@ -156,11 +159,15 @@ export class ProductPriceTableComponent implements OnInit {
     }
 
     IsItemAvailable(Product: ProductModel) {
-        if (this.CurrentPriceType != 0) //Fob
-        {
-            return this.CheckAvailabilityOfPrices(Product) && Product.WHQTY && Product.WHQTY.toLowerCase().trim() == "available";
-        } else
-            return this.CheckAvailabilityOfPrices(Product);
+        if (this.CurrentPriceType == 3) //3 = Sample
+            return Product.IsSample && Product.IsSample.trim() == "1";
+        else {
+            if (this.CurrentPriceType == 1 || this.CurrentPriceType == 2) //1 = Sacramento/Fob, 2 = Mix Container Landed To Door
+            {
+                return this.CheckAvailabilityOfPrices(Product) && Product.WHQTY && Product.WHQTY.toLowerCase().trim() == "available";
+            } else
+                return this.CheckAvailabilityOfPrices(Product);
+        }
     }
 
     CheckAvailabilityOfPrices(Product: ProductModel): boolean {
@@ -169,7 +176,7 @@ export class ProductPriceTableComponent implements OnInit {
             if (this.CurrentPriceType == 0 || this.CurrentPriceType == 2) {
                 return !(Product.Prices[0] == null || Product.Prices[0] == undefined || Product.Prices[0].Value == undefined);
                 //Sac
-            } else if (this.CurrentPriceType == 1) {
+            } else if (this.CurrentPriceType == 1 || this.CurrentPriceType == 3) {
                 return !((Product.Prices[1] == null || Product.Prices[1] == undefined || Product.Prices[1].Value == undefined) &&
                     (Product.Prices[2] == null || Product.Prices[2] == undefined || Product.Prices[2].Value == undefined));
             } else

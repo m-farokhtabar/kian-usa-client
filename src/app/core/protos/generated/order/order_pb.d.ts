@@ -2,6 +2,7 @@
 // file: order.proto
 
 import * as jspb from "google-protobuf";
+import * as google_protobuf_wrappers_pb from "google-protobuf/google/protobuf/wrappers_pb";
 
 export class ProductOrder extends jspb.Message {
   getProductslug(): string;
@@ -57,6 +58,17 @@ export class OrderRequestMessage extends jspb.Message {
   getDescription(): string;
   setDescription(value: string): void;
 
+  getMarketspecial(): string;
+  setMarketspecial(value: string): void;
+
+  hasCountofcustomershareacontainer(): boolean;
+  clearCountofcustomershareacontainer(): void;
+  getCountofcustomershareacontainer(): google_protobuf_wrappers_pb.Int32Value | undefined;
+  setCountofcustomershareacontainer(value?: google_protobuf_wrappers_pb.Int32Value): void;
+
+  getAdddiscounttosample(): boolean;
+  setAdddiscounttosample(value: boolean): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): OrderRequestMessage.AsObject;
   static toObject(includeInstance: boolean, msg: OrderRequestMessage): OrderRequestMessage.AsObject;
@@ -78,6 +90,9 @@ export namespace OrderRequestMessage {
     confirmedby: string,
     ponumber: string,
     description: string,
+    marketspecial: string,
+    countofcustomershareacontainer?: google_protobuf_wrappers_pb.Int32Value.AsObject,
+    adddiscounttosample: boolean,
   }
 }
 

@@ -14,6 +14,10 @@ export class ShoppingCartModel{
     ConfirmedBy: string = "";
     PoNumber: string = "";
     Description: string = "";
+    MarketSpecial: string = "1";
+    //PriceType => Mix Container => Mandatory
+    CountOfCustomerShareAContainer: number | null = 3200;
+    AddDiscountToSample: boolean = false;
     //IsVisible: boolean = false;
     //ShoppingCartSideButtonVisible: boolean = true;
 }

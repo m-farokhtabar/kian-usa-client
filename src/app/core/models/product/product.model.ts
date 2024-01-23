@@ -7,7 +7,7 @@ export class ProductModel {
                 BoxW: number | undefined, BoxD: number | undefined, BoxH: number | undefined,
                 Securities: Array<string>, WHQTY: string, Order: number, ImagesUrls: Array<string>, IsGroup: boolean, CategoryIds: string[],
                 Tags: string[],Groups: string[],Factories: string[],PiecesCount: number,ComplexItemPieces: string[],ComplexItemPriority : number, ProductDescription :string,
-                Features : KeyValueModel[],PricePermissions : KeyValueModel[]) {
+                Features : KeyValueModel[],PricePermissions : KeyValueModel[],IsSample: string) {
         this.Id = Id;
         this.Name = Name;
         this.Slug = Slug;
@@ -41,6 +41,7 @@ export class ProductModel {
 
         this.Features = Features;
         this.PricePermissions = PricePermissions;
+        this.IsSample = IsSample;
     }
 
     public Id: string;
@@ -79,5 +80,6 @@ export class ProductModel {
     public ProductDescription: string;
     public Features : KeyValueModel[];
     public PricePermissions : KeyValueModel[];
-
+    
+    public IsSample: string;
 }
