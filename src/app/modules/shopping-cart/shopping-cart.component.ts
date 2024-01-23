@@ -312,7 +312,7 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
                                 Price = CurrentOrder.Price[1];
                     }
                 }
-                else~
+                else
                     Price = CurrentOrder.Price[2];
             } else if (this.CartModel.CurrentPriceIndex == 2) {
                 Price = Tools.ComputeLandedPrice(CurrentOrder.Price[0], CurrentOrder.Cubes, this.CartModel.LandedPrice);
