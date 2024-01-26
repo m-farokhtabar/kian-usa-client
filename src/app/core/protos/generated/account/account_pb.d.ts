@@ -92,6 +92,9 @@ export class CustomerOfRepResponseMessage extends jspb.Message {
   getUsername(): string;
   setUsername(value: string): void;
 
+  getStorename(): string;
+  setStorename(value: string): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CustomerOfRepResponseMessage.AsObject;
   static toObject(includeInstance: boolean, msg: CustomerOfRepResponseMessage): CustomerOfRepResponseMessage.AsObject;
@@ -108,6 +111,7 @@ export namespace CustomerOfRepResponseMessage {
     name: string,
     family: string,
     username: string,
+    storename: string,
   }
 }
 

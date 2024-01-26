@@ -54,6 +54,13 @@ export class AuthService {
         return null;
     }
 
+    public GetStoreName(): string | null {
+        const token: any = this.GetAccount();
+        if (token != null) {
+            return token.store_name;
+        }
+        return null;
+    }
     public HasPermissionToShowPrice(pricePermissions: KeyValueModel[], priceName: string): boolean {
 
         const Roles = this.GetRoles();

@@ -37,12 +37,24 @@
               class="needs-validation">
             <ng-container *ngIf="!FullViewMode else FullViewModeRow1">
                 <label for="Customer" class="form-label label-of-input">Customer Name</label>
-                <select ngModel #Customer="ngModel" [(ngModel)]="CartModel.Customer" id="Customer"
+                
+                <ng-select
+                [items]="Customers"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="Select Customer"
+                name="SelectedCustomer"
+                [multiple]="false"
+                [(ngModel)]="CartModel.Customer"
+                required>
+                </ng-select>
+                
+                <!-- <select ngModel #Customer="ngModel" [(ngModel)]="CartModel.Customer" id="Customer"
                         name="Customer"
                         class="form-select form-select-sm" required>
                     <option [value]="Customer.UserName"
                             *ngFor="let Customer of Customers">{{Customer.Name + " " + Customer.Family + "(" + Customer.UserName + ")"}}</option>
-                </select>
+                </select> -->
                 <label for="SelectedPrice" class="form-label label-of-input">Select Price</label>
                 <select ngModel [(ngModel)]="CartModel.PriceType" (change)="OnChangePriceType($event)"
                         #SelectedPrice="ngModel" id="SelectedPrice"
@@ -54,12 +66,23 @@
                 <div class="row">
                     <div class="col-lg-6 col-sm-12">
                         <label for="Customer" class="form-label label-of-input">Customer Name</label>
-                        <select ngModel #Customer="ngModel" [(ngModel)]="CartModel.Customer" id="Customer"
+                        <!-- <ng-select
+                        [items]="Customers"
+                        bindLabel="name"
+                        placeholder="Select Customer"
+                        appendTo="body"
+                        ngModel
+                        name="SelectedCustomer"
+                        [multiple]="true"
+                        required>
+                        </ng-select> -->
+        
+                        <!-- <select ngModel #Customer="ngModel" [(ngModel)]="CartModel.Customer" id="Customer"
                                 name="Customer"
                                 class="form-select form-select-sm" required>
                             <option [value]="Customer.UserName"
                                     *ngFor="let Customer of Customers">{{Customer.Name + " " + Customer.Family + "(" + Customer.UserName + ")"}}</option>
-                        </select>
+                        </select> -->
                     </div>
                     <div class="col-lg-6 col-sm-12">
                         <label for="SelectedPrice" class="form-label label-of-input">Select Price</label>
@@ -90,9 +113,9 @@
                 <select name="CountOfCustomerShareAContainer" id="CountOfCustomerShareAContainer" [(ngModel)]="CartModel.CountOfCustomerShareAContainer" 
                         [disabled]="!CartModel.IsLandedPriceShow"
                         class="form-select form-select-sm  mb-2"  required>
-                        <option [value]="3200">One</option>
-                        <option [value]="1700">Two</option>
-                        <option [value]="1200">Three</option>
+                        <option [value]="3400">One</option>
+                        <option [value]="1750">Two</option>
+                        <!-- <option [value]="1200">Three</option> -->
                 </select>
                 <span for="LandedPriceValue" class="float-start me-2 label-of-input">Freight:</span>
                 <input ngModel #LandedPriceValue="ngModel" [(ngModel)]="CartModel.LandedPrice" id="LandedPriceValue"

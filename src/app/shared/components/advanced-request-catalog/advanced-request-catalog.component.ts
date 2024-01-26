@@ -127,10 +127,20 @@ export class AdvancedRequestCatalogComponent implements OnInit  {
             if (this.Type=='download') {
                 const Model = new DownloadAdvancedCatalogModel(SelectedCategories,SelectedFactories,SelectedPrices,JustAvailable,LandedPrice);
                 const Service = new CatalogGrpcService(this.account);
-                Service.DownloadAdvanceCatalog(Model).then(data => {
-                    this.DownloadUrl = Constant.CatalogAddress + data;
-                    this.DownloadLinkIsReady = true;
+                Service.DownloadAdvanceCatalog(Model).then(data => {                    
+                    if (data)
+                    {
+                        this.DownloadUrl = Constant.CatalogAddress + data;
+                        this.DownloadLinkIsReady = true;
+                    }
+                    else
+                    {
+                        this.DownloadUrl = null;
+                        this.DownloadLinkIsReady = false;    
+                        alert("this request is not downloadable.");
+                    }
                     this.Processing = false;
+                    
                 }).catch(x => {
                     this.Processing = false;
                     alert("There is a problem to run this operation.");

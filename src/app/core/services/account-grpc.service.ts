@@ -52,7 +52,8 @@ export class AccountGrpcService {
                         Family: Customer.getFamily(),
                         Name: Customer.getName(),
                         UserName: Customer.getUsername(),
-                        Id: Customer.getId()
+                        Id: Customer.getId(),
+                        StoreName: Customer.getStorename()
                     });
                     return resolve(result);
                 });

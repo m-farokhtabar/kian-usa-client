@@ -27,7 +27,8 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
     readonly PriceTypes: PriceType[] = [new PriceType("China", 0), new PriceType("Sacramento", 1), new PriceType("Mix Container Landed To Door", 2)];
     readonly DeliveryTypes: DeliveryType[] = [new DeliveryType("Customer Forwarder", 0), new DeliveryType("WillCall", 1), new DeliveryType("KianUSA", 2)];
     readonly IOR: IORType[] = [new IORType("Tariff paid by Kian", 0), new IORType("Tariff paid by Customer", 1)];
-    Customers: CustomersOfRepModel[] = [];
+    //Customers: CustomersOfRepModel[] = [];
+    Customers = [{id: "", name: ""}];
     CurrentDeliveryTypes: DeliveryType[] | null = null;
     CurrentIORs: IORType[] | null = null;
 
@@ -149,7 +150,7 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
     }
 
     ngDoCheck() {
-        if (this.IsShoppingCartLoadFromStorage) {
+        if (this.IsShoppingCartLoadFromStorage) {            
             const ShoppingCartModelStr = JSON.stringify(this.CartModel);
             if (this.PrevCartModel != ShoppingCartModelStr) {
                 this.PrevCartModel = ShoppingCartModelStr;
@@ -168,17 +169,23 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
     LoadCustomers() {
         const AccountService = new AccountGrpcService(this.account);
         if (this.account.GetUserName() != null) {
-            AccountService.GetCustomersOfRep(this.account.GetUserName()!).then(data => {
+            AccountService.GetCustomersOfRep(this.account.GetUserName()!).then(data => {                
                 if (!Array.isArray(data) || data.length == 0) {
-                    this.Customers = [];
-                    this.Customers.push(new CustomersOfRepModel(this.account.GetId() == null ? "" : this.account.GetId()!,
-                        this.account.GetName() == null ? "" : this.account.GetName()!,
-                        this.account.GetFamily() == null ? "" : this.account.GetFamily()!,
-                        this.account.GetUserName() == null ? "" : this.account.GetUserName()!));
+                    this.Customers = [];                 
+                    this.Customers.push(
+                        {
+                            id: this.account.GetUserName() == null ? "" : this.account.GetUserName()!,
+                            name: this.account.GetStoreName() == null ? "" : this.account.GetStoreName()!
+                        }
+                    )
                     this.CartModel.Customer = this.account.GetUserName();
                 }
-                else {
-                    this.Customers = data;
+                else {                    
+                    this.Customers = data.map(usr=>
+                        ({
+                            id : usr.UserName,
+                            name: usr.StoreName + " (" + usr.UserName + ")"
+                        }));                    
                 }
                 this.LoadShoppingCart();
             }).catch(data => {
@@ -214,7 +221,7 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
         Pt.push(this.PriceTypes[1]);
         //if (Prices.includes(999))
         Pt.push(this.PriceTypes[2]);
-        if (this.account.HasPermissionToButton("Sample"))
+        if (this.account.HasPermissionToButton("ShoppingCart.Sample"))
             Pt.push(this.PriceTypes[3]);
         return Pt;
     }
@@ -454,7 +461,7 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
             return;            
         }
         else {
-            let minCapacityOFContainer = 3200;
+            let minCapacityOFContainer = 3400;
             if (this.CartModel.CountOfCustomerShareAContainer != null)
                 minCapacityOFContainer = this.CartModel.CountOfCustomerShareAContainer;
             if (this.CartModel.PriceType == 2 && (Cubes == undefined || Cubes < minCapacityOFContainer)) //Mix Container Landed To Door
