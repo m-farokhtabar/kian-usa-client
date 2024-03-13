@@ -29,7 +29,7 @@ export class OrderGrpcService{
             if (Model.CountOfCustomerShareAContainer != null)
             {
                 const countOfCustomerShareAContainer = new Int32Value();
-                countOfCustomerShareAContainer.setValue(Model.CountOfCustomerShareAContainer);
+                countOfCustomerShareAContainer.setValue(+Model.CountOfCustomerShareAContainer);
                 request.setCountofcustomershareacontainer(countOfCustomerShareAContainer);
             }
             this.GetOrders(request, Model.Orders);
@@ -52,7 +52,9 @@ export class OrderGrpcService{
     }
 
     private GetPriceType(request: OrderRequestMessage, PriceType: number){
-        if (PriceType == 2)
+        if (PriceType == 3)
+            request.setPricetype(3);
+        else if (PriceType == 2)
             request.setPricetype(2);
         else if (PriceType == 1)
             request.setPricetype(1);

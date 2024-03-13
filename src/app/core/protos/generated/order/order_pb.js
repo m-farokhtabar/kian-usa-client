@@ -923,7 +923,8 @@ proto.OrderResponseMessage.prototype.setIserror = function(value) {
 proto.PriceType = {
   FOB: 0,
   SAC: 1,
-  LANDEDPRICE: 2
+  LANDEDPRICE: 2,
+  SAMPLE: 3
 };
 
 /**

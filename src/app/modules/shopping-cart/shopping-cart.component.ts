@@ -14,6 +14,7 @@ import { SharedDataService } from "../../core/services/shareddata.service";
 import { FactoryInfo } from "./model/FactoryInfo";
 import { ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs";
+import { devOnlyGuardedExpression } from '@angular/compiler';
 
 @Component({
     selector: 'app-shopping-cart',
@@ -203,7 +204,7 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
         this.IsShoppingCartLoadFromStorage = true;
     }
 
-    OnSubmit(Form: NgForm) {
+    OnSubmit(Form: NgForm) {        
         if (Form.valid) {
             this.SendingData = true;
         }
@@ -225,7 +226,7 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
             Pt.push(this.PriceTypes[3]);
         return Pt;
     }
-    OnChangePriceType(data: Event) {        
+    OnChangePriceType(data: Event) {              
         if (Array.isArray(this.CartModel.Orders) && this.CartModel.Orders.length > 0) {
             const result = confirm("Are you sure to change Price Type from (" + this.PriceTypes[this.PrevPriceType!].Name + ") to (" + this.PriceTypes[this.CartModel.PriceType!].Name + "). If you do that all items will be removed.");
             if (result == true) {
@@ -289,6 +290,7 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
         
         this.CartModel.MarketSpecial = "1";
         this.CartModel.AddDiscountToSample = false;
+        this.CartModel.CountOfCustomerShareAContainer = 3400;
     }
 
     GetPrice(CurrentOrder: OrderModel): (number | undefined) {
@@ -309,13 +311,15 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
             } else if (this.CartModel.CurrentPriceIndex == 1) { //Sac
                 //در صورتی که مبلغ تخفیفی نداشته باشد یعنی قسمت سوم اکسل یا همان قیمت با ایندکس 2 می تواند از تخفیف 5 یا 10 درصد استفاده کند
                 if (CurrentOrder.Price[2] == undefined || CurrentOrder.Price[2] == null || CurrentOrder.Price[2] == 0) {
-                    if (CurrentOrder.Price[1] != undefined) {
-                        if (this.CartModel.MarketSpecial == "1")
-                            Price = CurrentOrder.Price[1] - ((CurrentOrder.Price[1] * 5) / 100);
-                        else
-                            if (this.CartModel.MarketSpecial == "2")
-                                Price = CurrentOrder.Price[1] - ((CurrentOrder.Price[1] * 10) / 100);
-                            else
+                    if (CurrentOrder.Price[1] != undefined) {                        
+                        
+                        //Las Vegas Special
+                        // if (this.CartModel.MarketSpecial == "1")
+                        //     Price = CurrentOrder.Price[1] - ((CurrentOrder.Price[1] * 5) / 100);
+                        // else
+                        //     if (this.CartModel.MarketSpecial == "2")
+                        //         Price = CurrentOrder.Price[1] - ((CurrentOrder.Price[1] * 10) / 100);
+                        //     else
                                 Price = CurrentOrder.Price[1];
                     }
                 }
@@ -463,7 +467,7 @@ export class ShoppingCartComponent implements OnInit, DoCheck {
         else {
             let minCapacityOFContainer = 3400;
             if (this.CartModel.CountOfCustomerShareAContainer != null)
-                minCapacityOFContainer = this.CartModel.CountOfCustomerShareAContainer;
+                minCapacityOFContainer = +this.CartModel.CountOfCustomerShareAContainer;
             if (this.CartModel.PriceType == 2 && (Cubes == undefined || Cubes < minCapacityOFContainer)) //Mix Container Landed To Door
             {
                 alert("The minimum order of 'Mix container landed to Door' container  is " + minCapacityOFContainer);

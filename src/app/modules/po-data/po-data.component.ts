@@ -189,8 +189,17 @@ export class PoDataComponent implements OnInit {
     SortableSearchableData.sort((a,b) => 
     {
       
-       const aValue = Reflect.get(a, this.SortFiledName);
-       const bValue = Reflect.get(b, this.SortFiledName);
+       let aValue = Reflect.get(a, this.SortFiledName);
+       let bValue = Reflect.get(b, this.SortFiledName);
+       if (this.SortFiledName == 'FactoryStatus' || this.SortFiledName == 'ForwarderName' || this.SortFiledName == 'DischargeStatus' || this.SortFiledName == 'ShippmentStatus')
+       {
+        //به دلیل اون آیتم خالی مسخره و کد 999999 مجبور شدم نالش کنم که توی مرتب سازی سوتی نده
+        if (aValue == 999999)
+             aValue = null;
+         if (bValue == 999999)
+             bValue = null;
+       }       
+        
        //Low to high
        if (this.SortType == "0")
        {
@@ -254,7 +263,14 @@ export class PoDataComponent implements OnInit {
      var FoundedData = this.SearchableData.find(x=>x.PONumber === element.PONumber);
      if (FoundedData)
      {      
-       FoundedData.FactoryStatus = +element.FactoryStatus;
+       
+       FoundedData.FactoryStatus = +element.FactoryStatus;       
+       if (!element.FactoryStatus)
+       {
+         const fS = poDataRows.getRawValue()[i].FactoryStatus;
+         if (fS)
+          FoundedData.FactoryStatus = fS;
+       }
        //FoundedData.StatusDate /* Do not need it is updated */
        FoundedData.FactoryContainerNumber = element.FactoryContainerNumber;
 

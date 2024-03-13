@@ -124,6 +124,7 @@ export interface PriceTypeMap {
   FOB: 0;
   SAC: 1;
   LANDEDPRICE: 2;
+  SAMPLE: 3;
 }
 
 export const PriceType: PriceTypeMap;
